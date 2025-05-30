@@ -1,0 +1,30 @@
+@charset "ISO-8859-1";
+
+#titulo{
+	display:flex;
+}
+
+.menu-acoes{
+	display: flex;
+	justify-content: center;
+	align-items:center;
+	margin-top: 10%;
+}
+
+.links{
+	
+	margin: 0 10% 0 10%;
+	text-decoration: none;
+	font-family: helvetica, arial;
+	color: white;
+	background-color: #4CAF50;
+	padding: 2em;
+	border-radius: 15px;
+	font-size: 25px;
+	
+}
+
+.links:hover{
+	
+	background-color: #333333;
+}

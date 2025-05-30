@@ -1,0 +1,163 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Teste JSF</title>
+	<link rel="stylesheet" type="text/css" href="../styles/feedback.css" />
+</h:head>
+<h:body>
+	<h:form id="formFeedBack">
+
+		<p:panel id="titulo">
+			<a href="#{request.contextPath}/restrito/home.jsf"
+				style="text-decoration: none"><p:outputLabel value="Gestor COI" /></a>
+		</p:panel>
+
+		<div id="menu_titulo">
+			<h1 id="titulo">Feedback - Funcionários</h1>
+			<h1 id="logo">Equatorial Energia</h1>
+		</div>
+
+		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
+			life="7000"
+			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
+			
+			<div class="corpo-geral">
+				
+				<div class="dataTable-div">
+					<p:dataTable emptyMessage="Não há nenhum feedback no momento"
+								 value="#{feedback.listarAll()}"
+								 var="objeto"
+								 scrollable="true" 
+							     style="padding: 1em;"
+							     scrollHeight="50%">
+						<p:column>
+							<center>
+								<f:facet name="header">Funcionário</f:facet>
+								<h:outputText value="#{objeto.funcionario.nome}" />
+							</center>
+						</p:column>
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Data</f:facet>
+								<h:outputText value="#{objeto.data}">
+									<f:convertDateTime pattern="dd/MM/yy" />
+								</h:outputText>
+							</center>
+						</p:column>
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Feedback</f:facet>
+								<h:outputText value="#{objeto.feedback}" />
+							</center>						
+						</p:column>
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Remover</f:facet>
+								<p:commandButton value="🗑️"
+								ajax="true" action="#{feedback.remover(objeto)}"
+								update=":formFeedBack"/>
+							</center>						
+						</p:column>
+					</p:dataTable>
+				</div>
+				
+				<div class="formulario-inputs">
+					
+					<h1>Criar Feedback</h1>
+				
+					<div class="inputs">
+						<h:outputText value="Nome Funcionário" />
+						
+						<p:autoComplete id="nomeFuncionario"
+							value="#{feedback.feedback.funcionario.nome}"
+							completeMethod="#{feedback.findAllFuncionario()}"
+							dropdown="true" forceSelection="true"
+							placeholder="Nome funcionário"
+							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+							inputStyle="width :93%; margin: 0" 
+							style="margin:0;" />
+					</div>
+					
+					<div class="inputs">
+						<h:outputText value="FeedBack" />
+						<p:inputText placeholder="Desenvolvimento do funcionário"
+									 value="#{feedback.feedback.feedback}"/>
+					</div>
+					
+					<div class="botoes">
+						<p:commandButton value="Salvar 💾" class="botao"
+						ajax="true" action="#{feedback.salvar()}" update=":formFeedBack"/>
+						
+						<p:commandButton value="Consultar 🔍" class="botao"
+						ajax="true" oncomplete="PF('consulta').show()"/>
+						
+						<p:commandButton value="Limpar 🧹" class="botao"
+						ajax="true" action="#{feedback.limpar()}"/>
+					</div>
+				</div>
+			</div>
+		
+			<p:dialog id="consulta" widgetVar="consulta" closable="true" header="Funcionários"
+			width="80vw" height="80vh" position="center" resizable="false">
+				
+				<p:dataTable value="#{feedback.getAllFuncionariosObjeto()}" var="objeto" scrollable="true">
+					<p:column>
+						<center>
+							<f:facet name="header">Nome</f:facet>
+							<h:outputText value="#{objeto.nome}" />
+						</center>
+					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Feedbacks</f:facet>
+							<p:commandButton value="🔍" action="#{feedback.setFuncionarios(objeto)}"
+							oncomplete="PF('consulta').show(), PF('feedbacks').show()" ajax="true"
+							update=":formFeedBack" process="@this"/>
+						</center>
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
+			
+			<p:dialog id="feedbacks" widgetVar="feedbacks" position="center"
+			height="70vh" width="70vw" header="Feedbacks" resizable="false" draggable="false"
+			rendered="#{not empty feedback.funcionarios.id}" >
+			
+				<p:dataTable var="objeto" value="#{feedback.findAllByName()}" scrollable="true" lazy="true">
+					<p:column>
+						<center>
+							<f:facet name="header">Data</f:facet>
+							<h:outputText value="#{objeto.data}">
+									<f:convertDateTime pattern="dd/MM/yy" />
+							</h:outputText>
+						</center>
+					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Nome</f:facet>
+							<h:outputText value="#{objeto.funcionario.nome}" />
+						</center>
+					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">FeedBack</f:facet>
+							<h:outputText value="#{objeto.feedback}" />
+						</center>
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
+	</h:form>
+</h:body>
+</html>

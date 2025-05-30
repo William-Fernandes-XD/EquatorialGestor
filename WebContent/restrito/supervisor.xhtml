@@ -1,0 +1,247 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Teste JSF</title>
+	<link rel="stylesheet" type="text/css" href="../styles/supervisor.css" />
+</h:head>
+<h:body>
+	<h:form id="formGestor">
+		<p:panel id="titulo">
+			<a href="#{request.contextPath}/restrito/home.jsf"
+				style="text-decoration: none"><p:outputLabel value="Gestor COI" /></a>
+		</p:panel>
+
+		<div id="menu_titulo">
+			<h1 id="titulo">Gestor de Turno</h1>
+			<h1 id="logo">Equatorial Energia</h1>
+		</div>
+
+		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
+			life="7000"
+			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
+
+		<div id="tudo">
+
+			<!-- Supervisão -->
+			<div id="supervisao">
+
+				<div class="text">
+					<p:outputLabel value="Id: " rendered="true" />
+					<p:inputText placeholder="Insira o supervisor que está saindo"
+						rendered="true" disabled="true"
+						value="#{gestorTurnoController.gestorEntity.id}" />
+				</div>
+				<div class="text">
+					<p:outputLabel value="Supervisor saindo" />
+					<p:inputText placeholder="Insira o supervisor que está saindo"
+						value="#{gestorTurnoController.gestorEntity.supervisorSaindo.name}" />
+				</div>
+
+				<div class="text">
+					<p:outputLabel value="Supervisor Entrando" />
+					<p:inputText placeholder="Insira o supervisor que está entrando"
+						value="#{gestorTurnoController.gestorEntity.supervisorEntrando.name}" />
+				</div>
+
+				<div class="text">
+					<p:outputLabel value="Turno" />
+					<p:inputText placeholder="Insira o turno"
+						value="#{gestorTurnoController.gestorEntity.turno}" />
+				</div>
+
+				<div class="text">
+					<p:outputLabel value="Data" />
+					<p:calendar placeholder="Insira a data atual" pattern="dd/MM/yyyy"
+						value="#{gestorTurnoController.gestorEntity.date}" />
+				</div>
+			</div>
+
+			<!-- Pendencias -->
+			<div id="pendencias" class="text">
+				<p:outputLabel value="Pendencias" />
+				<p:inputTextarea placeholder="Insira as pendências"
+					value="#{gestorTurnoController.gestorEntity.pendencias}" />
+			</div>
+
+			<!-- Ocorrencias -->
+			<div id="ocorrencias">
+				<div class="text">
+					<p:outputLabel value="Ocorrência" />
+					<p:inputText placeholder="Insira o código da ocorrência"
+						value="#{gestorTurnoController.ocorrencia.ocorrencia}" />
+				</div>
+
+				<div class="text">
+					<p:outputLabel value="Ponto de defeito" />
+					<p:inputText placeholder="Insira o ponto de defeito"
+						value="#{gestorTurnoController.ocorrencia.ponto_defeito}" />
+				</div>
+
+				<div class="text">
+					<p:outputLabel value="Data" />
+					<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
+						value="#{gestorTurnoController.ocorrencia.date}" />
+				</div>
+
+				<div class="text">
+					<p:outputLabel value="Recursos Especiais" />
+					<p:inputText placeholder="Insira os recursos especiais"
+						value="#{gestorTurnoController.ocorrencia.recursos_especiais}" />
+				</div>
+			</div>
+
+			<!-- Observações -->
+			<div id="observacoes" class="text">
+				<p:outputLabel value="Observações" />
+				<p:inputTextarea placeholder="Insira as observações"
+					value="#{gestorTurnoController.ocorrencia.observacoes}" />
+			</div>
+
+			<!-- Botões -->
+			<div class="botoes" style="margin-top: 1em;">
+				<p:commandButton value="Salvar 💾"
+					action="#{gestorTurnoController.salvar()}" update=":formGestor" class="botao"/>
+
+				<p:commandButton value="Adicionar Ocorrências ➕"
+					action="#{gestorTurnoController.adicionarOcorrencia()}" ajax="true"
+					update=":formGestor" class="botao"/>
+
+				<p:commandButton value="Registrar Ausência 📝" class="botao"
+				oncomplete="PF('registroAusencia').show()"/>
+
+				<p:commandButton value="Limpar Alterações 🧹" 
+					action="#{gestorTurnoController.limpar()}" ajax="true"
+					update=":formGestor" class="botao"/>
+
+				<p:commandButton value="Dúvidas? 🤔"
+					oncomplete="PF('duvidasDialog').show()" class="botao"/>
+			</div>
+
+			<div id="salvos">
+				<p:dataTable scrollable="true" scrollHeight="500" var="objeto"
+					value="#{gestorTurnoController.listAllGestor()}"
+					style="padding: 1em; text-align:center; padding-top: 2em;">
+					<p:column>
+						<f:facet name="header">Data</f:facet>
+						<h:outputText value="#{objeto.date}">
+							<f:convertDateTime pattern="dd/MM/yy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Supervisor Saindo</f:facet>
+						<h:outputText value="#{objeto.supervisorSaindo.name}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Supervisor Entrando</f:facet>
+						<h:outputText value="#{objeto.supervisorEntrando.name}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Pendências</f:facet>
+						<h:outputText value="#{objeto.pendencias}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Ocorrências</f:facet>
+						<p:commandButton value="🔍"
+							action="#{gestorTurnoController.setGestorEntity(objeto)}"
+							oncomplete="PF('ocorrencias').show()"
+							update=":formGestor :formGestor:ocorrencias" process="@this"
+							ajax="true" styleClass="ui-button-info" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Remover</f:facet>
+						<p:commandButton value="🗑️"
+							action="#{gestorTurnoController.remover(objeto)}" styleClass="ui-button-danger" process="@this"
+							ajax="true" update=":formGestor :formGestor:ocorrencias" />
+					</p:column>
+				</p:dataTable>
+			</div>
+
+			<!-- DATA TABLE EM P:DIALOG FILTRADO POR GESTÃO -->
+
+			<p:dialog id="ocorrencias" widgetVar="ocorrencias" closable="true"
+				height="90%" position="center" width="70%" header="Dados Criados"
+				draggable="false" closeOnEscape="true" resizable="false"
+				modal="true">
+
+				<p:dataTable scrollable="true" scrollHeight="500" var="objeto"
+					value="#{gestorTurnoController.listAllOcorrencias()}"
+					style="padding: 1em; text-align:center"
+					emptyMessage="Não existem dados para exibição">
+					<p:column>
+						<f:facet name="header">Ocorrência</f:facet>
+						<h:outputText value="#{objeto.date}">
+							<f:convertDateTime pattern="dd/MM/yy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Ocorrência</f:facet>
+						<h:outputText value="#{objeto.ocorrencia}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Ponto de defeito</f:facet>
+						<h:outputText value="#{objeto.ponto_defeito}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Recursos Especiais</f:facet>
+						<h:outputText value="#{objeto.recursos_especiais}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Observações</f:facet>
+						<h:outputText value="#{objeto.observacoes}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Remover</f:facet>
+						<p:commandButton value="🗑️"
+							action="#{gestorTurnoController.removerOcorrencia(objeto)}"
+							process="@this" ajax="true"
+							update=":formGestor :formGestor:ocorrencias"
+							oncomplete="PF('ocorrencias').show()"
+							styleClass="ui-button-danger" />
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
+
+			<p:dialog id="duvidasDialog" widgetVar="duvidasDialog"
+          closable="true" height="60vh" width="40vw"
+          header="Dúvidas?" draggable="false" resizable="false"
+          styleClass="duvidas-dialog"
+          footer="📧 william.almeida@equatorialenergia.com.br">
+
+    <h:panelGroup layout="block" styleClass="duvidas-content">
+        <p><strong>💾 Botão Salvar:</strong> É necessário preencher os campos de gestão (Supervisor_saindo, Supervisor_entrando, Turno, Data, Pendências). Caso contrário, um erro de índice [0] pode ocorrer, indicando dados nulos.</p>
+
+        <p><strong> ➕ Botão Adicionar Ocorrências:</strong> Requer uma gestão criada ou selecionada na tabela. Clique no botão "Ocorrências", feche a janela e depois adicione a ocorrência.</p>
+
+        <p><strong>📝 Botão Registrar Ausência:</strong> Utilizado para registrar a ausência de um supervisor.</p>
+
+        <p><strong>🧹 Botão Limpar Alterações:</strong> Limpa todos os campos da tela, incluindo as ocorrências.</p>
+        
+        <p><strong>📝 Termos de compromisso</strong> Não responsabilizar o estagiário <strong>William Fernandes</strong> por quaisquer
+         erros de banco de dados. Ao usar este produto, você automáticamente concorda com estes termos;</p>
+         
+    	</h:panelGroup>
+
+</p:dialog>
+
+	<ui:include src="/templates/registroausencia.xhtml" />
+		</div>
+	</h:form>
+</h:body>
+</html>

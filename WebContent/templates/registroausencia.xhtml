@@ -1,0 +1,188 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog id="registroAusencia" modal="true"
+		widgetVar="registroAusencia" draggable="false" closable="true"
+		position="center" height="90vh" width="95vw" resizable="false"
+		header="Registrar ausência">
+
+		<div id="corpo-dialog">
+
+			<div id="dataTableAusencia">
+				<p:dataTable var="objeto" 
+					value="#{ausenciaController.listAllAusencia()}"
+					emptyMessage="Não existem ausências" scrollable="true"
+					style="background-color: white; border-radius: 10px; padding: 1em;">
+					<p:column>
+						<center>
+							<f:facet name="header">Nome</f:facet>
+							<h:outputText value="#{objeto.funcionarios.nome}" />
+						</center>
+					</p:column>
+
+					<p:column>
+						<center>
+							<f:facet name="header">Data</f:facet>
+							<h:outputText value="#{objeto.data_ausencia}">
+								<f:convertDateTime pattern="dd/MM/yy" />
+							</h:outputText>
+						</center>
+					</p:column>
+
+					<p:column>
+						<center>
+							<f:facet name="header">Turno</f:facet>
+							<h:outputText value="#{objeto.turno}" />
+						</center>
+					</p:column>
+
+					<p:column>
+						<center>
+							<f:facet name="header">Justificativa</f:facet>
+							<h:outputText value="#{objeto.justificativa}" />
+						</center>
+					</p:column>
+
+					<p:column>
+						<center>
+							<f:facet name="header">Deletar</f:facet>
+							<p:commandButton value="🗑️"
+								action="#{ausenciaController.removerAusencia(objeto)}"
+								update=":formGestor" oncomplete="PF('registroAusencia').show()" />
+						</center>
+					</p:column>
+				</p:dataTable>
+			</div>
+			<div id="formulario">
+				<div id="form_inputs">
+				
+					<h1
+						style="color: white;
+						 font-style: helvetica;
+						  text-align: center;
+						   background-color: #003366;
+						    border-radius: 10px;
+						     padding: 1em;
+						      width: 70%;">
+						Registrar Ausência</h1>
+
+					<div class="input-label">
+						<p:outputLabel value="Nome" />
+
+						<p:autoComplete id="nomeFuncionario"
+							value="#{ausenciaController.ausencia.funcionarios.nome}"
+							completeMethod="#{ausenciaController.buscarFuncionarios()}"
+							dropdown="true" forceSelection="true"
+							placeholder="Nome funcionário"
+							panelStyle="max-height: 400px; overflow-y:auto;"
+							style="width:340px;"
+							 />
+					</div>
+
+					<div class="input-label">
+						<p:outputLabel value="Data" />
+						<p:calendar placeholder="Data Ausência" pattern="dd/MM/yyyy"
+							value="#{ausenciaController.ausencia.data_ausencia}" />
+					</div>
+
+					<div class="input-label">
+						<p:outputLabel value="Turno" />
+						<p:inputText placeholder="Turno de trabalho"
+							value="#{ausenciaController.ausencia.turno}" />
+					</div>
+
+					<div class="input-label">
+						<p:outputLabel value="Justificativa" />
+						<p:inputText placeholder="Justificativa"
+							value="#{ausenciaController.ausencia.justificativa}" />
+					</div>
+
+					<div class="botoes" style="margin-top: 1em;">
+
+						<p:commandButton value="Salvar 💾" update=":formGestor"
+							class="botao" action="#{ausenciaController.salvarAusencia()}"
+							oncomplete="PF('registroAusencia').show()" />
+
+						<p:commandButton value="Consultar 🔍" update=":formGestor"
+							class="botao"
+							oncomplete="PF('registroAusencia').show(), PF('funcionariosDialog').show()" />
+
+						<p:commandButton value="Limpar 🧹" update=":formGestor"
+							class="botao" action="#{ausenciaController.limpar()}" />
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</p:dialog>
+
+	<p:dialog id="funcionariosDialog" widgetVar="funcionariosDialog"
+		header="Funcionários" position="center" height="80vh" width="80vw"
+		draggable="false" resizable="false">
+
+		<p:dataTable value="#{ausenciaController.findAllFuncionarios()}"
+			var="objeto" scrollable="true">
+
+			<p:column>
+				<center>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{objeto.nome}" />
+				</center>
+			</p:column>
+
+			<p:column>
+				<center>
+					<f:facet name="header">Ausências</f:facet>
+					<p:commandButton value="🔍"
+						action="#{ausenciaController.setFuncionarios(objeto)}" ajax="true"
+						update=":formGestor"
+						oncomplete="PF('registroAusencia').show(), PF('funcionariosDialog').show(), PF('ausenciasDialog').show()" />
+				</center>
+			</p:column>
+		</p:dataTable>
+	</p:dialog>
+
+	<p:dialog id="ausenciasDialog" widgetVar="ausenciasDialog"
+		header="Ausências" position="center" height="70vh" width="70vw"
+		draggable="false" resizable="false">
+
+		<p:dataTable value="#{ausenciaController.findAllAusenciasByName()}"
+			var="objeto" scrollable="true"
+			emptyMessage="Não existem ausências para esse funcionário">
+
+			<p:column>
+				<center>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{objeto.funcionarios.nome}" />
+				</center>
+			</p:column>
+
+			<p:column>
+				<center>
+					<f:facet name="header">Data</f:facet>
+					<h:outputText value="#{objeto.data_ausencia}">
+						<f:convertDateTime pattern="dd/MM/yy" />
+					</h:outputText>
+				</center>
+			</p:column>
+
+			<p:column>
+				<center>
+					<f:facet name="header">Turno</f:facet>
+					<h:outputText value="#{objeto.turno}" />
+				</center>
+			</p:column>
+
+			<p:column>
+				<center>
+					<f:facet name="header">Justificativa</f:facet>
+					<h:outputText value="#{objeto.justificativa}" />
+				</center>
+			</p:column>
+		</p:dataTable>
+	</p:dialog>
+</ui:composition>

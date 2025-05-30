@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+                
+    <p:ajaxStatus onstart="statusDialog.show()" onsuccess="statusDialog.hide()" />
+    
+    <p:dialog id="dialogAjaxStatus" modal="true" widgetVar="statusDialog"
+              height="200px" width="300px"
+              header="Carregando dados na velocidade da luz" footer="Aguarde"
+              draggable="false" closable="false"
+              appendTo="@(body)" dynamic="false">
+              
+        <h:graphicImage library="img" name="loading.gif" />
+    </p:dialog>
+</ui:composition>

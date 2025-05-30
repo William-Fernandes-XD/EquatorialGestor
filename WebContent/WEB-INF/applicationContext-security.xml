@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+             http://www.springframework.org/schema/security
+             http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+          
+        <global-method-security secured-annotations="enabled"/>
+		   <http auto-config="true"
+		    access-denied-page="/error/acessoNegado.jsf"
+		    use-expressions="true">
+		   	  
+		   	  <intercept-url pattern="/cadastro/cad_permissao.jsf" access="hasAnyRole('SUPERVISOR')"
+		   	   method="POST"/>
+		   	   
+		   	   <intercept-url pattern="/resources/components/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+		   	   
+		   	   <intercept-url pattern="/resources/**" access="isAuthenticated() and hasAnyRole('ADMIN')"/>
+		   	   
+		   	   <intercept-url pattern="/error/**" access="isAuthenticated() or isAnonymous() or !isAuthenticated()"/>
+		   	   
+		   	   <intercept-url pattern="/templates/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+		   	   
+		   	   <intercept-url pattern="/publico/**" access="permitAll"/>
+		   	   
+		   	   <form-login login-page="/publico/login.jsf" always-use-default-target="true"
+		   	    default-target-url="/restrito/home.jsf" authentication-failure-url="/publico/login.jsf?login_error=1" 
+		   	    username-parameter="j_username"
+		   	    password-parameter="j_password"/>
+		   	    
+		   	    <logout invalidate-session="true" logout-success-url="/publico/login.jsf" logout-url="/j_spring_security_logout"
+		   	    delete-cookies="JSESSIONID"/>
+		   	    
+		   	    <remember-me token-validity-seconds="7200"/>
+		   	    
+		   	    <session-management invalid-session-url="/publico/login.jsf" 
+		   	    session-fixation-protection="migrateSession">
+		   	    	<concurrency-control max-sessions="1" expired-url="/public/login.jsf" error-if-maximum-exceeded="true"/>
+		   	    </session-management>
+		   </http>       
+		   
+		   <authentication-manager>
+		   		<authentication-provider>
+		   			<password-encoder hash="plaintext"/>
+		   			<jdbc-user-service data-source-ref="springDataSource"
+		   			
+		   			users-by-username-query="select name as username
+		   			, password as password, 1 as enable from supervisor where upper(name)
+					= upper(?)"
+					
+		   			authorities-by-username-query="select u.name as username, p.role as authority
+		   			from supervisor u join roles p on u.id = p.supervisor_id where upper(u.name) =
+		   			upper(?)"
+		   			/>
+		   		</authentication-provider>
+		   </authentication-manager>
+</b:beans>
