@@ -11,6 +11,24 @@ body{
 	height: 5em;
 }
 
+.verde {
+    background-color: #d1f7d1; /* verde claro */
+    color: #1e4620; /* verde escuro para contraste */
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.vermelho {
+    background-color: #fcdada; /* vermelho claro */
+    color: #7b1c1c; /* vermelho escuro */
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-align: center;
+}
+
 #titulo{
 	float: left;
 	margin-left: 1em;
@@ -46,6 +64,7 @@ body{
 	display:flex;
 	flex-direction: row;
 	justify-content: space-between;
+	gap: 50px;
 }
 
 .text{
@@ -68,6 +87,7 @@ body{
 	flex-direction:row;
 	margin-top:2em;
 	justify-content: space-between;
+	gap: 50px;
 }
 
 #observacoes{

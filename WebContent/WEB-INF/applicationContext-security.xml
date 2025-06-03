@@ -21,6 +21,10 @@
 		   	   
 		   	   <intercept-url pattern="/error/**" access="isAuthenticated() or isAnonymous() or !isAuthenticated()"/>
 		   	   
+		   	   <intercept-url pattern="/restrito/criarConta.jsf" access="isAuthenticated() and hasAnyRole('ADMIN')"/>
+		   	   
+		   	   <intercept-url pattern="/restrito/funcionarios.jsf" access="isAuthenticated() and hasAnyRole('ADMIN')"/>
+		   	   
 		   	   <intercept-url pattern="/templates/**" access="isAuthenticated() and hasAnyRole('USER')"/>
 		   	   
 		   	   <intercept-url pattern="/publico/**" access="permitAll"/>

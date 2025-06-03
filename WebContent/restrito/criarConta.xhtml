@@ -37,7 +37,7 @@
 					<div>
 						<p>Id:</p>
 						<p:inputText class="inputs" id="id" placeholder="Digite o nome de usuário"
-							value="#{contaController.supervisor.id}" disabled="true" />
+							value="#{contaController.supervisor.id}" />
 					</div>
 					<div>
 						<p>Usuário:</p>
@@ -58,7 +58,7 @@
 					</div>
 				</div>
 				<div id="botoeiras">
-					<p:commandButton class="botao botao-verde" action="#{contaController.salvar()}"
+					<p:commandButton class="botao botao-verde" action="#{contaController.merge()}"
 						onclick="return valida()" ajax="true" value="Criar uma conta"
 						update=":formCriarConta" />
 

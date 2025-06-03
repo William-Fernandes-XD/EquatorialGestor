@@ -36,6 +36,8 @@ public class FuncionarioImpl implements AbstractMethods<Funcionarios>, Serializa
 	public void merge(Funcionarios obj) throws Exception {
 		
 		validateSessionFactory();
+		sessionFactory.getCurrentSession().save(obj);
+		executeFlush();
 	}
 	
 	public Funcionarios merge2(Funcionarios obj) throws Exception {
@@ -50,6 +52,9 @@ public class FuncionarioImpl implements AbstractMethods<Funcionarios>, Serializa
 	@Override
 	public void remove(Funcionarios obj) throws Exception {
 		
+		validateSessionFactory();
+		sessionFactory.getCurrentSession().delete(obj);
+		executeFlush();
 	}
 
 	@Override

@@ -65,6 +65,8 @@ public class FeedbackImpl implements AbstractMethods<Feedback>, Serializable{
 	
 	public List<Feedback> findAllByNameFuncionario(Long funcionario_id) throws Exception{
 		
+		validateSessionFactory();
+		
 		StringBuilder query = new StringBuilder();
 		
 		query.append("select distinct(entity) from ").append(Feedback.class.getSimpleName())
@@ -75,7 +77,7 @@ public class FeedbackImpl implements AbstractMethods<Feedback>, Serializable{
 		
 		return feedbacksById;
 	}
-
+	
 	@Override
 	public List<Feedback> findAll(Class<Feedback> classe) throws Exception {
 		

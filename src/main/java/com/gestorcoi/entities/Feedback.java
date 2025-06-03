@@ -22,6 +22,12 @@ public class Feedback {
 	private Date data;
 	
 	@ManyToOne
+	@JoinColumn(name = "supervisor_id")
+	private Supervisor avaliador;
+	
+	private String positivoOrNegative;
+	
+	@ManyToOne
 	@JoinColumn(name = "funcionario_id")
 	private Funcionarios funcionario;
 	
@@ -33,6 +39,22 @@ public class Feedback {
 		this.feedback = feedback;
 		this.data = data;
 		this.funcionario = funcionario;
+	}
+	
+	public Supervisor getAvaliador() {
+		return avaliador;
+	}
+	
+	public String getPositivoOrNegative() {
+		return positivoOrNegative;
+	}
+	
+	public void setPositivoOrNegative(String positivoOrNegative) {
+		this.positivoOrNegative = positivoOrNegative;
+	}
+	
+	public void setAvaliador(Supervisor avaliador) {
+		this.avaliador = avaliador;
 	}
 
 	public Long getId() {

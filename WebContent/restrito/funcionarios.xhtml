@@ -1,0 +1,68 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Teste JSF</title>
+    <link rel="stylesheet" type="text/css" href="../styles/funcionarios.css"/>
+</h:head>
+<h:body>
+	<h:form id="forms">
+	
+		<ui:include src="/templates/barraProgresso.xhtml" />
+	
+		<p:panel id="titulo">
+			<a href="#{request.contextPath}/restrito/home.jsf"
+				style="text-decoration: none"><p:outputLabel value="Gestor COI" /></a>
+		</p:panel>
+		
+		<div id="menu_titulo">
+			<h1 id="titulo">Gerência Funcionários</h1>
+			<h1 id="logo">Equatorial Energia</h1>
+		</div>
+
+		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
+			life="7000"
+			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
+			
+			<div id="corpo-geral">
+			
+				<div id="formulario">
+					<div class="input">
+						<p:outputLabel value="Nome"/>
+						<p:inputText value="#{gerenciaFuncionarios.funcionarios.nome}"/>
+					</div>
+					
+					<div class="botoes">
+						<p:commandButton value="Salvar 💾"
+						action="#{gerenciaFuncionarios.salvar()}"  class="botao"
+						ajax="true"/>
+					</div>
+				</div>
+			
+				<div id="dataTableFuncionarios">
+					<p:dataTable value="#{gerenciaFuncionarios.findAllFuncionariosObjeto()}" var="objeto">
+						<p:column>
+							<center>
+								<f:facet name="header">Nome</f:facet>
+								<h:outputText value="#{objeto.nome}" />
+							</center>
+						</p:column>
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Remover</f:facet>
+								<p:commandButton value="🗑️" action="#{gerenciaFuncionarios.remover(objeto)}" ajax="true"/>
+							</center>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</div>
+	</h:form>
+</h:body>
+</html>

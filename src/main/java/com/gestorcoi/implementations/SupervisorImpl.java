@@ -46,6 +46,20 @@ public class SupervisorImpl implements AbstractMethods<Supervisor>, Serializable
 		executeFlush();
 	}
 	
+	public Supervisor findById(Long id) {
+		validateSessionFactory();
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select distinct(entity) from ");
+		
+		query.append(Supervisor.class.getSimpleName()).append(" entity where entity.id = :id");
+		Supervisor supervisor = (Supervisor) sessionFactory.getCurrentSession()
+				.createQuery(query.toString()).setParameter("id", id).uniqueResult();
+		
+		return supervisor;
+	}
+	
+	
 	public Supervisor findByName(String name) {
 		
 		validateSessionFactory();
@@ -69,7 +83,7 @@ public class SupervisorImpl implements AbstractMethods<Supervisor>, Serializable
 	public void merge(Supervisor obj) throws Exception {
 		
 		validateSessionFactory();
-        sessionFactory.getCurrentSession().update(obj);
+        sessionFactory.getCurrentSession().merge(obj);
 		executeFlush();
 	}
 	

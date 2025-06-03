@@ -15,7 +15,8 @@
 				<p:dataTable var="objeto" 
 					value="#{ausenciaController.listAllAusencia()}"
 					emptyMessage="Não existem ausências" scrollable="true"
-					style="background-color: white; border-radius: 10px; padding: 1em;">
+					style="background-color: white; border-radius: 10px; padding: 1em;"
+					scrollHeight="750">
 					<p:column>
 						<center>
 							<f:facet name="header">Nome</f:facet>
@@ -74,8 +75,9 @@
 
 						<p:autoComplete id="nomeFuncionario"
 							value="#{ausenciaController.ausencia.funcionarios.nome}"
-							completeMethod="#{ausenciaController.buscarFuncionarios()}"
-							dropdown="true" forceSelection="true"
+							completeMethod="#{ausenciaController.buscarFuncionarios}"
+							dropdown="true"
+							forceSelection="true"
 							placeholder="Nome funcionário"
 							panelStyle="max-height: 400px; overflow-y:auto;"
 							style="width:340px;"
@@ -123,6 +125,29 @@
 	<p:dialog id="funcionariosDialog" widgetVar="funcionariosDialog"
 		header="Funcionários" position="center" height="80vh" width="80vw"
 		draggable="false" resizable="false">
+		
+		<div class="pesquisa-funcionarios" style="
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+		margin-top: 3em;
+		align-items: center;
+		justify-content: center;
+		padding-bottom: 3em;">
+		
+			<p:autoComplete 
+							value="#{ausenciaController.funcionarios.nome}"
+    						completeMethod="#{ausenciaController.buscarFuncionarios}"
+    						dropdown="true"
+    						forceSelection="true"
+    						placeholder="Nome funcionário"
+    						panelStyle="max-height: 400px; overflow-y:auto;"
+    						style="width:340px;"
+							 />
+							 
+			<p:commandButton value="Pesquisar" action="#{ausenciaController.findAllAusenciasByName()}" ajax="true" update=":formGestor"
+			oncomplete="PF('registroAusencia').show(), PF('funcionariosDialog').show(), PF('ausenciasDialog').show()"/>
+		</div>
 
 		<p:dataTable value="#{ausenciaController.findAllFuncionarios()}"
 			var="objeto" scrollable="true">

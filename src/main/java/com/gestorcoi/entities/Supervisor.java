@@ -23,6 +23,9 @@ public class Supervisor {
 	private String name;
 	private String password;
 	
+	@OneToMany(mappedBy = "avaliador", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Feedback> feedbacks;
+	
 	@OneToMany(mappedBy = "supervisorEntrandoOcorrencia", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Ocorrencia> ocorrencias;
 	
@@ -47,6 +50,14 @@ public class Supervisor {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public List<Feedback> getFeedbacks() {
+		return feedbacks;
+	}
+	
+	public void setFeedbacks(List<Feedback> feedbacks) {
+		this.feedbacks = feedbacks;
 	}
 	
 	public List<GestorEntity> getDeclarados() {

@@ -6,7 +6,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
 	<title>Teste JSF</title>
 	<link rel="stylesheet" type="text/css" href="../styles/feedback.css" />
@@ -30,14 +31,17 @@
 			
 			<div class="corpo-geral">
 				
-				<div class="dataTable-div">
+				<c:if test="#{userVerification.admin}">
+					
+					<div class="dataTable-div">
 					<p:dataTable emptyMessage="Não há nenhum feedback no momento"
 								 value="#{feedback.listarAll()}"
 								 var="objeto"
 								 scrollable="true" 
 							     style="padding: 1em;"
-							     scrollHeight="50%">
-						<p:column>
+							     scrollHeight="500"
+							     id="datatableresultados">
+						<p:column width="20%">
 							<center>
 								<f:facet name="header">Funcionário</f:facet>
 								<h:outputText value="#{objeto.funcionario.nome}" />
@@ -53,10 +57,25 @@
 							</center>
 						</p:column>
 						
-						<p:column>
+						<p:column style="padding: 2px;">
+							<center>
+								<f:facet name="header">Expressão</f:facet>
+								<h:outputText value="#{objeto.positivoOrNegative}"
+								styleClass="#{objeto.positivoOrNegative eq 'Positivo' ? 'verde' : 'vermelho'}" />							
+							</center>
+						</p:column>
+						
+						<p:column width="30%">
 							<center>
 								<f:facet name="header">Feedback</f:facet>
 								<h:outputText value="#{objeto.feedback}" />
+							</center>						
+						</p:column>
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Avaliador por</f:facet>
+								<h:outputText value="#{objeto.avaliador.name}" />
 							</center>						
 						</p:column>
 						
@@ -69,9 +88,26 @@
 							</center>						
 						</p:column>
 					</p:dataTable>
+					
+					<div style="margin-top: 1em">
+					
+						<p:commandButton value="Todos" styleClass="botao"
+						ajax="false" immediate="true" update=":formFeedBack:dataTable-div:datatableresultados" 
+						action="#{feedback.filtrar('')}">
+						</p:commandButton>
+						
+						<p:commandButton value="Positivos" styleClass="botao" action="#{feedback.filtrar('Positivo')}"
+						ajax="false" immediate="true" update=":formFeedBack:dataTable-div:datatableresultados">
+						</p:commandButton>
+						
+						<p:commandButton value="Negativos" styleClass="botao" ajax="false" immediate="true"
+						action="#{feedback.filtrar('Negativo')}" update=":formFeedBack:dataTable-div:datatableresultados"/>
+					</div>
 				</div>
+					
+				</c:if>
 				
-				<div class="formulario-inputs">
+				<div class="formulario-inputs" style="margin: 0 auto">
 					
 					<h1>Criar Feedback</h1>
 				
@@ -79,13 +115,19 @@
 						<h:outputText value="Nome Funcionário" />
 						
 						<p:autoComplete id="nomeFuncionario"
-							value="#{feedback.feedback.funcionario.nome}"
-							completeMethod="#{feedback.findAllFuncionario()}"
+							value="#{feedback.funcionarios.nome}"
+							completeMethod="#{feedback.findAllFuncionario}"
 							dropdown="true" forceSelection="true"
 							placeholder="Nome funcionário"
 							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
 							inputStyle="width :93%; margin: 0" 
 							style="margin:0;" />
+					</div>
+					
+					<div class="inputs">
+						<h:outputText value="Relação de Desempenho" />
+						<p:inputText placeholder="Desenvolvimento do funcionário"
+									 value="#{feedback.feedback.positivoOrNegative}"/>
 					</div>
 					
 					<div class="inputs">
@@ -98,8 +140,10 @@
 						<p:commandButton value="Salvar 💾" class="botao"
 						ajax="true" action="#{feedback.salvar()}" update=":formFeedBack"/>
 						
-						<p:commandButton value="Consultar 🔍" class="botao"
-						ajax="true" oncomplete="PF('consulta').show()"/>
+						<c:if test="#{userVerification.admin}">
+							<p:commandButton value="Consultar 🔍" class="botao"
+							ajax="true" oncomplete="PF('consulta').show()"/>
+						</c:if>
 						
 						<p:commandButton value="Limpar 🧹" class="botao"
 						ajax="true" action="#{feedback.limpar()}"/>
@@ -108,7 +152,30 @@
 			</div>
 		
 			<p:dialog id="consulta" widgetVar="consulta" closable="true" header="Funcionários"
-			width="80vw" height="80vh" position="center" resizable="false">
+			width="80vw" height="80vh" position="center" resizable="false" draggable="false">
+			
+				<div class="pesquisa-funcionarios" style="
+				display: flex;
+				flex-direction: column;
+				gap: 40px;
+				margin-top: 3em;
+				align-items: center;
+				justify-content: center;
+				padding-bottom: 3em;">
+		
+			<p:autoComplete 
+							value="#{feedback.feedback.funcionario.nome}"
+    						completeMethod="#{feedback.findAllFuncionario}"
+    						dropdown="true"
+    						forceSelection="true"
+    						placeholder="Nome funcionário"
+    						panelStyle="max-height: 400px; overflow-y:auto;"
+    						style="width:340px;"/>
+							 
+			<p:commandButton value="Pesquisar"
+			ajax="true" update=":formFeedBack"
+			oncomplete="PF('consulta').show(), PF('feedbacks').show()"/>
+		</div>
 				
 				<p:dataTable value="#{feedback.getAllFuncionariosObjeto()}" var="objeto" scrollable="true">
 					<p:column>
@@ -131,9 +198,18 @@
 			
 			<p:dialog id="feedbacks" widgetVar="feedbacks" position="center"
 			height="70vh" width="70vw" header="Feedbacks" resizable="false" draggable="false"
-			rendered="#{not empty feedback.funcionarios.id}" >
+			rendered="#{not empty feedback.funcionarios.id || not empty feedback.feedback.funcionario.nome}" >
 			
 				<p:dataTable var="objeto" value="#{feedback.findAllByName()}" scrollable="true" lazy="true">
+				
+					<p:column>
+					
+						<center>
+							<f:facet name="header">Avaliado por</f:facet>
+							<h:outputText value="#{objeto.avaliador.name}" />
+						</center>
+					</p:column>
+				
 					<p:column>
 						<center>
 							<f:facet name="header">Data</f:facet>
@@ -149,6 +225,14 @@
 							<h:outputText value="#{objeto.funcionario.nome}" />
 						</center>
 					</p:column>
+					
+					<p:column style="padding: 2px;">
+							<center>
+								<f:facet name="header">Expressão</f:facet>
+								<h:outputText value="#{objeto.positivoOrNegative}"
+								styleClass="#{objeto.positivoOrNegative eq 'Positivo' ? 'verde' : 'vermelho'}" />							
+							</center>
+						</p:column>
 					
 					<p:column>
 						<center>

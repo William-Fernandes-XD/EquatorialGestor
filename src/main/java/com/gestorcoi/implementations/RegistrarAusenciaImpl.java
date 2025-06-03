@@ -77,6 +77,21 @@ public class RegistrarAusenciaImpl implements AbstractMethods<RegistroAusencia>,
 		
 		return ausencias;
 	}
+	
+	public List<RegistroAusencia> findAllByNameFuncionario(String funcionario_name) throws Exception{
+		
+		validateSessionFactory();
+		
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select distinct(entity) from ").append(RegistroAusencia.class.getSimpleName())
+		.append(" entity where entity.funcionarios.nome = :nome");
+		
+		List<RegistroAusencia> ausencias = sessionFactory.getCurrentSession().createQuery(query.toString())
+				.setParameter("nome", funcionario_name).list();
+		
+		return ausencias;
+	}
 
 	@Override
 	public List<RegistroAusencia> findAll(Class<RegistroAusencia> classe) throws Exception {

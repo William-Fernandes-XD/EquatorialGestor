@@ -102,9 +102,4 @@ public class RegistroAusencia {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "RegistroAusencia [id=" + id + ", data_ausencia=" + data_ausencia + ", turno=" + turno
-				+ ", justificativa=" + justificativa + ", funcionarios=" + funcionarios + "]";
-	}
 }

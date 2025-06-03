@@ -6,7 +6,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
     <title>Teste JSF</title>
     <link rel="stylesheet" type="text/css" href="../styles/home.css"/>
@@ -22,11 +23,18 @@
 		
 		<div class="menu-acoes">
 		  <a href="supervisor.jsf" class="links">Supervisor - Turno</a>
-		  <a href="criarConta.jsf" class="links">Criar uma conta</a>
+		  
+		  <c:if test="#{userVerification.admin}">
+		  	  <a href="criarConta.jsf" class="links">Criar uma conta</a>
+		  </c:if>
 		</div>
 		
 		<div class="menu-acoes">
 			<a href="feedback.jsf" class="links">Feedback - Funcionários</a>
+			
+			<c:if test="#{userVerification.admin}">
+				<a href="funcionarios.jsf" class="links">Gerenciar Funcionários</a>
+			</c:if>
 		</div>
 	</h:form>
 </h:body>

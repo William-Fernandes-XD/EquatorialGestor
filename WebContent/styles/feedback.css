@@ -33,12 +33,31 @@ body{
 	align-content: center;
 	width: 90%;
 	margin: 0 auto;
-	margin-top: 10em; !important ;
+	margin-top: 5em; !important ;
 	text-align: center;
+	gap: 50px;
 }
 
 .dataTable-div{
-	width: 40%;
+	width: 60%;
+}
+
+.verde {
+    background-color: #d1f7d1; /* verde claro */
+    color: #1e4620; /* verde escuro para contraste */
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.vermelho {
+    background-color: #fcdada; /* vermelho claro */
+    color: #7b1c1c; /* vermelho escuro */
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .formulario-inputs{

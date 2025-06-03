@@ -54,47 +54,26 @@ public class ContasController {
 		}
 	}
 	
-	/**
-	 * 
-	 * public void merge() throws Exception{
-		
-		if(supervisor.getId() != null) {
-			
-			List<Roles> rolesList = new ArrayList<>();
-			rolesList.add(new Roles(role, supervisor));
-			
-			for (Roles rol : rolesList) {
-				 roleMetodos.merge2(rol);
-			}
-			
-			supervisor.setRoles(rolesList);
-			metodo.merge(supervisor);
-		}
-	}
-	 * @throws Exception
-	 */
+	
 	
 	public void merge() throws Exception{
 		
-		if(supervisor.getName() != null) {
+		if(supervisor.getId() != null) {
 			
-			if(supervisor.getId() != null) {
-				supervisor = metodo.findByName(supervisor.getName());
-			}
+			Supervisor supervisorBuscado = metodo.findById(supervisor.getId());
+			Roles role = new Roles(this.role, supervisorBuscado);
 			
-		    Roles role = new Roles(this.role, supervisor);
-		    
-		    supervisor.getRoles().add(role);
-		    
-		    supervisor = metodo.merge2(supervisor);
-		    
-		    supervisor.getRoles().remove(role);
-		    
-		    roleMetodos.remove(role);
-		    
-		    MensagensJSF.msgSeverityInfo("Usuário atualizado com sucesso.");
+			supervisorBuscado.getRoles().add(role);
+			
+			supervisor = metodo.merge2(supervisorBuscado);
+			
+			supervisor.getRoles().remove(role);
+			
+			supervisor = metodo.merge2(supervisor);
+			
+			MensagensJSF.msgSeverityInfo("Salvo ou atualizado com sucesso");
 		}else {
-			MensagensJSF.msgSeverityInfo("Informe um usuário");
+			salvar();
 		}
 	}
 	

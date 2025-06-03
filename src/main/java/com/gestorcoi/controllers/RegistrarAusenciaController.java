@@ -1,6 +1,8 @@
 package com.gestorcoi.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -37,17 +39,18 @@ public class RegistrarAusenciaController {
 		}
 	}
 	
-	public List<String> buscarFuncionarios() throws Exception{
+	public List<String> buscarFuncionarios(String query) throws Exception{
 		
-		List<Funcionarios> funcionarios = funcionarioImpl.findAll(Funcionarios.class);
-		
-		List<String> nomesFuncionarios = new ArrayList<>();
-		
-		for (Funcionarios obj: funcionarios) {
-			nomesFuncionarios.add(obj.getNome());
-		}
-		
-		return nomesFuncionarios;
+	    List<Funcionarios> funcionarios = funcionarioImpl.findAll(Funcionarios.class);
+	    List<String> nomesFiltrados = new ArrayList<>();
+
+	    for (Funcionarios obj : funcionarios) {
+	        if (obj.getNome().toLowerCase().contains(query.toLowerCase())) {
+	            nomesFiltrados.add(obj.getNome());
+	        }
+	    }
+
+	    return nomesFiltrados;
 	}
 	
 	public void limpar() {
@@ -104,12 +107,29 @@ public class RegistrarAusenciaController {
 	
 	public List<RegistroAusencia> findAllAusenciasByName() throws Exception{
 		
-		List<RegistroAusencia> ausencias = ausenciaImpl.findAllByFuncionario(funcionarios.getId());
+		List<RegistroAusencia> ausencias = new ArrayList<>();
+		
+		if(funcionarios.getId() != null) {
+			ausencias = ausenciaImpl.findAllByFuncionario(funcionarios.getId());
+		}else if(funcionarios.getNome() != null) {
+			ausencias = ausenciaImpl.findAllByNameFuncionario(funcionarios.getNome());
+		}
 		return ausencias;
 	}
 	
 	public List<RegistroAusencia> listAllAusencia() throws Exception{
-		return ausenciaImpl.findAll(RegistroAusencia.class);
+		
+		List<RegistroAusencia> ausencias = ausenciaImpl.findAll(RegistroAusencia.class);
+		
+		Collections.sort(ausencias, new Comparator<RegistroAusencia>() {
+
+			@Override
+			public int compare(RegistroAusencia o1, RegistroAusencia o2) {
+				return o2.getData_ausencia().compareTo(o1.getData_ausencia());
+			}
+		});;
+		
+		return ausencias;
 	}
 	
 	public RegistroAusencia getAusencia() {

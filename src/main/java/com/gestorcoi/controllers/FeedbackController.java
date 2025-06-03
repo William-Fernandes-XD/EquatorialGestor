@@ -2,18 +2,29 @@ package com.gestorcoi.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.gestorcoi.entities.Feedback;
 import com.gestorcoi.entities.Funcionarios;
+import com.gestorcoi.entities.Supervisor;
 import com.gestorcoi.implementations.FeedbackImpl;
 import com.gestorcoi.implementations.FuncionarioImpl;
+import com.gestorcoi.implementations.SupervisorImpl;
 import com.gestorcoi.utils.MensagensJSF;
+import com.gestorcoi.utils.UtilFramework;
 
 @ManagedBean(name = "feedback")
 @ViewScoped
@@ -25,11 +36,16 @@ public class FeedbackController {
 	private Funcionarios funcionarios;
 	private Feedback feedback;
 	
+	private SupervisorImpl supervisorImpl = new SupervisorImpl();
+	
+	private String filtro = "";
+	
 	@PostConstruct
 	public void init() {
 		
 		feedback = new Feedback();
 		feedback.setFuncionario(new Funcionarios());
+		funcionarios = new Funcionarios();
 	}
 	
 	public void salvar() throws Exception{
@@ -40,18 +56,31 @@ public class FeedbackController {
 			String dataAtual = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 			feedback.setData(new SimpleDateFormat("dd/MM/yyyy").parse(dataAtual));
 			
-			funcionarios = funcionarioImpl.findByName(feedback.getFuncionario().getNome());
-			feedback.setFuncionario(funcionarios);
+			funcionarios = funcionarioImpl.findByName(funcionarios.getNome());
 			
-			funcionarios.getFeedbacks().add(feedback);
+			if(funcionarios == null) {
+				MensagensJSF.msgSeverityInfo("Não foi possível encontrar esse funcionário");
+			}else {
+				
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				
+				Supervisor avaliador = supervisorImpl.findByName(authentication.getName());
 			
-			funcionarioImpl.merge2(funcionarios);
+				feedback.setAvaliador(avaliador);
+				feedback.setFuncionario(funcionarios);
 			
-			funcionarios.getFeedbacks().remove(feedback);
-			funcionarioImpl.merge2(funcionarios);
-			limpar();
+				funcionarios.getFeedbacks().add(feedback);
 			
-			MensagensJSF.msgSeverityInfo("Feedback realizado com sucesso");
+				funcionarioImpl.merge2(funcionarios);
+			
+				funcionarios.getFeedbacks().remove(feedback);
+				funcionarioImpl.merge2(funcionarios);
+				
+				limpar();
+			
+				MensagensJSF.msgSeverityInfo("Feedback realizado com sucesso");
+			
+			}
 		}else {
 			MensagensJSF.msgSeverityInfo("Você deve inserir um funcionário antes");
 		}
@@ -66,15 +95,17 @@ public class FeedbackController {
 		feedbackImpl.remove(feedback);
 	}
 	
-	public List<String> findAllFuncionario() throws Exception{
+	public List<String> findAllFuncionario(String query) throws Exception{
 		
 		List<Funcionarios> funcionarios = funcionarioImpl.findAll(Funcionarios.class);
 		
 		List<String> nomeFuncionarios = new ArrayList<>();
 		
 		for (Funcionarios obj : funcionarios) {
-			nomeFuncionarios.add(obj.getNome());
-		}
+	        if (obj.getNome().toLowerCase().contains(query.toLowerCase())) {
+	            nomeFuncionarios.add(obj.getNome());
+	        }
+	    }
 		
 		return nomeFuncionarios;
 	}
@@ -87,6 +118,12 @@ public class FeedbackController {
 	
 	public List<Feedback> findAllByName() throws Exception{
 		
+		if(funcionarios.getId() == null && feedback.getFuncionario().getNome() != null) {
+			
+			Funcionarios funcionarios = funcionarioImpl.findByName(feedback.getFuncionario().getNome());
+			return feedbackImpl.findAllByNameFuncionario(funcionarios.getId());
+		}
+		
 		if(funcionarios != null || funcionarios.getId() != null) {
 			
 			return feedbackImpl.findAllByNameFuncionario(funcionarios.getId());
@@ -97,7 +134,32 @@ public class FeedbackController {
 	}
 	
 	public List<Feedback> listarAll() throws Exception{
-		return feedbackImpl.findAll(Feedback.class);
+		
+		List<Feedback> feedbacks = feedbackImpl.findAll(Feedback.class);	
+		
+		Collections.sort(feedbacks, new Comparator<Feedback>() {
+
+			@Override
+			public int compare(Feedback o1, Feedback o2) {
+				return o2.getData().compareTo(o1.getData());
+			}
+		});
+		
+		if ("Positivo".equalsIgnoreCase(filtro)) {
+		    feedbacks = feedbacks.stream()
+		            .filter(f -> "Positivo".equalsIgnoreCase(f.getPositivoOrNegative()))
+		            .collect(Collectors.toList());
+		} else if ("Negativo".equalsIgnoreCase(filtro)) {
+		    feedbacks = feedbacks.stream()
+		            .filter(f -> "Negativo".equalsIgnoreCase(f.getPositivoOrNegative()))
+		            .collect(Collectors.toList());
+		}
+		
+		return feedbacks;
+	}
+	
+	public void filtrar(String filtrar){
+		this.filtro = filtrar; 
 	}
 
 	public Funcionarios getFuncionarios() {

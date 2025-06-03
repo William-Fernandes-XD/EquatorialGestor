@@ -34,20 +34,29 @@
 
 				<div class="text">
 					<p:outputLabel value="Id: " rendered="true" />
-					<p:inputText placeholder="Insira o supervisor que está saindo"
+					<p:inputText 
 						rendered="true" disabled="true"
 						value="#{gestorTurnoController.gestorEntity.id}" />
 				</div>
 				<div class="text">
 					<p:outputLabel value="Supervisor saindo" />
-					<p:inputText placeholder="Insira o supervisor que está saindo"
-						value="#{gestorTurnoController.gestorEntity.supervisorSaindo.name}" />
+					
+					<p:autoComplete value="#{gestorTurnoController.gestorEntity.supervisorSaindo.name}"
+					completeMethod="#{gestorTurnoController.findAllName}"
+					dropdown="true" forceSelection="true"
+					panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+					inputStyle="width :60%; margin: 0" 
+					style="margin:0;"/>
 				</div>
 
 				<div class="text">
 					<p:outputLabel value="Supervisor Entrando" />
-					<p:inputText placeholder="Insira o supervisor que está entrando"
-						value="#{gestorTurnoController.gestorEntity.supervisorEntrando.name}" />
+					<p:autoComplete value="#{gestorTurnoController.gestorEntity.supervisorEntrando.name}"
+					completeMethod="#{gestorTurnoController.findAllName}"
+					dropdown="true" forceSelection="true"
+					panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+					inputStyle="width :60%; margin: 0" 
+					style="margin:0;"/>
 				</div>
 
 				<div class="text">
@@ -56,11 +65,6 @@
 						value="#{gestorTurnoController.gestorEntity.turno}" />
 				</div>
 
-				<div class="text">
-					<p:outputLabel value="Data" />
-					<p:calendar placeholder="Insira a data atual" pattern="dd/MM/yyyy"
-						value="#{gestorTurnoController.gestorEntity.date}" />
-				</div>
 			</div>
 
 			<!-- Pendencias -->
@@ -134,15 +138,22 @@
 							<f:convertDateTime pattern="dd/MM/yy" />
 						</h:outputText>
 					</p:column>
+					
+					<p:column width="6%">
+						<center>
+							<f:facet name="header">Turno</f:facet>
+							<h:outputText value="#{objeto.turno}" />
+						</center>
+					</p:column>
 
 					<p:column>
 						<f:facet name="header">Supervisor Saindo</f:facet>
-						<h:outputText value="#{objeto.supervisorSaindo.name}" />
+						<h:outputText value="#{objeto.supervisorSaindo.name}" styleClass="vermelho"/>
 					</p:column>
 
 					<p:column>
 						<f:facet name="header">Supervisor Entrando</f:facet>
-						<h:outputText value="#{objeto.supervisorEntrando.name}" />
+						<h:outputText value="#{objeto.supervisorEntrando.name}" styleClass="verde"/>
 					</p:column>
 
 					<p:column>
@@ -243,5 +254,6 @@
 	<ui:include src="/templates/registroausencia.xhtml" />
 		</div>
 	</h:form>
+	
 </h:body>
 </html>
