@@ -8,7 +8,7 @@
 	display: flex;
 	justify-content: center;
 	align-items:center;
-	margin-top: 10%;
+	margin-top: 5%;
 	
 }
 
@@ -17,8 +17,8 @@
 	text-decoration: none;
 	font-family: helvetica, arial;
 	color: white;
-	background-color: #4CAF50;
-	padding: 2em;
+	background-color: #005B9F;
+	padding: 1.5em;
 	border-radius: 15px;
 	font-size: 32px;
 	width: 280px;

@@ -6,17 +6,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.gestorcoi.email.EmailUtil;
 import com.gestorcoi.entities.Feedback;
 import com.gestorcoi.entities.Funcionarios;
 import com.gestorcoi.entities.Supervisor;
@@ -24,7 +22,6 @@ import com.gestorcoi.implementations.FeedbackImpl;
 import com.gestorcoi.implementations.FuncionarioImpl;
 import com.gestorcoi.implementations.SupervisorImpl;
 import com.gestorcoi.utils.MensagensJSF;
-import com.gestorcoi.utils.UtilFramework;
 
 @ManagedBean(name = "feedback")
 @ViewScoped
@@ -76,6 +73,8 @@ public class FeedbackController {
 				funcionarios.getFeedbacks().remove(feedback);
 				funcionarioImpl.merge2(funcionarios);
 				
+				EmailUtil.enviarFeedBack(feedback);
+				
 				limpar();
 			
 				MensagensJSF.msgSeverityInfo("Feedback realizado com sucesso");
@@ -84,6 +83,10 @@ public class FeedbackController {
 		}else {
 			MensagensJSF.msgSeverityInfo("Você deve inserir um funcionário antes");
 		}
+	}
+	
+	public void limparNome() {
+		funcionarios.setNome("");
 	}
 	
 	public void limpar() {

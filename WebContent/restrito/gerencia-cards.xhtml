@@ -1,0 +1,142 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Teste JSF</title>
+	<link rel="stylesheet" type="text/css" href="../styles/gerenciaCards.css" />
+</h:head>
+<h:body>
+	<h:form id="formCards">
+		<p:panel id="titulo">
+			<a href="#{request.contextPath}/restrito/home.jsf"
+				style="text-decoration: none"><p:outputLabel value="Gestor COI" /></a>
+		</p:panel>
+
+		<div id="menu_titulo" style="font-style: helvetica">
+			<h1 id="titulo">Gerenciamento de Cards</h1>
+			<h1 id="logo">Equatorial Energia</h1>
+		</div>
+
+		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
+			life="7000"
+			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
+
+		<div id="tudo">
+
+			<div class="card2">
+				<div class="card-row-1">
+					 <div class="card-row-1-column-1">
+					 	<div class="inputs">
+					 		<h:outputText value="DISTRIBUIDORA" class="output"/>
+					 		<p:inputText value="#{cardsController.redCard.distribuidora}" class="input"/>
+					 	</div>
+					 	
+					 	<div class="inputs">
+					 		<h:outputText value="REGIONAL" class="output"/>
+					 		<p:inputText value="#{cardsController.redCard.regional}" class="input"/>
+					 	</div>
+					 	
+					 	<div class="inputs">
+					 		<h:outputText value="CÓD.EQUIPAMENTO" class="output"/>
+					 		<p:inputText value="#{cardsController.redCard.codigoEquipamento}" class="input"/>
+					 	</div>
+					 	
+					 	<div class="inputs">
+					 		<h:outputText value="DATA/HORA ÍNICIO" class="output"/>
+					 		<p:calendar id="data"
+            				value="#{cardsController.redCard.dataInicio}"
+            				placeholder="dd/MM/yyyy HH:mm:ss"
+            				pattern="dd/MM/yyyy HH:mm:ss"
+            				navigator="true"
+            				showButtonPanel="true"
+            				styleClass="input-data"/>
+					 	</div>
+					 	
+					 	<div class="inputs">
+					 		<h:outputText value="UC's INTERROMPIDAS" class="output"/>
+					 		<p:inputNumber value="#{cardsController.redCard.unidadeInterrompidas}" class="input"/>
+					 	</div>
+					 	
+					 	<div class="inputs">
+					 		<h:outputText value="TURMA(S) ACIONADA(S)" class="output"/>
+					 		<p:inputText value="#{cardsController.redCard.turmaAcionada}" class="input"/>
+					 	</div>
+					 	
+					 	<div class="inputs">
+					 		<h:outputText value="NÚMERO OCORRÊNCIA" class="output"/>
+					 		<p:inputText value="#{cardsController.redCard.numeroOcorrencia}" class="input"/>
+					 	</div>
+					 </div>
+
+					<div class="card-row-1-column-2">
+						<div class="inputs">
+							<h:outputText value="SUPERINTENDÊNCIA" class="output"/>
+							<p:inputText value="#{cardsController.redCard.superintendencia}" class="input"/>
+						</div>
+
+						<div class="inputs">
+							<h:outputText value="SE" class="output"/>
+							<p:inputText value="#{cardsController.redCard.se}" class="input"/>
+						</div>
+
+						<div class="inputs">
+							<h:outputText value="ALIMENTADOR" class="output"/>
+							<p:inputText value="#{cardsController.redCard.alimentador}" class="input"/>
+						</div>
+
+						<div class="inputs">
+							<h:outputText value="TENSÃO (KV)" class="output"/>
+							<p:inputText value="#{cardsController.redCard.tensaoKva}" class="input"/>
+						</div>
+
+						<div class="inputs">
+							<h:outputText value="PROTEÇÃO" class="output"/>
+							<p:inputText value="#{cardsController.redCard.protecao}" class="input"/>
+						</div>
+
+						<div class="inputs">
+							<h:outputText value="LOC.DIST. (KM)" class="output"/>
+							<p:inputText value="#{cardsController.redCard.localDistancia}" class="input"/>
+						</div>
+
+						<div class="inputs">
+							<h:outputText value="PREVISÃO DE MANOBRA" class="output"/>
+							<p:inputText value="#{cardsController.redCard.previsaoManobra}" class="input"/>
+						</div>
+					</div>
+					</div>
+					
+					<div class="card-row-2">
+						<div class="inputs2">
+							<h:outputText value="OBSERVAÇÃO" class="output"/>
+							<p:inputTextarea value="#{cardsController.redCard.observacao}" class="input"/>
+						</div>
+						
+						<div class="inputs2">
+							<h:outputText value="LOCAIS ATINGIDOS" class="output"/>
+							<p:inputTextarea value="#{cardsController.redCard.locaisAtingidos}" class="input"/>
+						</div>
+					</div>
+					
+					<div class="card-row-3">
+						<div class="botoes2" style="border: none; !important">
+							<p:commandButton value="Salvar 💾" class="botao" action="#{cardsController.salvar()}"/>
+							<p:commandButton value="Limpar 🧹" class="botao" action="#{cardsController.limpar()}" 
+							update="formCards"/>
+							<p:commandButton value="Consultar 🔍" oncomplete="PF('redCardsDialog').show()"
+							ajax="true" update="formCards"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<ui:include src="/templates/cardsTemplate.xhtml" />
+	</h:form>
+</h:body>
+</html>

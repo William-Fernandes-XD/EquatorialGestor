@@ -1,0 +1,543 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog id="redCardsDialog" modal="true" widgetVar="redCardsDialog"
+		draggable="false" closable="true" position="center" height="90vh"
+		width="95vw" resizable="false" header="Visualização cartões vermelhos">
+
+		<p:dataTable value="#{cardsController.findAll()}" var="redCard">
+			<p:column>
+				<center>
+					<f:facet name="header">Número Ocorrência</f:facet>
+					<h:outputText value="#{redCard.numeroOcorrencia}" />
+				</center>
+			</p:column>
+
+			<p:column>
+				<center>
+					<f:facet name="header">Data</f:facet>
+					<h:outputText value="#{redCard.dataInicio}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+					</h:outputText>
+				</center>
+			</p:column>
+			
+			<p:column>
+				<center>
+					<f:facet name="header">UC's interrompidas</f:facet>
+					<h:outputText value="#{redCard.unidadeInterrompidas}" />
+				</center>
+			</p:column>
+			
+			<p:column>
+				<center>
+					<f:facet name="header">Deletar</f:facet>
+					<p:commandButton value="🗑️" action="#{cardsController.deletarRedCard(redCard)}"
+					ajax="true" update=":formCards" oncomplete="PF('redCardsDialog').show()"/>
+				</center>			
+			</p:column>
+
+			<p:column>
+				<center>
+					<f:facet name="header">Card Amarelo</f:facet>
+					<p:commandButton value="🔍" action="#{cardsController.selecionarRedCardComYellows(redCard)}"
+					 oncomplete="PF('redCardsDialog').show(), PF('visualizarYellows').show();"
+					 update=":formCards"/>
+					
+					<p:commandButton value="➕" oncomplete="PF('redCardsDialog').show(), PF('adicionarYellowCard').show()"
+					action="#{cardsController.setRedCard(redCard)}" ajax="true"
+					update=":formCards"/>
+				</center>
+			</p:column>
+
+			<p:column>
+				<center>
+					<f:facet name="header">Card Verde</f:facet>
+					<p:commandButton value="🔍" action="#{cardsController.setRedCard(redCard)}"
+					 oncomplete="PF('redCardsDialog').show(), PF('visualizarGreenCard').show();"
+					 update=":formCards"/>
+					 
+					 <p:commandButton value="➕"
+						action="#{cardsController.validarGreenCard(redCard)}"
+						ajax="true"
+						update="dialogScript"/>
+						
+					<p:outputPanel id="dialogScript">
+    					<h:outputScript rendered="#{cardsController.validado}">
+        					PF('redCardsDialog').show();
+        					PF('adicionarGreenCard').show();
+    					</h:outputScript>
+					</p:outputPanel>
+				</center>
+			</p:column>
+		</p:dataTable>
+	</p:dialog>
+
+	<p:dialog id="adicionarGreenCard" modal="true" 
+		widgetVar="adicionarGreenCard" draggable="true" closable="true"
+		position="center" height="80vh" width="85vw" resizable="false"
+		header="Adicionar Green Card">
+
+		<div class="card">
+			<div class="card-row-1">
+				<div class="card-row-1-column-1">
+					<div class="input-verde">
+						<h:outputText value="DISTRIBUIDORA" class="output-verde" />
+						<p:inputText
+							value="#{cardsController.greenCard.distribuidora}" />
+					</div>
+					<div class="input-verde">
+						<h:outputText value="Regional" class="output-verde" />
+						<p:inputText value="#{cardsController.greenCard.regional}" />
+					</div>
+					<div class="input-verde">
+						<h:outputText value="CÓD.EQUIPAMENTO" class="output-verde" />
+						<p:inputText
+							value="#{cardsController.greenCard.codigoEquipamento}" />
+					</div>
+					<div class="input-verde">
+						<h:outputText value="DATA/HORA ÍNICIO" class="output-verde" />
+						<p:calendar 
+							value="#{cardsController.greenCard.dataInicio}"
+							placeholder="dd/MM/yyyy HH:mm:ss" pattern="dd/MM/yyyy HH:mm:ss"
+							navigator="true" showButtonPanel="true"
+							styleClass="campo-ajustado" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="DATA/HORA FIM" class="output-verde" />
+						<p:calendar 
+							value="#{cardsController.greenCard.dataNormalizada}"
+							placeholder="dd/MM/yyyy HH:mm:ss" pattern="dd/MM/yyyy HH:mm:ss"
+							navigator="true" showButtonPanel="true"
+							styleClass="campo-ajustado" />
+					</div>
+				</div>
+
+				<div class="card-row-1-column-2">
+					<div class="input-verde">
+						<h:outputText value="SUPERINTENDÊNCIA" class="output-verde" />
+						<p:inputText
+							value="#{cardsController.greenCard.superintendencia}" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="SE" class="output-verde" />
+						<p:inputText value="#{cardsController.greenCard.se}" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="ALIMENTADOR" class="output-verde" />
+						<p:inputText
+							value="#{cardsController.greenCard.alimentador}" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="UC´s NORMALIZADAS" class="output-verde" />
+						<p:inputNumber
+							value="#{cardsController.greenCard.unidadesNormalizadas}"
+							styleClass="campo-ajustado" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="NÚMERO OCORRÊNCIA" class="output-verde" />
+						<p:inputText
+							value="#{cardsController.greenCard.numeroOcorrencia}" />
+					</div>
+				</div>
+			</div>
+
+			<div class="card-row-2">
+				<div class="input-verde">
+					<h:outputText value="CAUSA" class="output-verde" />
+					<p:inputTextarea value="#{cardsController.greenCard.causa}"
+						style="width: 100%; !important; height: 100%; !important" />
+				</div>
+			</div>
+
+			<div class="card-row-3">
+				<div class="botoes2" style="border: none; !important">
+					<p:commandButton value="Salvar 💾" class="botao"
+						action="#{cardsController.salvarVerde()}" />
+					<p:commandButton value="Limpar 🧹" class="botao" action="#{cardsController.limparVerdeOuAmarelo()}"
+					update=":formCards:adicionarYellowCard" oncomplete="PF('adicionarYellowCard').show()"/>
+				</div>
+			</div>
+		</div>
+	</p:dialog>
+	
+	
+	
+	
+	
+	
+	<!-- 
+	
+	
+	
+	
+			Visualização do card verde
+	
+	
+	
+	 -->
+	 
+	 <p:dialog id="visualizarGreenCard" modal="true"
+		widgetVar="visualizarGreenCard" draggable="false" closable="true"
+		position="center" height="80vh" width="85vw" resizable="false"
+		header="Visualização Green Card">
+
+		<div class="card">
+			<div class="card-row-1">
+				<div class="card-row-1-column-1">
+					<div class="input-verde">
+						<h:outputText value="DISTRIBUIDORA" class="output-verde"/>
+						<h:outputText
+							value="#{cardsController.redCard.greenCard.distribuidora}" class="dadoInput"/>
+					</div>
+					<div class="input-verde">
+						<h:outputText value="Regional" class="output-verde" />
+						<h:outputText
+							value="#{cardsController.redCard.greenCard.regional}" class="dadoInput"/>
+					</div>
+					<div class="input-verde">
+						<h:outputText value="CÓD.EQUIPAMENTO" class="output-verde" />
+						<h:outputText 
+							value="#{cardsController.redCard.greenCard.codigoEquipamento}" class="dadoInput"/>
+					</div>
+					<div class="input-verde">
+						<h:outputText value="DATA/HORA ÍNICIO" class="output-verde" />
+						<h:outputText value="#{cardsController.redCard.greenCard.dataInicio}" class="dadoInput">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="DATA/HORA FIM" class="output-verde" />
+						<h:outputText value="#{cardsController.redCard.greenCard.dataNormalizada}" class="dadoInput">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
+						</h:outputText>
+					</div>
+				</div>
+
+				<div class="card-row-1-column-2">
+					<div class="input-verde">
+						<h:outputText value="SUPERINTENDÊNCIA" class="output-verde" />
+						<h:outputText
+							value="#{cardsController.redCard.greenCard.superintendencia}" class="dadoInput"/>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="SE" class="output-verde" />
+						<h:outputText value="#{cardsController.redCard.greenCard.se}" class="dadoInput"/>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="ALIMENTADOR" class="output-verde" />
+						<h:outputText
+							value="#{cardsController.redCard.greenCard.alimentador}" class="dadoInput"/>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="UC´s NORMALIZADAS" class="output-verde" />
+						<h:outputText
+							value="#{cardsController.redCard.greenCard.unidadesNormalizadas}"
+							class="dadoInput" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="NÚMERO OCORRÊNCIA" class="output-verde" />
+						<h:outputText
+							value="#{cardsController.redCard.greenCard.numeroOcorrencia}"
+							class="dadoInput" />
+					</div>
+				</div>
+			</div>
+
+			<div class="card-row-2">
+				<div class="input-verde">
+					<h:outputText value="CAUSA" class="output-verde" />
+					<h:outputText value="#{cardsController.redCard.greenCard.causa}"
+						class="dadoInput"/>
+				</div>
+			</div>
+			
+			<div class="card-row-3">
+				<div class="botoes2" style="border: none !important">
+					<p:commandButton value="Remover 🗑️" class="botao"
+					 action="#{cardsController.removerVerde(cardsController.redCard)}"
+					 update=":formCards"/>
+					 
+					<p:commandButton value="Editar 📝" class="botao"/>
+				</div>
+			</div>
+		</div>
+	</p:dialog>
+	
+	<!-- 
+	
+	
+	
+			ADICIONAR YELLOW CARD
+	
+	
+	
+	
+	 -->
+	
+	<p:dialog id="adicionarYellowCard" widgetVar="adicionarYellowCard" width="80vw" height="80vh"
+	draggable="true" resizable="false" >
+	
+		<div class="card">
+			<div class="card-row-1">
+				<div class="card-row-1-column-1">
+					<div class="input-verde">
+						<h:outputText value="DISTRIBUIDORA" class="output-yellow" />
+						<p:inputText
+							value="#{cardsController.yellowCard.distribuidora}" />
+					</div>
+					<div class="input-verde">
+						<h:outputText value="Regional" class="output-yellow" />
+						<p:inputText value="#{cardsController.yellowCard.regional}" />
+					</div>
+					<div class="input-verde">
+						<h:outputText value="CÓD.EQUIPAMENTO" class="output-yellow" />
+						<p:inputText
+							value="#{cardsController.yellowCard.codigoEquipamento}" />
+					</div>
+					<div class="input-verde">
+						<h:outputText value="DATA/HORA ÍNICIO" class="output-yellow" />
+						<p:calendar 
+							value="#{cardsController.yellowCard.dataInicio}"
+							placeholder="dd/MM/yyyy HH:mm:ss" pattern="dd/MM/yyyy HH:mm:ss"
+							navigator="true" showButtonPanel="true" 
+							styleClass="campo-ajustado" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="DATA/HORA PARCIAL" class="output-yellow" />
+						<p:calendar 
+							value="#{cardsController.yellowCard.dataParcial}"
+							placeholder="dd/MM/yyyy HH:mm:ss" pattern="dd/MM/yyyy HH:mm:ss"
+							navigator="true" showButtonPanel="true"
+							styleClass="campo-ajustado" />
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="SE TRANSF." class="output-yellow" />
+						<p:inputText
+							value="#{cardsController.yellowCard.seTransf}" />
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="NÚMERO OCORRÊNCIA" class="output-yellow" />
+						<p:inputText
+							value="#{cardsController.yellowCard.numeroOcorrencia}" />
+					</div>
+				</div>
+
+				<div class="card-row-1-column-2">
+					<div class="input-verde">
+						<h:outputText value="SUPERINTENDÊNCIA" class="output-yellow" />
+						<p:inputText
+							value="#{cardsController.yellowCard.superintendencia}" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="SE" class="output-yellow" />
+						<p:inputText value="#{cardsController.yellowCard.se}" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="ALIMENTADOR" class="output-yellow" />
+						<p:inputText
+							value="#{cardsController.yellowCard.alimentador}" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="UC´s NORMALIZADAS" class="output-yellow" />
+						<p:inputNumber
+							value="#{cardsController.yellowCard.unidadesNormalizadas}"
+							styleClass="campo-ajustado" />
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="ALIM. TRANSF." class="output-yellow" />
+						<p:inputText
+							value="#{cardsController.yellowCard.alimTransf}"
+							styleClass="campo-ajustado" />
+					</div>
+
+				</div>
+			</div>
+
+			<div class="card-row-2">
+				<div class="input-verde">
+					<h:outputText value="OBSERVAÇÃO" class="output-yellow" />
+					<p:inputTextarea value="#{cardsController.yellowCard.observacao}"
+						style="width: 100%; !important; height: 100%; !important" />
+				</div>
+			</div>
+
+			<div class="card-row-3">
+				<div class="botoes2" style="border: none; !important">
+				
+					<p:commandButton value="Salvar 💾" class="botao"
+						action="#{cardsController.salvarAmarelo()}" />
+						
+					<p:commandButton value="Limpar 🧹" class="botao" action="#{cardsController.limparVerdeOuAmarelo()}"
+					update=":formCards:adicionarYellowCard" oncomplete="PF('adicionarYellowCard').show()"/>
+				</div>
+			</div>
+		</div>
+	
+	</p:dialog>
+	
+	<p:dialog id="visualizarYellows" widgetVar="visualizarYellows" resizable="false"
+	draggable="false" height="85vh" width="85vw" position="center" header="Visualização Amarelos" >
+		
+		<p:dataTable value="#{cardsController.listaYellows}" var="yellow" >
+			
+			<p:column>
+				<center>
+					<f:facet name="header">DATA/HORA PARCIAL</f:facet>
+					<h:outputText value="#{yellow.dataParcial}" class="dadoInput">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
+					</h:outputText>
+				</center>
+			</p:column>
+			
+			<p:column>
+				<center>
+					<f:facet name="header">UC's NORMALIZADAS</f:facet>
+					<h:outputText value="#{yellow.unidadesNormalizadas}" />
+				</center>			
+			</p:column>
+			
+			<p:column>
+				<center>
+					<f:facet name="header">UC's INTERROMPIDAS</f:facet>
+					<h:outputText value="#{yellow.unidadesInterrompidas}" />
+				</center>			
+			</p:column>
+			
+			<p:column>
+				<center>
+					<f:facet name="header">Visualizar</f:facet>
+					<p:commandButton value="🔍" action="#{cardsController.setYellowCard(yellow)}"
+					update=":formCards" oncomplete="PF('redCardsDialog').show(),PF('visualizarYellows').show(), PF('yellowView').show();"/>
+				</center>			
+			</p:column>
+			
+			<p:column>
+				<center>
+					<f:facet name="header">Remover</f:facet>
+					<p:commandButton value="🗑️" action="#{cardsController.removerAmarelo(yellow)}"
+					update=":formCards" oncomplete="PF('redCardsDialog').show()"
+					ajax="true"/>
+				</center>
+			</p:column>
+		</p:dataTable>
+	</p:dialog>
+	
+	<p:dialog id="yellowView" widgetVar="yellowView" position="center" width="80vw" height="80vh"
+	header="Card amarelo" draggable="false" resizable="false">
+		
+		<div class="card">
+			<div class="card-row-1">
+				<div class="card-row-1-column-1">
+					<div class="input-verde">
+						<h:outputText value="DISTRIBUIDORA" class="output-yellow"/>
+						<h:outputText
+							value="#{cardsController.yellowCard.distribuidora}" class="dadoInput"/>
+					</div>
+					<div class="input-verde">
+						<h:outputText value="Regional" class="output-yellow" />
+						<h:outputText
+							value="#{cardsController.yellowCard.regional}" class="dadoInput"/>
+					</div>
+					<div class="input-verde">
+						<h:outputText value="CÓD.EQUIPAMENTO" class="output-yellow" />
+						<h:outputText 
+							value="#{cardsController.yellowCard.codigoEquipamento}" class="dadoInput"/>
+					</div>
+					<div class="input-verde">
+						<h:outputText value="DATA/HORA ÍNICIO" class="output-yellow" />
+						<h:outputText value="#{cardsController.yellowCard.dataInicio}" class="dadoInput">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
+						</h:outputText>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="DATA/HORA PARCIAL" class="output-yellow" />
+						<h:outputText value="#{cardsController.yellowCard.dataParcial}" class="dadoInput">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
+						</h:outputText>
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="SE TRANSF." class="output-yellow" />
+						<h:outputText value="#{cardsController.yellowCard.seTransf}" class="dadoInput"/>
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="NÚMERO OCORRÊNCIA" class="output-yellow" />
+						<h:outputText value="#{cardsController.yellowCard.numeroOcorrencia}" class="dadoInput"/>
+					</div>
+				</div>
+
+				<div class="card-row-1-column-2">
+					<div class="input-verde">
+						<h:outputText value="SUPERINTENDÊNCIA" class="output-yellow" />
+						<h:outputText
+							value="#{cardsController.yellowCard.superintendencia}" class="dadoInput"/>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="SE" class="output-yellow" />
+						<h:outputText value="#{cardsController.yellowCard.se}" class="dadoInput"/>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="ALIMENTADOR" class="output-yellow" />
+						<h:outputText
+							value="#{cardsController.yellowCard.alimentador}" class="dadoInput"/>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="UC´s NORMALIZADAS" class="output-yellow" />
+						<h:outputText
+							value="#{cardsController.yellowCard.unidadesNormalizadas}"
+							class="dadoInput" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="UC's INTERROMPIDAS" class="output-yellow" />
+						<h:outputText
+							value="#{cardsController.yellowCard.unidadesInterrompidas}"
+							class="dadoInput" />
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="ALIM. TRANSF." class="output-yellow" />
+						<h:outputText
+							value="#{cardsController.yellowCard.alimTransf}"
+							class="dadoInput" />
+					</div>
+				</div>
+			</div>
+
+			<div class="card-row-2">
+				<div class="inputs2">
+					<h:outputText value="OBSERVAÇÃO" class="output-yellow" />
+					<h:outputText value="#{cardsController.yellowCard.observacao}"
+						class="dadoInput"/>
+				</div>
+			</div>
+		</div>
+		
+	</p:dialog>
+</ui:composition>

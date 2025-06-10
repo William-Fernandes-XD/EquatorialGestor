@@ -24,5 +24,9 @@
  		<mapping class="com.gestorcoi.entities.Funcionarios"/>
  		<mapping class="com.gestorcoi.entities.RegistroAusencia"/>
  		<mapping class="com.gestorcoi.entities.Feedback"/>
+ 		
+ 		<mapping class="com.gestor.entityCards.RedCard"/>
+ 		<mapping class="com.gestor.entityCards.YellowCard"/>
+ 		<mapping class="com.gestor.entityCards.GreenCard"/>
  	</session-factory>
  </hibernate-configuration>

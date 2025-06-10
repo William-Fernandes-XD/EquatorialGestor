@@ -23,6 +23,8 @@ public class Supervisor {
 	private String name;
 	private String password;
 	
+	private String email;
+	
 	@OneToMany(mappedBy = "avaliador", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Feedback> feedbacks;
 	
@@ -50,6 +52,14 @@ public class Supervisor {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public List<Feedback> getFeedbacks() {
