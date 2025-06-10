@@ -130,7 +130,7 @@
 							<p:commandButton value="Limpar 🧹" class="botao" action="#{cardsController.limpar()}" 
 							update="formCards"/>
 							<p:commandButton value="Consultar 🔍" oncomplete="PF('redCardsDialog').show()"
-							ajax="true" update="formCards"/>
+							ajax="true" update="formCards" action="#{cardsController.findAll()}"/>
 						</div>
 					</div>
 				</div>

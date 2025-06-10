@@ -25,6 +25,10 @@ public class CardsController {
 	private YellowCardsImpl yellowCardsImpl = new YellowCardsImpl();
 	private GreenCardsImpl greenCardsImpl = new GreenCardsImpl();
 	
+	private String filtrarRedCardPorOcorrencia = "";
+	
+	private List<RedCard> redCardsAll = new ArrayList<>();
+	
 	private List<YellowCard> listaYellows = new ArrayList<>();
 	
 	
@@ -180,11 +184,24 @@ public class CardsController {
 	    }
 	}
 	
-	public List<RedCard> findAll() throws Exception{
+	public void findAll() throws Exception{
 		
 		List<RedCard> redCards = redCardImpl.findAll(RedCard.class);
+		
+		List<RedCard> listaFiltrada = new ArrayList<>();
+		
+		if(!this.filtrarRedCardPorOcorrencia.trim().equalsIgnoreCase("")) {
 			
-		Collections.sort(redCards, new Comparator<RedCard>() {
+			for (RedCard redCard : redCards) {
+				if(redCard.getNumeroOcorrencia().equalsIgnoreCase(this.filtrarRedCardPorOcorrencia)) {
+					listaFiltrada.add(redCard);
+				}
+			}
+		}else {
+			listaFiltrada = redCards;
+		}
+			
+		Collections.sort(listaFiltrada, new Comparator<RedCard>() {
 
 			@Override
 			public int compare(RedCard o1, RedCard o2) {
@@ -193,7 +210,7 @@ public class CardsController {
 		});
 		
 		
-		return redCards;
+		redCardsAll = listaFiltrada;
 	}
 	
 	public void limparVerdeOuAmarelo() {
@@ -230,6 +247,20 @@ public class CardsController {
 		}
 	}
 	
+	public List<String> buscarNumerosOcorrencia(String query) throws Exception{
+		
+		List<RedCard> redCardsListOcorrencias = redCardImpl.findAll(RedCard.class);
+		List<String> ocorrenciaFiltradas = new ArrayList<>();
+		
+		for (RedCard redcard : redCardsListOcorrencias) {
+			if(redcard.getNumeroOcorrencia().contains(query)) {
+				ocorrenciaFiltradas.add(redcard.getNumeroOcorrencia().toLowerCase());
+			}
+		}
+
+		return ocorrenciaFiltradas;
+	}
+	
 	public YellowCard getYellowCard() {
 		return yellowCard;
 	}
@@ -264,6 +295,22 @@ public class CardsController {
 	
 	public GreenCard getGreenCard() {
 		return greenCard;
+	}
+	
+	public List<RedCard> getRedCardsAll() {
+		return redCardsAll;
+	}
+	
+	public void setRedCardsAll(List<RedCard> redCardsAll) {
+		this.redCardsAll = redCardsAll;
+	}
+
+	public String getFiltrarRedCardPorOcorrencia() {
+		return filtrarRedCardPorOcorrencia;
+	}
+	
+	public void setFiltrarRedCardPorOcorrencia(String filtrarRedCardPorOcorrencia) {
+		this.filtrarRedCardPorOcorrencia = filtrarRedCardPorOcorrencia;
 	}
 	
 	public void setGreenCard(GreenCard greenCard) {

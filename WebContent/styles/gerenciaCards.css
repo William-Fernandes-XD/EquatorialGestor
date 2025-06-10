@@ -96,6 +96,39 @@ body{
 	justify-content: center;
 }
 
+.commandSearch{
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+	padding: 1m;
+	gap: 40px;
+}
+
+.commandSearch-div{
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
+	text-align:center;
+	margin-top: 2em;
+}
+
+.pesquisaTitle{
+	font-weight: bold;
+	font-size: 16px;
+	color: white;
+	background-color: #005B9F;
+	padding: 8px 12px;
+	border-radius: 5px;
+	padding: 1em;
+}
+
+.botoes{
+	margin-top: 1em;
+	padding-bottom:2em;
+}
+
 .output{
 	
 	background-color: red;

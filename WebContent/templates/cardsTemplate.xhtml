@@ -7,8 +7,28 @@
 	<p:dialog id="redCardsDialog" modal="true" widgetVar="redCardsDialog"
 		draggable="false" closable="true" position="center" height="90vh"
 		width="95vw" resizable="false" header="Visualização cartões vermelhos">
+		
+		<div class="commandSearch-div">
+			<div class="commandSearch">
+				<h:outputText value="Pesquisar pelo número de ocorrência" class="pesquisaTitle"/>
+				
+				<p:autoComplete 
+							value="#{cardsController.filtrarRedCardPorOcorrencia}"
+    						completeMethod="#{cardsController.buscarNumerosOcorrencia}"
+    						dropdown="true"
+    						forceSelection="true"
+    						placeholder="Nome funcionário"
+    						panelStyle="max-height: 400px; overflow-y:auto;"
+    						style="width:340px;"
+							 />
+			</div>
+			<div class="botoes">
+				<p:commandButton value="Filtrar ⚙️" action="#{cardsController.findAll()}" update=":formCards" ajax="true"
+				oncomplete="PF('redCardsDialog').show()" class="botao"/>
+			</div>
+		</div>
 
-		<p:dataTable value="#{cardsController.findAll()}" var="redCard">
+		<p:dataTable value="#{cardsController.redCardsAll}" var="redCard">
 			<p:column>
 				<center>
 					<f:facet name="header">Número Ocorrência</f:facet>
