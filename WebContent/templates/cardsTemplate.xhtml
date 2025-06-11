@@ -9,7 +9,8 @@
 		width="95vw" resizable="false" header="Visualização cartões vermelhos">
 		
 		<div class="commandSearch-div">
-			<div class="commandSearch">
+			<div class="divColumn">
+				<div class="commandSearch">
 				<h:outputText value="Pesquisar pelo número de ocorrência" class="pesquisaTitle"/>
 				
 				<p:autoComplete 
@@ -17,11 +18,22 @@
     						completeMethod="#{cardsController.buscarNumerosOcorrencia}"
     						dropdown="true"
     						forceSelection="true"
-    						placeholder="Nome funcionário"
+    						placeholder="Número ocorrência"
     						panelStyle="max-height: 400px; overflow-y:auto;"
     						style="width:340px;"
 							 />
+				</div>
+				
+				<div class="commandSearch">
+				<h:outputText value="Pesquisar pela data" class="pesquisaTitle"/>
+				
+				<p:calendar 
+							value="#{cardsController.filterRedCardPorData}"
+							placeholder="dd/MM/yyyy" pattern="dd/MM/yyyy"
+							styleClass="campo-ajustado" autocomplete="false" />
+				</div>
 			</div>
+			
 			<div class="botoes">
 				<p:commandButton value="Filtrar ⚙️" action="#{cardsController.findAll()}" update=":formCards" ajax="true"
 				oncomplete="PF('redCardsDialog').show()" class="botao"/>
@@ -56,7 +68,7 @@
 				<center>
 					<f:facet name="header">Deletar</f:facet>
 					<p:commandButton value="🗑️" action="#{cardsController.deletarRedCard(redCard)}"
-					ajax="true" update=":formCards" oncomplete="PF('redCardsDialog').show()"/>
+					ajax="true" update=":formCards"/>
 				</center>			
 			</p:column>
 
@@ -181,7 +193,7 @@
 			<div class="card-row-3">
 				<div class="botoes2" style="border: none; !important">
 					<p:commandButton value="Salvar 💾" class="botao"
-						action="#{cardsController.salvarVerde()}" />
+						action="#{cardsController.salvarVerde()}" update=":formCards"/>
 					<p:commandButton value="Limpar 🧹" class="botao" action="#{cardsController.limparVerdeOuAmarelo()}"
 					update=":formCards:adicionarYellowCard" oncomplete="PF('adicionarYellowCard').show()"/>
 				</div>
@@ -290,8 +302,6 @@
 					<p:commandButton value="Remover 🗑️" class="botao"
 					 action="#{cardsController.removerVerde(cardsController.redCard)}"
 					 update=":formCards"/>
-					 
-					<p:commandButton value="Editar 📝" class="botao"/>
 				</div>
 			</div>
 		</div>
@@ -379,7 +389,7 @@
 
 					<div class="input-verde">
 						<h:outputText value="UC´s NORMALIZADAS" class="output-yellow" />
-						<p:inputNumber
+						<p:inputNumber 
 							value="#{cardsController.yellowCard.unidadesNormalizadas}"
 							styleClass="campo-ajustado" />
 					</div>

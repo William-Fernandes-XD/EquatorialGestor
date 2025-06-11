@@ -131,11 +131,14 @@
 							update="formCards"/>
 							<p:commandButton value="Consultar 🔍" oncomplete="PF('redCardsDialog').show()"
 							ajax="true" update="formCards" action="#{cardsController.findAll()}"/>
+							
+							<p:commandButton value="Dúvidas? 🤔" oncomplete="PF('duvidasDialog').show()" class="botao"/>
 						</div>
 					</div>
 				</div>
 			</div>
 			
+			<ui:include src="/templates/painelDuvidasCards.xhtml" />
 			<ui:include src="/templates/cardsTemplate.xhtml" />
 	</h:form>
 </h:body>

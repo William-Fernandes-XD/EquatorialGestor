@@ -3,12 +3,11 @@ package com.gestorcoi.controllers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
 import com.gestor.entityCards.GreenCard;
 import com.gestor.entityCards.RedCard;
 import com.gestor.entityCards.YellowCard;
@@ -26,6 +25,7 @@ public class CardsController {
 	private GreenCardsImpl greenCardsImpl = new GreenCardsImpl();
 	
 	private String filtrarRedCardPorOcorrencia = "";
+	private Date filterRedCardPorData;
 	
 	private List<RedCard> redCardsAll = new ArrayList<>();
 	
@@ -51,9 +51,16 @@ public class CardsController {
 		
 		try {
 			
-			redCardImpl.merge2(redCard);
-			
-			MensagensJSF.msgSeverityInfo("Card Salvo com Sucesso");
+			if(this.redCard.getId() != null) {
+				
+				MensagensJSF.msgSeverityInfo("Ao salvar, sempre faça a limpeza primeiro");
+				limpar();
+			}else {
+				
+				redCardImpl.merge2(redCard);
+				
+				MensagensJSF.msgSeverityInfo("Card Salvo com Sucesso");
+			}
 		}catch(Exception e) {
 			MensagensJSF.msgSeverityError("Não foi possível salvar o novo card no banco");
 			e.printStackTrace();
@@ -184,21 +191,35 @@ public class CardsController {
 	    }
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void findAll() throws Exception{
 		
 		List<RedCard> redCards = redCardImpl.findAll(RedCard.class);
-		
+		List<RedCard> listaFiltradaEtapa1 = new ArrayList<>();
 		List<RedCard> listaFiltrada = new ArrayList<>();
 		
 		if(!this.filtrarRedCardPorOcorrencia.trim().equalsIgnoreCase("")) {
 			
 			for (RedCard redCard : redCards) {
 				if(redCard.getNumeroOcorrencia().equalsIgnoreCase(this.filtrarRedCardPorOcorrencia)) {
+					listaFiltradaEtapa1.add(redCard);
+				}
+			}
+		}else {
+			listaFiltradaEtapa1 = redCards;
+		}
+		
+		if(this.filterRedCardPorData != null && !this.filterRedCardPorData.toString().trim().equalsIgnoreCase("")){
+			
+			for(RedCard redCard : listaFiltradaEtapa1) {
+				if(redCard.getDataInicio().getDay() == this.filterRedCardPorData.getDay() && 
+						redCard.getDataInicio().getMonth() == this.filterRedCardPorData.getMonth() && redCard.getDataInicio().getYear()
+						== this.filterRedCardPorData.getYear()) {
 					listaFiltrada.add(redCard);
 				}
 			}
 		}else {
-			listaFiltrada = redCards;
+			listaFiltrada = listaFiltradaEtapa1;
 		}
 			
 		Collections.sort(listaFiltrada, new Comparator<RedCard>() {
@@ -307,6 +328,14 @@ public class CardsController {
 
 	public String getFiltrarRedCardPorOcorrencia() {
 		return filtrarRedCardPorOcorrencia;
+	}
+	
+	public Date getFilterRedCardPorData() {
+		return filterRedCardPorData;
+	}
+	
+	public void setFilterRedCardPorData(Date filterRedCardPorData) {
+		this.filterRedCardPorData = filterRedCardPorData;
 	}
 	
 	public void setFiltrarRedCardPorOcorrencia(String filtrarRedCardPorOcorrencia) {

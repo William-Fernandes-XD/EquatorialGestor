@@ -218,9 +218,13 @@ body{
 	border: 2px solid black;
 	font-size: 18px;
 	align-items: stretch; 
+	overflow: hidden;
 }
 
-
+.divColumn{
+	display: flex;
+	flex-direction: row;
+}
 
 .dadoInput {
 	
