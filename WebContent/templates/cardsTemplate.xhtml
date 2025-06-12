@@ -20,8 +20,7 @@
     						forceSelection="true"
     						placeholder="Número ocorrência"
     						panelStyle="max-height: 400px; overflow-y:auto;"
-    						style="width:340px;"
-							 />
+    						style="width:340px;"/>
 				</div>
 				
 				<div class="commandSearch">
@@ -48,10 +47,10 @@
 				</center>
 			</p:column>
 
-			<p:column>
+			<p:column width="20%" style="text-align:center;">
 				<center>
 					<f:facet name="header">Data</f:facet>
-					<h:outputText value="#{redCard.dataInicio}">
+					<h:outputText value="#{redCard.dataInicio}" style="">
 						<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
 					</h:outputText>
 				</center>
@@ -69,6 +68,14 @@
 					<f:facet name="header">Deletar</f:facet>
 					<p:commandButton value="🗑️" action="#{cardsController.deletarRedCard(redCard)}"
 					ajax="true" update=":formCards"/>
+				</center>			
+			</p:column>
+			
+			<p:column>
+				<center>
+					<f:facet name="header">Card Vermelho</f:facet>
+					<p:commandButton value="🔍" action="#{cardsController.setRedCard(redCard)}"
+					ajax="true" update=":formCards" oncomplete="PF('redCardsDialog').show(), PF('vermelhoView').show()"/>
 				</center>			
 			</p:column>
 
@@ -219,10 +226,21 @@
 	 
 	 <p:dialog id="visualizarGreenCard" modal="true"
 		widgetVar="visualizarGreenCard" draggable="false" closable="true"
-		position="center" height="80vh" width="85vw" resizable="false"
+		position="center" height="90vh" width="85vw" resizable="false"
 		header="Visualização Green Card">
 
-		<div class="card">
+		<div class="card" style="margin-top: 3em;">
+		
+			<div class="logo-card" style="border-bottom: 10px solid #4C7B3F;">
+					
+					<h:graphicImage value="/resources/img/GRUPO-EQUATORIAL-ENERGIA-LOGO_PADRAO_COR.png" width="300px" height="75px"/>
+					
+					<div style="display:flex;flex-direction:column; gap:0;">
+						<h1 style="padding:0;margin:0;color:black">NORMALIZAÇÃO TOTAL</h1>
+						<h1 style="text-align: center;padding:0; margin:10px;color:black">AL</h1>
+					</div>
+				</div>
+				
 			<div class="card-row-1">
 				<div class="card-row-1-column-1">
 					<div class="input-verde">
@@ -242,14 +260,14 @@
 					</div>
 					<div class="input-verde">
 						<h:outputText value="DATA/HORA ÍNICIO" class="output-verde" />
-						<h:outputText value="#{cardsController.redCard.greenCard.dataInicio}" class="dadoInput">
+						<h:outputText value="#{cardsController.redCard.greenCard.dataInicio}" class="dadoInput" style="margin-right: 100px;">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
 						</h:outputText>
 					</div>
 
 					<div class="input-verde">
 						<h:outputText value="DATA/HORA FIM" class="output-verde" />
-						<h:outputText value="#{cardsController.redCard.greenCard.dataNormalizada}" class="dadoInput">
+						<h:outputText value="#{cardsController.redCard.greenCard.dataNormalizada}" class="dadoInput" style="margin-right: 100px;">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
 						</h:outputText>
 					</div>
@@ -290,10 +308,10 @@
 			</div>
 
 			<div class="card-row-2">
-				<div class="input-verde">
+				<div class="inputs2">
 					<h:outputText value="CAUSA" class="output-verde" />
 					<h:outputText value="#{cardsController.redCard.greenCard.causa}"
-						class="dadoInput"/>
+						class="dadoInputText"/>
 				</div>
 			</div>
 			
@@ -434,7 +452,7 @@
 			<p:column>
 				<center>
 					<f:facet name="header">DATA/HORA PARCIAL</f:facet>
-					<h:outputText value="#{yellow.dataParcial}" class="dadoInput">
+					<h:outputText value="#{yellow.dataParcial}" class="dadoInput" style="margin-right: 100px;">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
 					</h:outputText>
 				</center>
@@ -473,11 +491,24 @@
 		</p:dataTable>
 	</p:dialog>
 	
-	<p:dialog id="yellowView" widgetVar="yellowView" position="center" width="80vw" height="80vh"
+	<p:dialog id="yellowView" widgetVar="yellowView" position="center" width="80vw" height="90vh"
 	header="Card amarelo" draggable="false" resizable="false">
 		
-		<div class="card">
+		<div class="card" style="margin-top: 3em; ">
+		
+			<div class="logo-card" style="border-bottom: 10px solid #FFD700;">
+					
+					<h:graphicImage value="/resources/img/GRUPO-EQUATORIAL-ENERGIA-LOGO_PADRAO_COR.png" width="300px" height="75px"
+					/>
+					
+					<div style="display:flex;flex-direction:column; gap:0;">
+						<h1 style="padding:0;margin:0">NORMALIZAÇÃO PARCIAL</h1>
+						<h1 style="text-align: center;padding:0; margin:10px">AL</h1>
+					</div>
+				</div>
+		
 			<div class="card-row-1">
+			
 				<div class="card-row-1-column-1">
 					<div class="input-verde">
 						<h:outputText value="DISTRIBUIDORA" class="output-yellow"/>
@@ -496,14 +527,14 @@
 					</div>
 					<div class="input-verde">
 						<h:outputText value="DATA/HORA ÍNICIO" class="output-yellow" />
-						<h:outputText value="#{cardsController.yellowCard.dataInicio}" class="dadoInput">
+						<h:outputText value="#{cardsController.yellowCard.dataInicio}" class="dadoInput" style="margin-right: 100px;">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
 						</h:outputText>
 					</div>
 
 					<div class="input-verde">
 						<h:outputText value="DATA/HORA PARCIAL" class="output-yellow" />
-						<h:outputText value="#{cardsController.yellowCard.dataParcial}" class="dadoInput">
+						<h:outputText value="#{cardsController.yellowCard.dataParcial}" class="dadoInput" style="margin-right: 100px;">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
 						</h:outputText>
 					</div>
@@ -545,7 +576,7 @@
 					</div>
 
 					<div class="input-verde">
-						<h:outputText value="UC's INTERROMPIDAS" class="output-yellow" />
+						<h:outputText value="UC's INTERROMPIDAS" class="output-yellow" style="background-color:#993333 !important" />
 						<h:outputText
 							value="#{cardsController.yellowCard.unidadesInterrompidas}"
 							class="dadoInput" />
@@ -564,7 +595,143 @@
 				<div class="inputs2">
 					<h:outputText value="OBSERVAÇÃO" class="output-yellow" />
 					<h:outputText value="#{cardsController.yellowCard.observacao}"
-						class="dadoInput"/>
+						class="dadoInputText" style="margin: auto 0;"/>
+				</div>
+			</div>
+		</div>
+		
+	</p:dialog>
+	
+	
+	<!-- 
+	
+	
+	
+	
+			VISUALIZAÇÃO VERMELHO
+	
+	
+	
+	 -->
+	 
+	 <p:dialog id="vermelhoView" widgetVar="vermelhoView" position="center" width="80vw" height="100vh"
+	header="Card Vermelho" draggable="false" resizable="true">
+		
+		<div class="card" style="margin-top: 1em; ">
+		
+			<div class="logo-card" style="border-bottom: 10px solid #993333;">
+					
+					<h:graphicImage value="/resources/img/GRUPO-EQUATORIAL-ENERGIA-LOGO_PADRAO_COR.png" width="300px" height="75px"
+					/>
+					
+					<div style="display:flex;flex-direction:column; gap:0;">
+						<h1 style="padding:0;margin:0;color:black;">INTERRUPÇÃO</h1>
+						<h1 style="text-align: center;padding:0; margin:10px;color:black;">AL</h1>
+					</div>
+				</div>
+		
+			<div class="card-row-1">
+			
+				<div class="card-row-1-column-1">
+					<div class="input-verde">
+						<h:outputText value="DISTRIBUIDORA" class="output-vermelho"/>
+						<h:outputText
+							value="#{cardsController.redCard.distribuidora}" class="dadoInput"/>
+					</div>
+					<div class="input-verde">
+						<h:outputText value="Regional" class="output-vermelho" />
+						<h:outputText
+							value="#{cardsController.redCard.regional}" class="dadoInput"/>
+					</div>
+					<div class="input-verde">
+						<h:outputText value="CÓD.EQUIPAMENTO" class="output-vermelho" />
+						<h:outputText 
+							value="#{cardsController.redCard.codigoEquipamento}" class="dadoInput"/>
+					</div>
+					<div class="input-verde">
+						<h:outputText value="DATA/HORA ÍNICIO" class="output-vermelho" />
+						<h:outputText value="#{cardsController.redCard.dataInicio}" class="dadoInput" style="margin-right: 100px;">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
+						</h:outputText>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="UC's INTERROMPIDAS" class="output-vermelho" />
+						<h:outputText value="#{cardsController.redCard.unidadeInterrompidas}" class="dadoInput"/>
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="TURMA(S) ACIONADA(S)" class="output-vermelho" />
+						<h:outputText value="#{cardsController.redCard.turmaAcionada}" class="dadoInput"/>
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="NÚMERO OCORRÊNCIA" class="output-vermelho" />
+						<h:outputText value="#{cardsController.redCard.numeroOcorrencia}" class="dadoInput"/>
+					</div>
+				</div>
+
+				<div class="card-row-1-column-2">
+					<div class="input-verde">
+						<h:outputText value="SUPERINTENDÊNCIA" class="output-vermelho" />
+						<h:outputText
+							value="#{cardsController.redCard.superintendencia}" class="dadoInput"/>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="SE" class="output-vermelho" />
+						<h:outputText value="#{cardsController.redCard.se}" class="dadoInput"/>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="ALIMENTADOR" class="output-vermelho" />
+						<h:outputText
+							value="#{cardsController.redCard.alimentador}" class="dadoInput"/>
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="TENSÃO (KV)" class="output-vermelho" />
+						<h:outputText
+							value="#{cardsController.redCard.tensaoKva}"
+							class="dadoInput" />
+					</div>
+
+					<div class="input-verde">
+						<h:outputText value="PROTEÇÃO" class="output-vermelho" />
+						<h:outputText
+							value="#{cardsController.redCard.protecao}"
+							class="dadoInput" />
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="LOC. DIST. (KM)" class="output-vermelho" />
+						<h:outputText
+							value="#{cardsController.redCard.localDistancia}"
+							class="dadoInput" />
+					</div>
+					
+					<div class="input-verde">
+						<h:outputText value="PREVISÃO DE MANOBRA" class="output-vermelho" />
+						<h:outputText
+							value="#{cardsController.redCard.previsaoManobra}"
+							class="dadoInput" />
+					</div>
+				</div>
+			</div>
+
+			<div class="card-row-2">
+				<div class="inputs2">
+					<h:outputText value="OBSERVAÇÃO" class="output-vermelho" />
+					<h:outputText value="#{cardsController.redCard.observacao}"
+						class="dadoInputText" style="margin: auto 0;"/>
+				</div>
+			</div>
+			
+			<div class="card-row-2">
+				<div class="inputs2">
+					<h:outputText value="LOCAIS ATINGIDOS" class="output-vermelho" />
+					<h:outputText value="#{cardsController.redCard.locaisAtingidos}"
+						class="dadoInputText" style="margin: auto 0;"/>
 				</div>
 			</div>
 		</div>

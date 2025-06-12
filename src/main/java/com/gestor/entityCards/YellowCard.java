@@ -2,6 +2,7 @@ package com.gestor.entityCards;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +34,7 @@ public class YellowCard {
 	private Integer unidadesInterrompidas;
 	private String alimTransf;
 	
+	@Column(length = 10000)
 	private String observacao;
 	
 	// Relacionamento entidades

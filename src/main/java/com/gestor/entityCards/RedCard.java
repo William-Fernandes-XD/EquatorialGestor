@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -39,7 +40,10 @@ public class RedCard {
 	private String localDistancia;
 	private String previsaoManobra;
 	
+	@Column(length = 10000)
 	private String observacao;
+	
+	@Column(length = 10000)
 	private String locaisAtingidos;
 	
 	// Relacionamentos de entidades

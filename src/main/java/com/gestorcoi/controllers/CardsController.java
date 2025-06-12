@@ -55,6 +55,9 @@ public class CardsController {
 				
 				MensagensJSF.msgSeverityInfo("Ao salvar, sempre faça a limpeza primeiro");
 				limpar();
+			}else if (this.redCard.getUnidadeInterrompidas() == null && this.redCard.getDataInicio() == null
+					&& this.redCard.getRegional() == null) {
+				MensagensJSF.msgSeverityInfo("Preencha as informações primeiro");
 			}else {
 				
 				redCardImpl.merge2(redCard);
@@ -170,7 +173,7 @@ public class CardsController {
 	
 	public void removerVerde(RedCard redCard) throws Exception {
 		
-	    if (redCard != null) {
+	    if (redCard != null && redCard.getGreenCard().getId() != null) {
 
 	        this.redCard = redCardImpl.findRedCardById(redCard.getId());
 
@@ -187,7 +190,7 @@ public class CardsController {
 
 	        MensagensJSF.msgSeverityInfo("Removido com sucesso");
 	    } else {
-	        MensagensJSF.msgSeverityError("Não existe redCard referenciado");
+	        MensagensJSF.msgSeverityError("Não existe esse green card");
 	    }
 	}
 	

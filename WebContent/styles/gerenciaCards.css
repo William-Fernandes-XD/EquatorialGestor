@@ -29,6 +29,13 @@ body{
     text-align: center;
 }
 
+.logo-card{
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
 #titulo{
 	float: left;
 	margin-left: 1em;
@@ -59,10 +66,12 @@ body{
 	flex-direction: column;
 	align-content: space-between;
 	margin-top: 2em;
-	width: 60vw;
 	margin: 0 auto;
-	height: 50vh;
+	width: 70vw;
+	height: 80h;
 	justify-content: space-between;
+	padding: 1em;
+	transform: scale(0.8);
 }
 
 .card2{
@@ -76,20 +85,27 @@ body{
 
 .card-row-1{
 	
-	display: flex;
+	display: grid;
 	flex-direction: row;
-	gap: 60px;
 	width: 100%;
-	align-content: center;
-	align-items: center;
+	grid-template-columns: 1fr 1fr; gap: 10px;
+}
+
+.card-row-1-column-1{
+	display: flex;
+	flex-direction: column;
 	justify-content: center;
+	align-content: center;
+}
+
+.card-row-1-column-2{
 }
 
 .inputs{
 	display: flex;
 	flex-direction:row;
 	width: 100%;
-	gap: 40px;
+	gap: 30px;
 	text-align: center;
 	margin-top: 1em;
 	border: 2px solid black;
@@ -139,25 +155,35 @@ body{
 
 .output-verde{
 	
-	background-color: green;
+	background-color: #4C7B3F;
 	width: 40%;
 	max-width: 40%;
 	min-width: 40%;
 	color: white;
 	text-align:center;
-	padding: 1em;
-	padding: 1em 2.5em 1em 2.5em;
+	padding: 0.2em 1.2em 0.2em 1.2em;
 }
 
 .output-yellow{
 	
 	background-color: #FFD700;
+	width: 30%;
+	max-width: 40%;
+	min-width: 40%;
+	color: black;
+	text-align:center;
+	padding: 0.2em 1.2em 0.2em 1.2em;
+}
+
+.output-vermelho{
+	
+	background-color: #993333;
 	width: 40%;
 	max-width: 40%;
 	min-width: 40%;
 	color: white;
 	text-align:center;
-	padding: 1em 2.5em 1em 2.5em;
+	padding: 0.2em 2em 0.2em 2em;
 }
 
 .campo-ajustado {
@@ -167,7 +193,6 @@ body{
 }
 
 .card-row-1{
-	width: 100%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -175,7 +200,7 @@ body{
 
 .card-row-2{
 	display: flex;
-	flex-direction: COLUMN;
+	flex-direction: column;
 	gap: 30px;
 	width: 100%;
 	align-content: center;
@@ -228,9 +253,21 @@ body{
 
 .dadoInput {
 	
+	width: 60%;
+	padding: 0.5em 2.5em 0.5em 2.5em;
+	margin-right: 100px;
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-content: center;
-	width: 50%;
+    justify-content: center;
+  	align-items: center;
+  	white-space: nowrap;
+  	font-size: 16px;
+}
+
+.dadoInputText{
+	width: 60%;
+	padding: 0.5em 2.5em 0.5em 2.5em;
+	display: flex;
+    justify-content: center;
+  	align-items: center;
+  	font-size: 16px;
 }
