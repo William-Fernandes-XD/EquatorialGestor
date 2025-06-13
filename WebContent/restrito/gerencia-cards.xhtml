@@ -25,7 +25,7 @@
 
 		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
 			life="7000"
-			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
+			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" sticky="true" />
 
 		<div id="tudo">
 
@@ -34,12 +34,23 @@
 					 <div class="card-row-1-column-2">
 					 	<div class="inputs">
 					 		<h:outputText value="DISTRIBUIDORA" class="output"/>
-					 		<p:inputText value="#{cardsController.redCard.distribuidora}" class="input"/>
+					 		<p:autoComplete value="#{cardsController.redCard.distribuidora}" class="input"
+					 		completeMethod="#{cardsController.pegarDistribuidoras}"
+							dropdown="true" forceSelection="true"
+							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+							inputStyle="width :75%; margin: 0" 
+							style="margin:0;"/>
 					 	</div>
 					 	
 					 	<div class="inputs">
 					 		<h:outputText value="REGIONAL" class="output"/>
-					 		<p:inputText value="#{cardsController.redCard.regional}" class="input"/>
+					 		
+					 		<p:autoComplete value="#{cardsController.redCard.regional}" class="input"
+							completeMethod="#{cardsController.pegarRegionais}"
+							dropdown="true" forceSelection="true"
+							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+							inputStyle="width :75%; margin: 0" 
+							style="margin:0;"/>
 					 	</div>
 					 	
 					 	<div class="inputs">
@@ -77,7 +88,13 @@
 					<div class="card-row-1-column-2">
 						<div class="inputs">
 							<h:outputText value="SUPERINTENDÊNCIA" class="output"/>
-							<p:inputText value="#{cardsController.redCard.superintendencia}" class="input"/>
+							
+							<p:autoComplete value="#{cardsController.redCard.superintendencia}" class="input"
+							completeMethod="#{cardsController.pegarSuperintendencas}"
+							dropdown="true" forceSelection="true"
+							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+							inputStyle="width :75%; margin: 0" 
+							style="margin:0;"/>
 						</div>
 
 						<div class="inputs">
@@ -92,7 +109,13 @@
 
 						<div class="inputs">
 							<h:outputText value="TENSÃO (KV)" class="output"/>
-							<p:inputText value="#{cardsController.redCard.tensaoKva}" class="input"/>
+							
+							<p:autoComplete value="#{cardsController.redCard.tensaoKva}" class="input"
+							completeMethod="#{cardsController.pegarTensoes}"
+							dropdown="true" forceSelection="true"
+							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+							inputStyle="width :75%; margin: 0" 
+							style="margin:0;"/>
 						</div>
 
 						<div class="inputs">

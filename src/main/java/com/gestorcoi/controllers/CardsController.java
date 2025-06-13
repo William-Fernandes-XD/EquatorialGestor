@@ -8,12 +8,16 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
+import org.primefaces.PrimeFaces;
+
 import com.gestor.entityCards.GreenCard;
 import com.gestor.entityCards.RedCard;
 import com.gestor.entityCards.YellowCard;
 import com.gestorcoi.implementations.GreenCardsImpl;
 import com.gestorcoi.implementations.RedCardImpl;
 import com.gestorcoi.implementations.YellowCardsImpl;
+import com.gestorcoi.utils.ListaSuperintendenciaAndRegionais;
 import com.gestorcoi.utils.MensagensJSF;
 
 @ManagedBean(name = "cardsController")
@@ -55,8 +59,8 @@ public class CardsController {
 				
 				MensagensJSF.msgSeverityInfo("Ao salvar, sempre faça a limpeza primeiro");
 				limpar();
-			}else if (this.redCard.getUnidadeInterrompidas() == null && this.redCard.getDataInicio() == null
-					&& this.redCard.getRegional() == null) {
+			}else if (this.redCard.getUnidadeInterrompidas() == null || this.redCard.getDataInicio() == null
+					|| this.redCard.getRegional() == null) {
 				MensagensJSF.msgSeverityInfo("Preencha as informações primeiro");
 			}else {
 				
@@ -72,9 +76,11 @@ public class CardsController {
 	
 	public void salvarAmarelo() throws Exception{
 		
-		if(this.yellowCard.getNumeroOcorrencia() != null || this.yellowCard.getNumeroOcorrencia().trim() != ""
-				|| this.yellowCard.getUnidadesNormalizadas() != null) {
+		if(this.yellowCard.getNumeroOcorrencia() == null || this.yellowCard.getNumeroOcorrencia().trim() == ""
+				|| this.yellowCard.getUnidadesNormalizadas() == null) {
 			
+			MensagensJSF.msgSeverityInfo("Preencha os dados");
+		}else {
 			this.redCard = redCardImpl.findRedCardById(this.redCard.getId());
 			this.redCard.getYellowCards().add(this.yellowCard);
 			
@@ -91,8 +97,6 @@ public class CardsController {
 			this.redCard = redCardImpl.merge2(this.redCard);
 			
 			MensagensJSF.msgSeverityInfo("Salvo com sucesso!");
-		}else {
-			MensagensJSF.msgSeverityInfo("Preencha os dados");
 		}
 	}
 	
@@ -105,13 +109,20 @@ public class CardsController {
 		
 		try {
 			
-			this.redCard = redCardImpl.findRedCardById(this.redCard.getId());
-			
-			this.greenCard.setRedCard(this.redCard);
-			this.redCard.setGreenCard(this.greenCard);
-			
-			this.redCard = redCardImpl.merge2(this.redCard);
-			MensagensJSF.msgSeverityInfo("Salvo com sucesso! MALDITO");
+			if(greenCard.getUnidadesNormalizadas() == null || greenCard.getNumeroOcorrencia() == null
+					|| greenCard.getCodigoEquipamento() == null || greenCard.getDataInicio() == null) {
+				
+				MensagensJSF.msgSeverityInfo("Preencha as informações para salvar");
+			}else {
+				
+				this.redCard = redCardImpl.findRedCardById(this.redCard.getId());
+				
+				this.greenCard.setRedCard(this.redCard);
+				this.redCard.setGreenCard(this.greenCard);
+				
+				this.redCard = redCardImpl.merge2(this.redCard);
+				MensagensJSF.msgSeverityInfo("Salvo com sucesso! MALDITO");
+			}
 		}catch(Exception e) {
 			MensagensJSF.msgSeverityError("Ocorreu um erro ao tentar salvar um card verde");
 			e.printStackTrace();
@@ -194,6 +205,81 @@ public class CardsController {
 	    }
 	}
 	
+	public List<String> pegarDistribuidoras(String query){
+		
+		List<String> distribuidoras = ListaSuperintendenciaAndRegionais.pegarDistribuidoras();
+		
+		List<String> listaFiltrada = new ArrayList<>();
+		
+		for (String obj : distribuidoras) {
+			if(obj.toLowerCase().contains(query.toLowerCase())) {
+				listaFiltrada.add(obj.toUpperCase());
+			}
+		}
+		
+		return listaFiltrada;
+	}
+	
+	public List<String> pegarTensoes(String query){
+		
+		List<String> tensoeskva = ListaSuperintendenciaAndRegionais.tensoeskVA();
+		List<String> listaFiltrada = new ArrayList<>();
+		
+		for (String obj : tensoeskva) {
+			
+			if(obj.toLowerCase().contains(query.toLowerCase())) {
+				listaFiltrada.add(obj);
+			}
+		}
+		
+		return listaFiltrada;
+	}
+	
+	/**
+	 * 
+	 * Retorna todas as regionais para os campos input
+	 * 
+	 * @param query
+	 * @return
+	 */
+	public List<String> pegarRegionais(String query){
+		
+		List<String> regionais = ListaSuperintendenciaAndRegionais.pegarRegionais();
+		
+		List<String> listaFiltrada = new ArrayList<>();
+		
+		for (String obj : regionais) {
+			if(obj.toLowerCase().contains(query.toLowerCase())) {
+				listaFiltrada.add(obj.toUpperCase());
+			}
+		}
+		
+		return listaFiltrada;
+	}
+	
+	/**
+	 * 
+	 * Retorna todas as superintendencias aos campos input
+	 * @param query
+	 * @return
+	 */
+	
+	public List<String> pegarSuperintendencas(String query){
+		
+		List<String> superintendencias = ListaSuperintendenciaAndRegionais.pegarSuperintendencias();
+		
+		List<String> listaFiltrada = new ArrayList<>();
+		
+		for (String obj : superintendencias) {
+			
+			if(obj.contains(query)) {
+				listaFiltrada.add(obj);
+			}
+		}
+		
+		return listaFiltrada;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void findAll() throws Exception{
 		
@@ -260,13 +346,34 @@ public class CardsController {
 		greenCard = new GreenCard();
 	}
 	
+	public List<String> pegarNumeroOcorrenciaRedCard() {
+		
+		List<String> numeroOcorrencia = new ArrayList<>();
+		
+		numeroOcorrencia.add(redCard.getNumeroOcorrencia());
+		
+		return numeroOcorrencia;
+	}
+	
+	public List<String> pegarCodigoEquipamentoRedCard() {
+		
+		List<String> codEquipamento = new ArrayList<>();
+		
+		codEquipamento.add(redCard.getCodigoEquipamento());
+		
+		return codEquipamento;
+	}
+	
 	public void validarGreenCard(RedCard redCard) {
 		
 		if(redCard.getGreenCard() == null) {
 			validado = true;
 			this.redCard = redCard;
+			
+			PrimeFaces.current().executeScript("PF('redCardsDialog').show(); PF('adicionarGreenCard').show()");
 		}else {
 			validado = false;
+			PrimeFaces.current().executeScript("PF('redCardsDialog').show();");
 			MensagensJSF.msgSeverityInfo("Já existe um card verde para essa ocorrência");
 		}
 	}

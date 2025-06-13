@@ -11,6 +11,11 @@ body{
 	height: 5em;
 }
 
+.ui-growl {
+    z-index: 9999 !important;
+    position: fixed !important;
+}
+
 .verde {
     background-color: #d1f7d1; /* verde claro */
     color: #1e4620; /* verde escuro para contraste */
@@ -210,7 +215,14 @@ body{
 }
 
 .input{
+	display: flex;
+	flex-direction: row;
 	width: 100%;
+	text-align: center;
+	font-size: 18px;
+	align-items: stretch; 
+	justify-content: space-between;
+	overflow: hidden;
 }
 
 .inputs2{
@@ -243,6 +255,7 @@ body{
 	border: 2px solid black;
 	font-size: 18px;
 	align-items: stretch; 
+	justify-content: space-between;
 	overflow: hidden;
 }
 
