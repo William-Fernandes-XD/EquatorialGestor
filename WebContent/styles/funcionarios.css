@@ -13,6 +13,11 @@ body{
 	height: 5em;
 }
 
+.ui-growl {
+    position: fixed !important;
+    z-index: 9999 !important;
+}
+
 #titulo{
 	float: left;
 	margin-left: 1em;

@@ -85,6 +85,16 @@ public class ContasController {
 		}
 	}
 	
+	public List<String> retornarPapeis() {
+		List<String> roles = new ArrayList<>();
+		roles.add("ADMIN");
+		roles.add("SUPERVISOR");
+		roles.add("AVALIADOR");
+		roles.add("REGISTRADORA");
+		
+		return roles;
+	}
+	
 	public Supervisor getSupervisor() {
 		return supervisor;
 	}

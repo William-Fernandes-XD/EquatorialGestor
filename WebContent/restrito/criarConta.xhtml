@@ -14,8 +14,6 @@
 <h:body id="body">
 
 	<h:form id="formCriarConta" >
-		<ui:include src="/templates/barraProgresso.xhtml" />
-
 		<p:panel id="titulo">
 			<a href="#{request.contextPath}/restrito/home.jsf" style="text-decoration:none"><p:outputLabel value="Gestor COI" /></a>
 		</p:panel>
@@ -59,8 +57,14 @@
 
 					<div>
 						<p>Role:</p>
-						<p:inputText class="inputs" id="role" placeholder="Digite o papel do usuário"
-							value="#{contaController.role}" />
+						<p:autoComplete
+							value="#{contaController.role}"
+							completeMethod="#{contaController.retornarPapeis()}"
+							dropdown="true" forceSelection="true"
+							placeholder="Nome funcionário"
+							panelStyle="max-height: 700px; overflow-y:auto;position:absolute"
+							inputStyle="width :70%; margin: 0" 
+							style="margin:0;" inputStyleClass="inputs"/>
 					</div>
 				</div>
 				<div id="botoeiras">

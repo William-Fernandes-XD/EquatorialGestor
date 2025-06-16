@@ -316,21 +316,21 @@
 						<h:outputText value="DATA/HORA ÍNICIO" class="output-yellow" />
 						<p:calendar value="#{cardsController.yellowCard.dataInicio}"
 							placeholder="dd/MM/yyyy HH:mm:ss" pattern="dd/MM/yyyy HH:mm:ss"
-							navigator="true" showButtonPanel="true"
-							styleClass="campo-ajustado" />
+							navigator="true" showButtonPanel="true" autocomplete="false"
+							styleClass="campo-ajustado" inputStyle="width :100%; margin: 0;height: 100%;"/>
 					</div>
 
 					<div class="input-verde">
 						<h:outputText value="DATA/HORA PARCIAL" class="output-yellow" />
 						<p:calendar value="#{cardsController.yellowCard.dataParcial}"
 							placeholder="dd/MM/yyyy HH:mm:ss" pattern="dd/MM/yyyy HH:mm:ss"
-							navigator="true" showButtonPanel="true"
-							styleClass="campo-ajustado" />
+							navigator="true" showButtonPanel="true" autocomplete="false"
+							styleClass="campo-ajustado" inputStyle="width :100%; margin: 0;height: 100%;"/>
 					</div>
 
 					<div class="input-verde">
 						<h:outputText value="SE TRANSF." class="output-yellow" />
-						<p:inputText value="#{cardsController.yellowCard.seTransf}" />
+						<p:inputText value="#{cardsController.yellowCard.seTransf}" inputStyle="width :100%; margin: 0;height: 100%;"/>
 					</div>
 				</div>
 
@@ -340,13 +340,13 @@
 						<h:outputText value="UC´s NORMALIZADAS" class="output-yellow" />
 						<p:inputNumber
 							value="#{cardsController.yellowCard.unidadesNormalizadas}"
-							styleClass="campo-ajustado" />
+							styleClass="campo-ajustado" inputStyle="width :100%; margin: 0; height: 100%;"/>
 					</div>
 
 					<div class="input-verde">
 						<h:outputText value="ALIM. TRANSF." class="output-yellow" />
 						<p:inputText value="#{cardsController.yellowCard.alimTransf}"
-							styleClass="campo-ajustado" />
+							styleClass="campo-ajustado" inputStyle="width :100%; margin: 0;height: 100%;"/>
 					</div>
 
 				</div>

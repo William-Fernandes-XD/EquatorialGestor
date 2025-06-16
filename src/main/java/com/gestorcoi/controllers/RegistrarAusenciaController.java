@@ -104,9 +104,9 @@ public class RegistrarAusenciaController {
 				
 				funcionarioImpl.merge2(funcionarios);
 				
-				limpar();
-				
 				MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome());
+				
+				limpar();
 		}
 		
 		}else {

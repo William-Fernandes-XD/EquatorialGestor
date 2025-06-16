@@ -178,12 +178,12 @@
     						panelStyle="max-height: 400px; overflow-y:auto;"
     						style="width:340px;"/>
 							 
-			<p:commandButton value="Pesquisar"
+			<p:commandButton value="Pesquisar" action="#{feedback.carregarFeedBacksByName()}"
 			ajax="true" update=":formFeedBack"
 			oncomplete="PF('consulta').show(), PF('feedbacks').show()"/>
 		</div>
 				
-				<p:dataTable value="#{feedback.getAllFuncionariosObjeto()}" var="objeto" scrollable="true">
+				<p:dataTable value="#{feedback.allFuncionariosObjeto}" var="objeto" scrollable="true">
 					<p:column>
 						<center>
 							<f:facet name="header">Nome</f:facet>
@@ -194,9 +194,9 @@
 					<p:column>
 						<center>
 							<f:facet name="header">Feedbacks</f:facet>
-							<p:commandButton value="🔍" action="#{feedback.setFuncionarios(objeto)}"
-							oncomplete="PF('consulta').show(), PF('feedbacks').show()" ajax="true"
-							update=":formFeedBack" process="@this"/>
+							<p:commandButton value="🔍" action="#{feedback.carregarFeedBacksByObject(objeto)}"
+							update=":formFeedBack:dataTableDivInView" ajax="true"
+							oncomplete="PF('consulta').show(), PF('feedbacks').show()"/>
 						</center>
 					</p:column>
 				</p:dataTable>
@@ -204,9 +204,9 @@
 			
 			<p:dialog id="feedbacks" widgetVar="feedbacks" position="center"
 			height="70vh" width="70vw" header="Feedbacks" resizable="false" draggable="false"
-			rendered="#{not empty feedback.funcionarios.id || not empty feedback.feedback.funcionario.nome}" >
+			 dynamic="false">
 			
-				<p:dataTable var="objeto" value="#{feedback.findAllByName()}" scrollable="true" lazy="true">
+				<p:dataTable id="dataTableDivInView" var="objeto" value="#{feedback.feedbacksListaBusca}" scrollable="true" lazy="true">
 				
 					<p:column>
 					

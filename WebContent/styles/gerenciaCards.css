@@ -114,6 +114,7 @@ body{
 	margin-top: 1em;
 	border: 2px solid black;
 	justify-content: center;
+	border-radius: 5px;
 }
 
 .commandSearch{
@@ -231,6 +232,7 @@ body{
 	text-align: center;
 	margin-top: 1em;
 	border: 2px solid black;
+	border-radius: 5px;
 }
 
 .botoes2{
@@ -256,6 +258,7 @@ body{
 	align-items: stretch; 
 	justify-content: space-between;
 	overflow: hidden;
+	border-radius: 5px;
 }
 
 .divColumn{

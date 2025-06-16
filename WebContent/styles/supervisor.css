@@ -11,6 +11,11 @@ body{
 	height: 5em;
 }
 
+.ui-growl {
+    position: fixed !important;
+    z-index: 9999 !important;
+}
+
 .verde {
     background-color: #d1f7d1; /* verde claro */
     color: #1e4620; /* verde escuro para contraste */

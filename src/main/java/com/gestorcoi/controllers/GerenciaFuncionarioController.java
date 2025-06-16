@@ -1,6 +1,7 @@
 package com.gestorcoi.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import com.gestorcoi.entities.Feedback;
 import com.gestorcoi.entities.Funcionarios;
 import com.gestorcoi.entities.RegistroAusencia;
 import com.gestorcoi.implementations.FuncionarioImpl;
+import com.gestorcoi.implementations.SupervisorImpl;
 import com.gestorcoi.utils.MensagensJSF;
 
 @ManagedBean(name = "gerenciaFuncionarios")
@@ -21,6 +23,8 @@ public class GerenciaFuncionarioController {
 	
 	private Funcionarios funcionarios;
 	
+	private SupervisorImpl supervisorImpl = new SupervisorImpl();
+	
 	@PostConstruct
 	public void init() {
 		
@@ -28,8 +32,13 @@ public class GerenciaFuncionarioController {
 			funcionarios = new Funcionarios();
 		}
 		
-		funcionarios.setAusencias(new ArrayList<>());
-		funcionarios.setFeedbacks(new ArrayList<>());
+		if (funcionarios.getAusencias() == null) {
+		    funcionarios.setAusencias(new ArrayList<>());
+		}
+		
+		if (funcionarios.getFeedbacks() == null) {
+		    funcionarios.setFeedbacks(new ArrayList<>());
+		}
 	}
 	
 	public void salvar() throws Exception {
@@ -65,6 +74,39 @@ public class GerenciaFuncionarioController {
 	    } else {
 	        MensagensJSF.msgSeverityInfo("Você deve inserir um funcionário antes");
 	    }
+	}
+	
+	public void salvarFuncionario() throws Exception{
+		
+		try {
+			RegistroAusencia registroAusencia = new RegistroAusencia();
+			registroAusencia.setFuncionarios(funcionarios);
+			
+			registroAusencia.setData_ausencia(new Date());
+			registroAusencia.setJustificativa("POR FAVOR APAGAR");
+			registroAusencia.setTurno("POR FAVOR APAGAR");
+			
+			funcionarios.getAusencias().add(registroAusencia);
+			
+			Feedback feedback = new Feedback();
+			feedback.setFuncionario(funcionarios);
+			
+			feedback.setAvaliador(supervisorImpl.findByName("admin"));
+			feedback.setData(new Date());
+			feedback.setFeedback("POR FAVOR APAGAR");
+			feedback.setPositivoOrNegative("Positivo");
+			
+			funcionarios.getFeedbacks().add(feedback);
+			funcionarioImpl.merge(funcionarios);
+			
+			MensagensJSF.msgSeverityInfo("Colaborador salvo com sucesso!");
+			
+			limpar();
+			
+		}catch(Exception e) {
+			MensagensJSF.msgSeverityError("Não foi possível salvar o funcionário");
+			e.printStackTrace();
+		}
 	}
 	
 	public void limpar() {

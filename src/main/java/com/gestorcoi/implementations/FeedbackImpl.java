@@ -78,6 +78,21 @@ public class FeedbackImpl implements AbstractMethods<Feedback>, Serializable{
 		return feedbacksById;
 	}
 	
+	public List<Feedback> findAllByNameFuncionario2(String nome_funcionario) throws Exception{
+		
+		validateSessionFactory();
+		
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select distinct(entity) from ").append(Feedback.class.getSimpleName())
+		.append(" entity where entity.funcionario.nome = :nome");
+		
+		List<Feedback> feedbacksById = sessionFactory.getCurrentSession().createQuery(query.toString())
+				.setParameter("nome", nome_funcionario).list();
+		
+		return feedbacksById;
+	}
+	
 	@Override
 	public List<Feedback> findAll(Class<Feedback> classe) throws Exception {
 		

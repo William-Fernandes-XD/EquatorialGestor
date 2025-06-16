@@ -12,6 +12,11 @@
 	<link rel="stylesheet" type="text/css" href="../styles/supervisor.css" />
 </h:head>
 <h:body>
+
+	<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
+			life="7000"
+			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" sticky="true" />
+	
 	<h:form id="formGestor">
 		<p:panel id="titulo">
 			<a href="#{request.contextPath}/restrito/home.jsf"
@@ -22,10 +27,6 @@
 			<h1 id="titulo">Gestor de Turno</h1>
 			<h1 id="logo">Equatorial Energia</h1>
 		</div>
-
-		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
-			life="7000"
-			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
 
 		<div id="tudo">
 
@@ -228,12 +229,11 @@
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
-
-	<ui:include src="/templates/painelDuvidas.xhtml" />
-
-	<ui:include src="/templates/registroausencia.xhtml" />
 		</div>
+		
+		<ui:include src="/templates/painelDuvidas.xhtml" />
+
+		<ui:include src="/templates/registroausencia.xhtml" />
 	</h:form>
-	
 </h:body>
 </html>

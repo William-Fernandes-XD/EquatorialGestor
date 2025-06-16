@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -34,6 +35,9 @@ public class FeedbackController {
 	private Feedback feedback;
 	
 	private SupervisorImpl supervisorImpl = new SupervisorImpl();
+	
+	private List<Funcionarios> funcionariosListaBusca = new ArrayList<>();
+	private List<Feedback> feedbacksListaBusca = new ArrayList<>();
 	
 	private String filtro = "";
 	
@@ -128,23 +132,6 @@ public class FeedbackController {
 		return funcionariosObjeto;
 	}
 	
-	public List<Feedback> findAllByName() throws Exception{
-		
-		if(funcionarios.getId() == null && feedback.getFuncionario().getNome() != null) {
-			
-			Funcionarios funcionarios = funcionarioImpl.findByName(feedback.getFuncionario().getNome());
-			return feedbackImpl.findAllByNameFuncionario(funcionarios.getId());
-		}
-		
-		if(funcionarios != null || funcionarios.getId() != null) {
-			
-			return feedbackImpl.findAllByNameFuncionario(funcionarios.getId());
-		}
-		
-		
-		return new ArrayList<>();
-	}
-	
 	public List<Feedback> listarAll() throws Exception{
 		
 		List<Feedback> feedbacks = feedbackImpl.findAll(Feedback.class);	
@@ -170,6 +157,57 @@ public class FeedbackController {
 		return feedbacks;
 	}
 	
+	public void carregarFeedBacksByObject(Funcionarios funcionario) throws Exception{
+		
+		if(funcionario.getId() != null) {
+			
+			List<Feedback> feedbacks = feedbackImpl.findAllByNameFuncionario(funcionario.getId());
+			
+			Collections.sort(feedbacks, new Comparator<Feedback>() {
+
+				@Override
+				public int compare(Feedback o1, Feedback o2) {
+					return o2.getData().compareTo(o1.getData());
+				}
+			});
+			
+			feedbacksListaBusca = feedbacks;
+		}else {
+			feedbacksListaBusca = new ArrayList<>();
+		}
+	}
+	
+	public void carregarFeedBacksByName() throws Exception{
+	
+		
+		if(feedback.getFuncionario().getNome() != null || !feedback.getFuncionario().getNome().trim().equals("")) {
+			
+			List<Feedback> feedbacks = feedbackImpl.findAllByNameFuncionario2(feedback.getFuncionario().getNome());
+			
+			Collections.sort(feedbacks, new Comparator<Feedback>() {
+
+				@Override
+				public int compare(Feedback o1, Feedback o2) {
+					return o2.getData().compareTo(o1.getData());
+				}
+			});
+			
+			feedbacksListaBusca = feedbacks;
+			
+		}else {
+			
+			feedbacksListaBusca = new ArrayList<>();
+		}
+	}
+	
+	public List<Feedback> getFeedbacksListaBusca() {
+		return feedbacksListaBusca;
+	}
+	
+	public void setFeedbacksListaBusca(List<Feedback> feedbacksListaBusca) {
+		this.feedbacksListaBusca = feedbacksListaBusca;
+	}
+	
 	public void filtrar(String filtrar){
 		this.filtro = filtrar; 
 	}
@@ -184,6 +222,14 @@ public class FeedbackController {
 	
 	public Feedback getFeedback() {
 		return feedback;
+	}
+	
+	public List<Funcionarios> getFuncionariosListaBusca() {
+		return funcionariosListaBusca;
+	}
+	
+	public void setFuncionariosListaBusca(List<Funcionarios> funcionariosListaBusca) {
+		this.funcionariosListaBusca = funcionariosListaBusca;
 	}
 	
 	public void setFeedback(Feedback feedback) {
