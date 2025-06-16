@@ -122,89 +122,21 @@
 
 		<div class="card">
 			<div class="card-row-1">
-				<div class="card-row-1-column-1">
-					<div class="input-verde">
-						<h:outputText value="DISTRIBUIDORA" class="output-verde" />
-						<p:autoComplete value="#{cardsController.greenCard.distribuidora}"
-							class="input"
-							completeMethod="#{cardsController.pegarDistribuidoras}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
-					</div>
-					<div class="input-verde">
-						<h:outputText value="Regional" class="output-verde" />
-						<p:autoComplete value="#{cardsController.greenCard.regional}"
-							class="input" completeMethod="#{cardsController.pegarRegionais}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
-					</div>
-					<div class="input-verde">
-						<h:outputText value="CÓD.EQUIPAMENTO" class="output-verde" />
-						<p:autoComplete
-							value="#{cardsController.greenCard.codigoEquipamento}"
-							class="input"
-							completeMethod="#{cardsController.pegarCodigoEquipamentoRedCard()}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
-					</div>
+				<div class="card-row-2">
 					<div class="input-verde">
 						<h:outputText value="DATA/HORA ÍNICIO" class="output-verde" />
 						<p:calendar value="#{cardsController.greenCard.dataInicio}"
 							placeholder="dd/MM/yyyy HH:mm:ss" pattern="dd/MM/yyyy HH:mm:ss"
-							navigator="true" showButtonPanel="true"
-							styleClass="campo-ajustado" />
+							navigator="true" showButtonPanel="true" inputStyle="width: 100%"
+							style="width: 100%; !important; height: 100%; !important" />
 					</div>
 
 					<div class="input-verde">
 						<h:outputText value="DATA/HORA FIM" class="output-verde" />
 						<p:calendar value="#{cardsController.greenCard.dataNormalizada}"
 							placeholder="dd/MM/yyyy HH:mm:ss" pattern="dd/MM/yyyy HH:mm:ss"
-							navigator="true" showButtonPanel="true"
-							styleClass="campo-ajustado" />
-					</div>
-				</div>
-
-				<div class="card-row-1-column-2">
-					<div class="input-verde">
-						<h:outputText value="SUPERINTENDÊNCIA" class="output-verde" />
-						<p:autoComplete
-							value="#{cardsController.greenCard.superintendencia}"
-							class="input"
-							completeMethod="#{cardsController.pegarSuperintendencas}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
-					</div>
-
-					<div class="input-verde">
-						<h:outputText value="SE" class="output-verde" />
-						<p:inputText value="#{cardsController.greenCard.se}" />
-					</div>
-
-					<div class="input-verde">
-						<h:outputText value="ALIMENTADOR" class="output-verde" />
-						<p:inputText value="#{cardsController.greenCard.alimentador}" />
-					</div>
-
-					<div class="input-verde">
-						<h:outputText value="UC´s NORMALIZADAS" class="output-verde" />
-						<p:inputNumber
-							value="#{cardsController.greenCard.unidadesNormalizadas}"
-							styleClass="campo-ajustado" />
-					</div>
-
-					<div class="input-verde">
-						<h:outputText value="NÚMERO OCORRÊNCIA" class="output-verde" />
-						<p:autoComplete
-							value="#{cardsController.greenCard.numeroOcorrencia}"
-							class="input"
-							completeMethod="#{cardsController.pegarNumeroOcorrenciaRedCard()}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
+							navigator="true" showButtonPanel="true" inputStyle="width: 100%"
+							style="width: 100%; !important; height: 100%; !important" />
 					</div>
 				</div>
 			</div>
@@ -375,41 +307,11 @@
 	 -->
 
 	<p:dialog id="adicionarYellowCard" widgetVar="adicionarYellowCard"
-		width="80vw" height="80vh" draggable="true" resizable="false">
+		width="80vw" height="80vh" draggable="true" resizable="false" header="Adicionar Card Amarelo">
 
 		<div class="card">
 			<div class="card-row-1">
 				<div class="card-row-1-column-1">
-					<div class="input-verde">
-						<h:outputText value="DISTRIBUIDORA" class="output-yellow" />
-						<p:autoComplete
-							value="#{cardsController.yellowCard.distribuidora}"
-							class="input"
-							completeMethod="#{cardsController.pegarDistribuidoras}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
-					</div>
-					<div class="input-verde">
-						<h:outputText value="Regional" class="output-yellow" />
-						<p:autoComplete
-							value="#{cardsController.yellowCard.regional}"
-							class="input"
-							completeMethod="#{cardsController.pegarRegionais}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
-					</div>
-					<div class="input-verde">
-						<h:outputText value="CÓD.EQUIPAMENTO" class="output-yellow" />
-						<p:autoComplete
-							value="#{cardsController.yellowCard.codigoEquipamento}"
-							class="input"
-							completeMethod="#{cardsController.pegarCodigoEquipamentoRedCard()}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
-					</div>
 					<div class="input-verde">
 						<h:outputText value="DATA/HORA ÍNICIO" class="output-yellow" />
 						<p:calendar value="#{cardsController.yellowCard.dataInicio}"
@@ -430,40 +332,9 @@
 						<h:outputText value="SE TRANSF." class="output-yellow" />
 						<p:inputText value="#{cardsController.yellowCard.seTransf}" />
 					</div>
-
-					<div class="input-verde">
-						<h:outputText value="NÚMERO OCORRÊNCIA" class="output-yellow" />
-						<p:autoComplete
-							value="#{cardsController.yellowCard.numeroOcorrencia}"
-							class="input"
-							completeMethod="#{cardsController.pegarNumeroOcorrenciaRedCard()}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
-					</div>
 				</div>
 
 				<div class="card-row-1-column-2">
-					<div class="input-verde">
-						<h:outputText value="SUPERINTENDÊNCIA" class="output-yellow" />
-						<p:autoComplete
-							value="#{cardsController.yellowCard.superintendencia}"
-							class="input"
-							completeMethod="#{cardsController.pegarSuperintendencas}"
-							dropdown="true" forceSelection="true"
-							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" style="margin:0;" />
-					</div>
-
-					<div class="input-verde">
-						<h:outputText value="SE" class="output-yellow" />
-						<p:inputText value="#{cardsController.yellowCard.se}" />
-					</div>
-
-					<div class="input-verde">
-						<h:outputText value="ALIMENTADOR" class="output-yellow" />
-						<p:inputText value="#{cardsController.yellowCard.alimentador}" />
-					</div>
 
 					<div class="input-verde">
 						<h:outputText value="UC´s NORMALIZADAS" class="output-yellow" />

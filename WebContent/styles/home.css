@@ -12,6 +12,11 @@
 	
 }
 
+body {
+    background: linear-gradient(to bottom, #ffffff, #e6f0fa);
+    height: 100vh;
+}
+
 .links{
 	margin: 0 5% 0 5%;
 	text-decoration: none;

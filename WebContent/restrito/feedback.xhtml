@@ -48,16 +48,16 @@
 							</center>
 						</p:column>
 						
-						<p:column>
+						<p:column width="15%">
 							<center>
-								<f:facet name="header">Data</f:facet>
+								<f:facet name="header" >Data</f:facet>
 								<h:outputText value="#{objeto.data}">
 									<f:convertDateTime pattern="dd/MM/yy" />
 								</h:outputText>
 							</center>
 						</p:column>
 						
-						<p:column style="padding: 2px;">
+						<p:column style="padding: 2px;" width="15%">
 							<center>
 								<f:facet name="header">Expressão</f:facet>
 								<h:outputText value="#{objeto.positivoOrNegative}"
@@ -65,7 +65,7 @@
 							</center>
 						</p:column>
 						
-						<p:column width="30%">
+						<p:column width="20%">
 							<center>
 								<f:facet name="header">Feedback</f:facet>
 								<h:outputText value="#{objeto.feedback}" />
@@ -120,14 +120,20 @@
 							dropdown="true" forceSelection="true"
 							placeholder="Nome funcionário"
 							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :93%; margin: 0" 
+							inputStyle="width :90%; margin: 0" 
 							style="margin:0;" />
 					</div>
 					
 					<div class="inputs">
 						<h:outputText value="Relação de Desempenho" />
-						<p:inputText placeholder="Desenvolvimento do funcionário"
-									 value="#{feedback.feedback.positivoOrNegative}"/>
+						<p:autoComplete
+							value="#{feedback.feedback.positivoOrNegative}"
+							completeMethod="#{feedback.retornarPositivoNegativo()}"
+							dropdown="true" forceSelection="true"
+							placeholder="Nome funcionário"
+							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+							inputStyle="width :90%; margin: 0" 
+							style="margin:0;" />
 					</div>
 					
 					<div class="inputs">

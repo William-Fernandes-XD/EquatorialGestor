@@ -113,6 +113,15 @@ public class FeedbackController {
 		return nomeFuncionarios;
 	}
 	
+	public List<String> retornarPositivoNegativo(){
+		
+		List<String> list = new ArrayList<>();
+		list.add("Positivo");
+		list.add("Negativo");
+		
+		return list;
+	}
+	
 	public List<Funcionarios> getAllFuncionariosObjeto() throws Exception{
 		
 		List<Funcionarios> funcionariosObjeto = funcionarioImpl.findAll(Funcionarios.class);

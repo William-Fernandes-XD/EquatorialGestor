@@ -38,8 +38,8 @@
 					 		completeMethod="#{cardsController.pegarDistribuidoras}"
 							dropdown="true" forceSelection="true"
 							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" 
-							style="margin:0;"/>
+							inputStyle="width :100%; margin: 0" 
+							style="margin:0;" />
 					 	</div>
 					 	
 					 	<div class="inputs">
@@ -49,39 +49,42 @@
 							completeMethod="#{cardsController.pegarRegionais}"
 							dropdown="true" forceSelection="true"
 							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" 
+							inputStyle="width :100%; margin: 0" 
 							style="margin:0;"/>
 					 	</div>
 					 	
 					 	<div class="inputs">
 					 		<h:outputText value="CÓD.EQUIPAMENTO" class="output"/>
-					 		<p:inputText value="#{cardsController.redCard.codigoEquipamento}" class="input"/>
+					 		<p:inputText value="#{cardsController.redCard.codigoEquipamento}" class="input"
+					 		inputStyle="width :100%; margin: 0" />
 					 	</div>
 					 	
 					 	<div class="inputs">
-					 		<h:outputText value="DATA/HORA ÍNICIO" class="output"/>
+					 		<h:outputText value="DATA/HORA ÍNICIO" class="output" style="width: 44.8%"/>
 					 		<p:calendar id="data"
             				value="#{cardsController.redCard.dataInicio}"
             				placeholder="dd/MM/yyyy HH:mm:ss"
             				pattern="dd/MM/yyyy HH:mm:ss"
-            				navigator="true"
-            				showButtonPanel="true"
-            				styleClass="input-data"/>
+            				styleClass="input-data"
+            				inputStyle="width :96%; margin: 0; float: right" />
 					 	</div>
 					 	
 					 	<div class="inputs">
 					 		<h:outputText value="UC's INTERROMPIDAS" class="output"/>
-					 		<p:inputNumber value="#{cardsController.redCard.unidadeInterrompidas}" class="input"/>
+					 		<p:inputNumber value="#{cardsController.redCard.unidadeInterrompidas}" class="input"
+					 		inputStyle="width :100%; margin: 0" />
 					 	</div>
 					 	
 					 	<div class="inputs">
 					 		<h:outputText value="TURMA(S) ACIONADA(S)" class="output"/>
-					 		<p:inputText value="#{cardsController.redCard.turmaAcionada}" class="input"/>
+					 		<p:inputText value="#{cardsController.redCard.turmaAcionada}" class="input"
+					 		inputStyle="width :100%; margin: 0" />
 					 	</div>
 					 	
 					 	<div class="inputs">
 					 		<h:outputText value="NÚMERO OCORRÊNCIA" class="output"/>
-					 		<p:inputText value="#{cardsController.redCard.numeroOcorrencia}" class="input"/>
+					 		<p:inputText value="#{cardsController.redCard.numeroOcorrencia}" class="input"
+					 		inputStyle="width :100%; margin: 0" />
 					 	</div>
 					 </div>
 
@@ -93,18 +96,20 @@
 							completeMethod="#{cardsController.pegarSuperintendencas}"
 							dropdown="true" forceSelection="true"
 							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" 
+							inputStyle="width :100%; margin: 0" 
 							style="margin:0;"/>
 						</div>
 
 						<div class="inputs">
 							<h:outputText value="SE" class="output"/>
-							<p:inputText value="#{cardsController.redCard.se}" class="input"/>
+							<p:inputText value="#{cardsController.redCard.se}" class="input"
+							inputStyle="width :100%; margin: 0" />
 						</div>
 
 						<div class="inputs">
 							<h:outputText value="ALIMENTADOR" class="output"/>
-							<p:inputText value="#{cardsController.redCard.alimentador}" class="input"/>
+							<p:inputText value="#{cardsController.redCard.alimentador}" class="input"
+							inputStyle="width :100%; margin: 0" />
 						</div>
 
 						<div class="inputs">
@@ -114,23 +119,26 @@
 							completeMethod="#{cardsController.pegarTensoes}"
 							dropdown="true" forceSelection="true"
 							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-							inputStyle="width :75%; margin: 0" 
+							inputStyle="width :100%; margin: 0" 
 							style="margin:0;"/>
 						</div>
 
 						<div class="inputs">
 							<h:outputText value="PROTEÇÃO" class="output"/>
-							<p:inputText value="#{cardsController.redCard.protecao}" class="input"/>
+							<p:inputText value="#{cardsController.redCard.protecao}" class="input"
+							inputStyle="width :100%; margin: 0"/>
 						</div>
 
 						<div class="inputs">
 							<h:outputText value="LOC.DIST. (KM)" class="output"/>
-							<p:inputText value="#{cardsController.redCard.localDistancia}" class="input"/>
+							<p:inputText value="#{cardsController.redCard.localDistancia}" class="input"
+							inputStyle="width :100%; margin: 0"/>
 						</div>
 
 						<div class="inputs">
 							<h:outputText value="PREVISÃO DE MANOBRA" class="output"/>
-							<p:inputText value="#{cardsController.redCard.previsaoManobra}" class="input"/>
+							<p:inputText value="#{cardsController.redCard.previsaoManobra}" class="input"
+							inputStyle="width :100%; margin: 0"/>
 						</div>
 					</div>
 					</div>
@@ -138,12 +146,14 @@
 					<div class="card-row-2">
 						<div class="inputs2">
 							<h:outputText value="OBSERVAÇÃO" class="output"/>
-							<p:inputTextarea value="#{cardsController.redCard.observacao}" class="input"/>
+							<p:inputTextarea value="#{cardsController.redCard.observacao}" class="input"
+							inputStyle="width :100%; margin: 0"/>
 						</div>
 						
 						<div class="inputs2">
 							<h:outputText value="LOCAIS ATINGIDOS" class="output"/>
-							<p:inputTextarea value="#{cardsController.redCard.locaisAtingidos}" class="input"/>
+							<p:inputTextarea value="#{cardsController.redCard.locaisAtingidos}" class="input"
+							inputStyle="width :100%; margin: 0"/>
 						</div>
 					</div>
 					

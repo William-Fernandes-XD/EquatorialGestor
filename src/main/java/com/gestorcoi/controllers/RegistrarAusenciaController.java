@@ -9,6 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.PrimeFaces;
+
 import com.gestorcoi.entities.Funcionarios;
 import com.gestorcoi.entities.RegistroAusencia;
 import com.gestorcoi.implementations.FuncionarioImpl;
@@ -25,6 +27,9 @@ public class RegistrarAusenciaController {
 	private RegistrarAusenciaImpl ausenciaImpl = new RegistrarAusenciaImpl();
 	private FuncionarioImpl funcionarioImpl = new FuncionarioImpl();
 	
+	private List<Funcionarios> listaFuncionariosAusencia = new ArrayList<>();
+	private List<RegistroAusencia> listaAusenciasFuncionario = new ArrayList<>();
+	
 	@PostConstruct
 	public void init() {
 		
@@ -39,6 +44,13 @@ public class RegistrarAusenciaController {
 		}
 	}
 	
+	/**
+	 * 
+	 * Carrega para o autoComplete do Primefaces
+	 * @param query
+	 * @return
+	 * @throws Exception
+	 */
 	public List<String> buscarFuncionarios(String query) throws Exception{
 		
 	    List<Funcionarios> funcionarios = funcionarioImpl.findAll(Funcionarios.class);
@@ -77,44 +89,29 @@ public class RegistrarAusenciaController {
 	
 	public void salvarAusencia() throws Exception{
 		
-		funcionarios = (Funcionarios) funcionarioImpl.findByName(ausencia.getFuncionarios().getNome());
+		if(funcionarios.getNome() != null || !funcionarios.getNome().trim().equals("")) {
+			
+			funcionarios = (Funcionarios) funcionarioImpl.findByName(ausencia.getFuncionarios().getNome());
+			
+			if(funcionarios.getId() != null) {
+				
+				funcionarios.getAusencias().add(ausencia);
+				ausencia.setFuncionarios(funcionarios);
+				
+				ausencia = ausenciaImpl.merge2(ausencia);
+				
+				funcionarios.getAusencias().remove(ausencia);
+				
+				funcionarioImpl.merge2(funcionarios);
+				
+				limpar();
+				
+				MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome());
+		}
 		
-		if(funcionarios.getId() != null) {
-			
-			funcionarios.getAusencias().add(ausencia);
-			ausencia.setFuncionarios(funcionarios);
-			
-			ausencia = ausenciaImpl.merge2(ausencia);
-			
-			funcionarios.getAusencias().remove(ausencia);
-			
-			funcionarioImpl.merge2(funcionarios);
-			
-			limpar();
-			
-			MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome());
 		}else {
 			MensagensJSF.msgSeverityError("Funcionário não encontrado");
 		}
-	}
-	
-	public List<Funcionarios> findAllFuncionarios() throws Exception{
-		
-		List<Funcionarios> funcionarios = funcionarioImpl.findAll(Funcionarios.class);
-		
-		return funcionarios;
-	}
-	
-	public List<RegistroAusencia> findAllAusenciasByName() throws Exception{
-		
-		List<RegistroAusencia> ausencias = new ArrayList<>();
-		
-		if(funcionarios.getId() != null) {
-			ausencias = ausenciaImpl.findAllByFuncionario(funcionarios.getId());
-		}else if(funcionarios.getNome() != null) {
-			ausencias = ausenciaImpl.findAllByNameFuncionario(funcionarios.getNome());
-		}
-		return ausencias;
 	}
 	
 	public List<RegistroAusencia> listAllAusencia() throws Exception{
@@ -132,6 +129,27 @@ public class RegistrarAusenciaController {
 		return ausencias;
 	}
 	
+	public void carregarAusenciasFuncionarioByObject(Funcionarios funcionario) throws Exception {
+		
+		List<RegistroAusencia> ausenciasRegistradas = ausenciaImpl.findAllByFuncionario(funcionario.getId());
+		listaAusenciasFuncionario = ausenciasRegistradas;
+	}
+	
+	public void carregarAusenciasFuncionarioByName(String name) throws Exception {
+		
+		if(!name.trim().equals("") || name != null) {
+			
+			List<RegistroAusencia> ausenciasRegistradas = ausenciaImpl.findAllByNameFuncionario(name);
+			listaAusenciasFuncionario = ausenciasRegistradas;
+		}
+	}
+	
+	public void carregarFuncionariosAusencias() throws Exception{
+		
+		listaFuncionariosAusencia = funcionarioImpl.findAll(Funcionarios.class);
+		PrimeFaces.current().executeScript("PF('registroAusencia').show(); PF('funcionariosDialog').show();");
+	}
+	
 	public RegistroAusencia getAusencia() {
 		return ausencia;
 	}
@@ -146,5 +164,21 @@ public class RegistrarAusenciaController {
 	
 	public Funcionarios getFuncionarios() {
 		return funcionarios;
+	}
+	
+	public List<Funcionarios> getListaFuncionariosAusencia() {
+		return listaFuncionariosAusencia;
+	}
+	
+	public void setListaFuncionariosAusencia(List<Funcionarios> listaFuncionariosAusencia) {
+		this.listaFuncionariosAusencia = listaFuncionariosAusencia;
+	}
+	
+	public List<RegistroAusencia> getListaAusenciasFuncionario() {
+		return listaAusenciasFuncionario;
+	}
+	
+	public void setListaAusenciasFuncionario(List<RegistroAusencia> listaAusenciasFuncionario) {
+		this.listaAusenciasFuncionario = listaAusenciasFuncionario;
 	}
 }

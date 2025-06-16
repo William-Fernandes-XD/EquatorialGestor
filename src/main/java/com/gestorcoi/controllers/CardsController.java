@@ -76,8 +76,17 @@ public class CardsController {
 	
 	public void salvarAmarelo() throws Exception{
 		
-		if(this.yellowCard.getNumeroOcorrencia() == null || this.yellowCard.getNumeroOcorrencia().trim() == ""
-				|| this.yellowCard.getUnidadesNormalizadas() == null) {
+		this.yellowCard.setDistribuidora(redCard.getDistribuidora());
+		this.yellowCard.setRegional(redCard.getRegional());
+		this.yellowCard.setCodigoEquipamento(redCard.getCodigoEquipamento());
+		this.yellowCard.setNumeroOcorrencia(redCard.getNumeroOcorrencia());
+		this.yellowCard.setSuperintendencia(redCard.getSuperintendencia());
+		this.yellowCard.setSe(redCard.getSe());
+		this.yellowCard.setAlimentador(redCard.getAlimentador());
+		
+		if(this.yellowCard.getDataInicio() == null || this.yellowCard.getDataParcial() == null
+				|| this.yellowCard.getSe() == null || this.yellowCard.getAlimentador() == null
+				|| this.yellowCard.getObservacao() == null) {
 			
 			MensagensJSF.msgSeverityInfo("Preencha os dados");
 		}else {
@@ -87,6 +96,7 @@ public class CardsController {
 			this.yellowCard.setRedCard(this.redCard);
 			
 			this.yellowCard.setUnidadesInterrompidas(this.redCard.getUnidadeInterrompidas() - this.yellowCard.getUnidadesNormalizadas());
+			
 			
 			this.redCard = redCardImpl.merge2(this.redCard);
 			
@@ -109,19 +119,29 @@ public class CardsController {
 		
 		try {
 			
-			if(greenCard.getUnidadesNormalizadas() == null || greenCard.getNumeroOcorrencia() == null
-					|| greenCard.getCodigoEquipamento() == null || greenCard.getDataInicio() == null) {
+			this.greenCard.setDistribuidora(redCard.getDistribuidora());
+			this.greenCard.setRegional(redCard.getRegional());
+			this.greenCard.setCodigoEquipamento(redCard.getCodigoEquipamento());
+			this.greenCard.setSuperintendencia(redCard.getSuperintendencia());
+			this.greenCard.setSe(redCard.getSe());
+			this.greenCard.setAlimentador(redCard.getAlimentador());
+			this.greenCard.setUnidadesNormalizadas(redCard.getUnidadeInterrompidas());
+			this.greenCard.setNumeroOcorrencia(redCard.getNumeroOcorrencia());
+			
+			if(this.greenCard.getDataInicio() == null || this.greenCard.getDataNormalizada() == null
+				|| this.greenCard.getCausa() == null	) {
 				
 				MensagensJSF.msgSeverityInfo("Preencha as informações para salvar");
 			}else {
 				
 				this.redCard = redCardImpl.findRedCardById(this.redCard.getId());
 				
+				
 				this.greenCard.setRedCard(this.redCard);
 				this.redCard.setGreenCard(this.greenCard);
 				
 				this.redCard = redCardImpl.merge2(this.redCard);
-				MensagensJSF.msgSeverityInfo("Salvo com sucesso! MALDITO");
+				MensagensJSF.msgSeverityInfo("Salvo com sucesso!");
 			}
 		}catch(Exception e) {
 			MensagensJSF.msgSeverityError("Ocorreu um erro ao tentar salvar um card verde");

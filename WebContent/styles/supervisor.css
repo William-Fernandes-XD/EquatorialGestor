@@ -142,25 +142,22 @@ body{
 	width: 100%;
 	height: 100%;
 	justify-content: space-between;
+	background: linear-gradient(to bottom, #ffffff, #e6f0fa);
 }
 
 #dataTableAusencia{
 	display:flex;
 	justify-content:center;
 	align-content: center;
-	width: 40%;
+	width: 50%;
 	padding: 1em;
-	background-color: #ECECEC;
-	border-radius: 10px;
 }
 
 #formulario{
 	display:flex;
 	align-content: center;
 	flex-direction: column;
-	background-color: #ECECEC;
-	border-radius: 10px;
-	width: 60%;
+	width: 50%;
 	color: #333333;
 	font-family: helvetica;
 	padding: 1em;
