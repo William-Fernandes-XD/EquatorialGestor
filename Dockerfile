@@ -1,13 +1,9 @@
-# Usa a imagem oficial do Tomcat 9
-FROM tomcat:9.0
+FROM tomcat:9.0-jdk8
 
-# Copia o WAR gerado para dentro do Tomcat no container
+# Copia seu WAR para a pasta do Tomcat
 COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
 
-# Exponha a porta padrÃ£o do Tomcat
+# Exponha a porta padrão
 EXPOSE 8080
 
-FROM openjdk:8
-
-# Start do Tomcat
 CMD ["catalina.sh", "run"]
