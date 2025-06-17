@@ -163,7 +163,7 @@
   <resource-ref>
   	<description>DataSource datasource</description>
   	<res-ref-name>jdbc/datasource</res-ref-name>
-  	<res-type>Container</res-type>
+  	<res-type>javax.sql.DataSource</res-type>
   </resource-ref>
   
   <servlet>
