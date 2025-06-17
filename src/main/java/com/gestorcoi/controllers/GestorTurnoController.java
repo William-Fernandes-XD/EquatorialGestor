@@ -45,33 +45,44 @@ public class GestorTurnoController {
 		
 		if(gestorEntity.getId() == null) {
 			
-			Supervisor supervisorEntrando = supervisorImpl.findByName(gestorEntity.getSupervisorEntrando().getName());
-			Supervisor supervisorSaindo = supervisorImpl.findByName(gestorEntity.getSupervisorSaindo().getName());
-			
-			if(supervisorEntrando != null && supervisorSaindo != null) {
+			if(gestorEntity.getSupervisorEntrando() != null && gestorEntity.getSupervisorSaindo() != null &&
+					!gestorEntity.getSupervisorEntrando().getName().trim().equals("")
+					&& !gestorEntity.getSupervisorSaindo().getName().trim().equals("")) {
 				
-				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				Supervisor supervisorEntrando = supervisorImpl.findByName(gestorEntity.getSupervisorEntrando().getName());
+				Supervisor supervisorSaindo = supervisorImpl.findByName(gestorEntity.getSupervisorSaindo().getName());
+				
+				if(supervisorEntrando != null && supervisorSaindo != null) {
+					
+					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-		        Date agora = new Date();
+			        Date agora = new Date();
 
-		        Date somenteData = formatter.parse(formatter.format(agora));
+			        Date somenteData = formatter.parse(formatter.format(agora));
+					
+					gestorEntity.setDate(somenteData);
 				
-				gestorEntity.setDate(somenteData);
-			
-				gestorEntity.setSupervisorEntrando(supervisorEntrando);
-				gestorEntity.setSupervisorSaindo(supervisorSaindo);
-				
-				ocorrencia.setSupervisorEntrandoOcorrencia(supervisorEntrando);
-				
-				gestorEntity.getOcorrencias().add(ocorrencia);
-				ocorrencia.setGestorEntity(gestorEntity);
-				
-				ocorrenciaImpl.merge(ocorrencia);
-				gestorEntity = gestorEntityImpl.merge2(gestorEntity);
-				
-				 MensagensJSF.msgSeverityInfo("Salvo com sucesso");
+					gestorEntity.setSupervisorEntrando(supervisorEntrando);
+					gestorEntity.setSupervisorSaindo(supervisorSaindo);
+					
+					ocorrencia.setSupervisorEntrandoOcorrencia(supervisorEntrando);
+					
+					gestorEntity.getOcorrencias().add(ocorrencia);
+					ocorrencia.setGestorEntity(gestorEntity);
+					
+					gestorEntity = gestorEntityImpl.merge2(gestorEntity);
+					
+					gestorEntity.getOcorrencias().remove(ocorrencia);
+					ocorrenciaImpl.remove(ocorrencia);
+					
+					gestorEntity = gestorEntityImpl.merge2(gestorEntity);
+					
+					 MensagensJSF.msgSeverityInfo("Salvo com sucesso");
+				}else {
+					MensagensJSF.msgSeverityError("Esse usuário não pode ser encontrado ou não existe");
+				}
 			}else {
-				MensagensJSF.msgSeverityError("Esse usuário não pode ser encontrado ou não existe");
+				MensagensJSF.msgSeverityInfo("Preencha os dados corretamente");
 			}
 		}else {
 			MensagensJSF.msgSeverityInfo("Limpe a seleção primeiramente antes de salvar outra gestão");
@@ -174,6 +185,10 @@ public class GestorTurnoController {
 	        gestorDoBanco.getOcorrencias().add(ocorrencia); 
 
 	        gestorEntity = gestorEntityImpl.merge2(gestorDoBanco);
+	        
+	        gestorEntity.getOcorrencias().remove(ocorrencia);
+	        
+	        gestorEntity = gestorEntityImpl.merge2(gestorEntity);
 	        
 	        MensagensJSF.msgSeverityInfo("Adicionado com sucesso");
 	    } else {

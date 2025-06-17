@@ -35,7 +35,7 @@ public class Ocorrencia {
 	@JoinColumn(name = "supervisor_id", nullable = false)
 	private Supervisor supervisorEntrandoOcorrencia;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "gestorEntity_id")
 	private GestorEntity gestorEntity;
 	
