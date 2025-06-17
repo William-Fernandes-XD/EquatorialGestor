@@ -1,9 +1,11 @@
 package com.gestorcoi.project.filter;
 
 import java.io.IOException;
+
 import java.io.Serializable;
 
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -11,13 +13,13 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import javax.servlet.Filter;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.web.filter.DelegatingFilterProxy;
 
 import com.gestorcoi.entities.Supervisor;
 import com.gestorcoi.hibernate.HibernateUtil;
@@ -25,17 +27,16 @@ import com.gestorcoi.project.listeners.ContextLoaderListenerGestorcoiUtils;
 import com.gestorcoi.utils.UtilFramework;
 
 @WebFilter(filterName="conexaoFilter")
-public class FilterOpenSessionInView extends DelegatingFilterProxy implements Serializable{
+public class FilterOpenSessionInView implements Serializable, Filter{
 
 	private static final long serialVersionUID = 1L;
 	
 	private static SessionFactory sessionFactory;
 	
 	@Override
-	protected void initFilterBean() throws ServletException {
+	public void init(FilterConfig filterConfig) throws ServletException {
 		sessionFactory = HibernateUtil.getSessionFactory();
-	}
-	
+	}	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -105,5 +106,10 @@ public class FilterOpenSessionInView extends DelegatingFilterProxy implements Se
 				sessionFactory.getCurrentSession().close();
 			}
 		}
+	}
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 }
