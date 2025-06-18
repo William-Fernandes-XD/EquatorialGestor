@@ -1,7 +1,7 @@
 FROM tomcat:9.0-jdk8
 
 # Copia o WAR
-COPY target/gestorcoi-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/
+COPY target/gestorcoi-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Copia o context.xml específico da aplicação (JNDI)
 RUN mkdir -p /usr/local/tomcat/conf/Catalina/localhost
