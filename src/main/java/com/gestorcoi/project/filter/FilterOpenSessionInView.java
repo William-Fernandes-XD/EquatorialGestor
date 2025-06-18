@@ -40,6 +40,7 @@ public class FilterOpenSessionInView implements Serializable, Filter{
 	        sessionFactory = HibernateUtil.getSessionFactory();
 	        System.out.println("### SessionFactory criado: " + sessionFactory);
 	    } catch (Exception e) {
+	    	System.out.println("### Erro ao criar o sessionFactory:");
 	        e.printStackTrace();
 	        throw new ServletException("Erro ao iniciar filtro: ", e);
 	    }
