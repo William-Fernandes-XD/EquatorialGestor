@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context reloadable="true">
+<Context reloadable="true" docBase="ROOT.war">
 	<Resource
 		name="jdbc/datasource"
 		auth="Container"
