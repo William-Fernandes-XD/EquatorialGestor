@@ -5,7 +5,7 @@ COPY target/gestorcoi-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Copia o context.xml específico da aplicação (JNDI)
 RUN mkdir -p /usr/local/tomcat/conf/Catalina/localhost
-COPY lib/ROOT.xml /usr/local/tomcat/conf/Catalina/localhost/ROOT.xml
+COPY lib/context.xml /usr/local/tomcat/conf/Catalina/localhost/ROOT.xml
 
 # Copia o driver JDBC PostgreSQL
 COPY lib/postgresql-42.7.3.jar /usr/local/tomcat/lib/
