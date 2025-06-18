@@ -9,7 +9,9 @@ COPY lib/Context.xml /usr/local/tomcat/conf/context.xml
 # Copia o driver JDBC (exemplo: mysql-connector)
 COPY lib/postgresql-42.7.3.jar /usr/local/tomcat/lib/
 
-# Exponha a porta padrão
+ENV CATALINA_OPTS="-Dcatalina.useNaming=true"
+
+# Exponha a porta padrÃ£o
 EXPOSE 8081
 
 CMD ["catalina.sh", "run"]
