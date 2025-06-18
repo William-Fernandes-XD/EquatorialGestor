@@ -13,17 +13,15 @@ COPY lib/context.xml /usr/local/tomcat/conf/Catalina/localhost/ROOT.xml
 # Copia o driver JDBC PostgreSQL
 COPY lib/postgresql-42.7.3.jar /usr/local/tomcat/lib/
 
-# Copia o server.xml com porta 8081
+# Deixa o server.xml na porta padrão 8080
 COPY lib/server.xml /usr/local/tomcat/conf/server.xml
 
 # Copia o wait-for-database.sh
 COPY wait-for-database.sh /usr/local/tomcat/wait-for-database.sh
 RUN chmod +x /usr/local/tomcat/wait-for-database.sh
 
-
 USER tomcat
 
 EXPOSE 8081
-
 
 CMD ["/usr/local/tomcat/wait-for-database.sh"]
