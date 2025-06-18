@@ -29,14 +29,14 @@
   <context:component-scan base-package="com.gestorcoi.exception"/>
   <context:component-scan base-package="com.gestorcoi.beans"/>
   
-  <bean id="springDataSource" name="springDataSource"
+  	<bean id="springDataSource" name="springDataSource"
    class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="false">
   		<property name="jndiName">
   			<value>java:comp/env/jdbc/datasource</value>
   		</property>
   </bean>
-  
-  <bean id="transactionManager" name="transactionManager"
+   
+  	<bean id="transactionManager" name="transactionManager"
    class="org.springframework.jdbc.datasource.DataSourceTransactionManager" lazy-init="false">
   	<property name="dataSource" ref="springDataSource"/>
   </bean>

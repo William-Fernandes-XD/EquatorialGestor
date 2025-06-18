@@ -12,10 +12,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+
 import javax.servlet.Filter;
+import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -24,6 +23,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.gestorcoi.entities.Supervisor;
 import com.gestorcoi.hibernate.HibernateUtil;
+import com.gestorcoi.project.listeners.ContextLoaderListenerGestorcoiUtils;
 import com.gestorcoi.utils.UtilFramework;
 
 @WebFilter(filterName="conexaoFilter")
@@ -35,20 +35,22 @@ public class FilterOpenSessionInView implements Serializable, Filter{
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		sessionFactory = HibernateUtil.getSessionFactory();
-	}	
+	    System.out.println("### Iniciando FilterOpenSessionInView...");
+	    try {
+	        sessionFactory = HibernateUtil.getSessionFactory();
+	        System.out.println("### SessionFactory criado: " + sessionFactory);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new ServletException("Erro ao iniciar filtro: ", e);
+	    }
+	}
+	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		DataSource springDataSource = null;
-		try {
-		    InitialContext ctx = new InitialContext();
-		    springDataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/datasource");
-		} catch (NamingException e) {
-		    e.printStackTrace();
-		    throw new ServletException("Datasource JNDI lookup failed", e);
-		}
+		BasicDataSource springDataSource = (BasicDataSource)
+				ContextLoaderListenerGestorcoiUtils.getBean("springDataSource");
 		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		PlatformTransactionManager transactionManager = new DataSourceTransactionManager(springDataSource);
