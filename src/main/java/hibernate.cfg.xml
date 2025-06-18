@@ -16,7 +16,6 @@
  		<property name="hibernate.show_sql">false</property>
  		<property name="hibernate.format_sql">true</property>
  		<property name="hibernate.generate_statistics">false</property>
- 		
  		<mapping class="com.gestorcoi.entities.Roles"/>
  		<mapping class="com.gestorcoi.entities.Supervisor"/>
  		<mapping class="com.gestorcoi.entities.Ocorrencia"/>
