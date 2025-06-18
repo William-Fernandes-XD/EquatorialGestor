@@ -1,17 +1,16 @@
 FROM tomcat:9.0-jdk8
 
-# Copia seu WAR para a pasta do Tomcat
+# Copia o WAR
 COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
 
-# Copia o context.xml com o JNDI configurado
-COPY lib/Context.xml /usr/local/tomcat/conf/context.xml
+# Copia o context.xml específico da aplicação (JNDI)
+RUN mkdir -p /usr/local/tomcat/conf/Catalina/localhost
+COPY lib/Context.xml /usr/local/tomcat/conf/Catalina/localhost/ROOT.xml
 
-# Copia o driver JDBC (exemplo: mysql-connector)
+# Copia o driver JDBC
 COPY lib/postgresql-42.7.3.jar /usr/local/tomcat/lib/
 
-ENV CATALINA_OPTS="-Dcatalina.useNaming=true"
-
-# Exponha a porta padrÃ£o
-EXPOSE 8081
+# Exponha a porta que o Tomcat realmente vai abrir
+EXPOSE 8080
 
 CMD ["catalina.sh", "run"]
