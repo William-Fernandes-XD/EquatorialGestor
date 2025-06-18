@@ -1,5 +1,9 @@
 FROM tomcat:9.0-jdk8
 
+USER root
+RUN apt-get update && apt-get install -y netcat-openbsd
+USER tomcat
+
 # Copia o WAR
 COPY target/gestorcoi-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
