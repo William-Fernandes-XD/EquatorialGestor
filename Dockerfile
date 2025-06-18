@@ -1,5 +1,10 @@
 FROM tomcat:9.0-jdk8
 
+COPY wait-for-postgres.sh /wait-for-postgres.sh
+RUN chmod +x /wait-for-postgres.sh
+
+CMD ["sh", "-c", "./wait-for-postgres.sh && catalina.sh run"]
+
 # Copia o WAR para a raiz do Tomcat
 COPY target/gestorcoi-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
