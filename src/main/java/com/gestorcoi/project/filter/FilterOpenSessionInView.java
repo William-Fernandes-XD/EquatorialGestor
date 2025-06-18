@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.Filter;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -35,9 +36,9 @@ public class FilterOpenSessionInView implements Serializable, Filter{
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-	    System.out.println("### Iniciando FilterOpenSessionInView...");
 	    try {
-	        sessionFactory = HibernateUtil.getSessionFactory();
+	    	System.out.println("### Iniciando FilterOpenSessionInView...");
+	        sessionFactory = new Configuration().configure().buildSessionFactory();
 	        System.out.println("### SessionFactory criado: " + sessionFactory);
 	    } catch (Exception e) {
 	    	System.out.println("### Erro ao criar o sessionFactory:");
