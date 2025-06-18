@@ -66,10 +66,6 @@
   	</init-param>
   </filter>
   
-  <filter>
-  	<filter-name>conexaoFilter</filter-name>
-  	<filter-class>com.gestorcoi.project.filter.FilterOpenSessionInView</filter-class>
-  </filter>
   
   <filter-mapping>
   	<filter-name>encoding-filter</filter-name>
