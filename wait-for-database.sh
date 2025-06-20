@@ -1,13 +1,9 @@
 #!/bin/bash
-
-echo "Aguardando banco de dados estar disponível em host:porta..."
-
+echo "Aguardando banco de dados..."
 until nc -z -v -w30 dpg-d18rsmqli9vc73fu89gg-a.oregon-postgres.render.com 5432
 do
-  echo "Banco ainda não está pronto... aguardando 5s"
+  echo "Aguardando 5 segundos pelo banco..."
   sleep 5
 done
-
-echo "Banco pronto! Iniciando Tomcat..."
-
+echo "Banco disponível! Iniciando Tomcat..."
 catalina.sh run
