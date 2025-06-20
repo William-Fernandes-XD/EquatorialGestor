@@ -1,6 +1,5 @@
 FROM tomcat:9.0-jdk8
 
-USER root
 RUN apt-get update && apt-get install -y netcat-openbsd
 
 # Copia o WAR
@@ -21,8 +20,6 @@ COPY lib/server.xml /usr/local/tomcat/conf/server.xml
 # Script para esperar o banco
 COPY wait-for-database.sh /usr/local/tomcat/wait-for-database.sh
 RUN chmod +x /usr/local/tomcat/wait-for-database.sh
-
-USER tomcat
 
 EXPOSE 8081
 
