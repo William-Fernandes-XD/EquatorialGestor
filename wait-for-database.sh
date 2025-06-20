@@ -7,5 +7,7 @@ while ! nc -z dpg-d18rsmqli9vc73fu89gg-a.oregon-postgres.render.com 5432; do
   sleep 5
 done
 
+sleep 90
+
 echo "✅ Banco disponível! Iniciando o Tomcat..."
 exec catalina.sh run

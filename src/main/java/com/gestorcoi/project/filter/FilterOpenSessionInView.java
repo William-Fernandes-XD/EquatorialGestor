@@ -28,7 +28,7 @@ import com.gestorcoi.project.listeners.ContextLoaderListenerGestorcoiUtils;
 import com.gestorcoi.utils.UtilFramework;
 
 @Component
-@WebFilter("/*")
+@WebFilter(filterName="conexaoFilter")
 public class FilterOpenSessionInView implements Serializable, Filter{
 
 	private static final long serialVersionUID = 1L;
