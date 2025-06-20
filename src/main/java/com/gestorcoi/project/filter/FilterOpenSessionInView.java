@@ -17,6 +17,7 @@ import javax.servlet.Filter;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -26,7 +27,8 @@ import com.gestorcoi.hibernate.HibernateUtil;
 import com.gestorcoi.project.listeners.ContextLoaderListenerGestorcoiUtils;
 import com.gestorcoi.utils.UtilFramework;
 
-@WebFilter(filterName="conexaoFilter")
+@Component
+@WebFilter("/*")
 public class FilterOpenSessionInView implements Serializable, Filter{
 
 	private static final long serialVersionUID = 1L;

@@ -66,18 +66,22 @@
   	</init-param>
   </filter>
   
-  <filter>
+  <!--  
+  
+  	<filter>
   	<filter-name>conexaoFilter</filter-name>
   	<filter-class>com.gestorcoi.project.filter.FilterOpenSessionInView</filter-class>
   </filter>
   
   <filter-mapping>
-  	<filter-name>encoding-filter</filter-name>
+  	<filter-name>conexaoFilter</filter-name>
   	<url-pattern>/*</url-pattern>
   </filter-mapping>
   
+  -->
+  
   <filter-mapping>
-  	<filter-name>conexaoFilter</filter-name>
+  	<filter-name>encoding-filter</filter-name>
   	<url-pattern>/*</url-pattern>
   </filter-mapping>
   
