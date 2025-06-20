@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
-echo "⏳ Esperando o Postgres ficar disponível em dpg-d18rsmqli9vc73fu89gg-a.oregon-postgres.render.com:5432..."
+echo "Aguardando banco de dados estar disponível em host:porta..."
 
-while ! nc -z dpg-d18rsmqli9vc73fu89gg-a.oregon-postgres.render.com 5432; do
+until nc -z -v -w30 dpg-d18rsmqli9vc73fu89gg-a.oregon-postgres.render.com 5432
+do
   echo "Banco ainda não está pronto... aguardando 5s"
   sleep 5
 done
 
-sleep 90
+echo "Banco pronto! Iniciando Tomcat..."
 
-echo "✅ Banco disponível! Iniciando o Tomcat..."
-exec catalina.sh run
+catalina.sh run
