@@ -1,10 +1,12 @@
-# Use uma imagem oficial do Tomcat com JDK 11
+# Etapa de build, nomeada como 'build'
+FROM maven:3.8.1-openjdk-11-slim AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Etapa de runtime
 FROM tomcat:9.0-jdk11-openjdk-slim
-
-# Copie o WAR gerado para o diretório webapps do Tomcat como ROOT.war
 COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
-
-# Exponha a porta padrão do Tomcat
 EXPOSE 8080
-
-# O Tomcat já tem o comando de start configurado, não precisa de ENTRYPOINT
+# Tomcat já inicia automaticamente, não precisa de ENTRYPOINT
