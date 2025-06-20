@@ -57,9 +57,6 @@
   	</param-value>
   </context-param>
   
-  
-  <!-- 
-  
   <filter>
   	<filter-name>encoding-filter</filter-name>
   	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -69,7 +66,7 @@
   	</init-param>
   </filter>
   
-  	<filter>
+  <filter>
   	<filter-name>conexaoFilter</filter-name>
   	<filter-class>com.gestorcoi.project.filter.FilterOpenSessionInView</filter-class>
   </filter>
@@ -93,8 +90,6 @@
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  	
-  -->
   
   <listener>
   	<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
@@ -154,8 +149,6 @@
   	<param-value>smoothness</param-value>
   </context-param>
   
-  <!-- 
-  
   <filter>
   	<filter-name>PrimeFaces FileUpload Filter</filter-name>
   	<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
@@ -166,9 +159,6 @@
   	<servlet-name>Faces Servlet</servlet-name>
   	<url-pattern>*.jsf</url-pattern>
   </filter-mapping>
-  	
-  -->
-  
   
   <resource-ref>
   	<description>DataSource datasource</description>
