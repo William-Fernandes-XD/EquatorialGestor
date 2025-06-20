@@ -1,0 +1,59 @@
+@charset "ISO-8859-1";
+
+body{
+	margin: 0;
+	padding: 0;
+	font-family: helvetica;
+}
+
+#menu_titulo{
+	width: 100% - 0.5em;
+	background-color: #005B9F;
+	padding: 1em;
+	height: 5em;
+}
+
+.ui-growl {
+    position: fixed !important;
+    z-index: 9999 !important;
+}
+
+#titulo{
+	float: left;
+	margin-left: 1em;
+	Color: white;
+}
+
+#logo{
+	float: right;
+	margin-right: 1em;
+	color: white;
+}
+
+#formulario{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	margin-top: 4em;
+}
+
+.botoes{
+	
+	display:flex;
+	flex-direction: row;
+	justify-content:flex-end;
+	align-items: center;
+	margin-top: 4em;
+}
+
+.botao{
+	padding: 0.7em;
+}
+
+#dataTableFuncionarios{
+	
+	width: 40%;
+	margin: 4em auto;
+}

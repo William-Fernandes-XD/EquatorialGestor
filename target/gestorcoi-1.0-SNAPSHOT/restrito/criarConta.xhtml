@@ -1,0 +1,189 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Criação de conta</title>
+	<link rel="stylesheet" type="text/css" href="../styles/criaConta.css" />
+</h:head>
+<h:body id="body">
+
+	<h:form id="formCriarConta" >
+		<p:panel id="titulo">
+			<a href="#{request.contextPath}/restrito/home.jsf" style="text-decoration:none"><p:outputLabel value="Gestor COI" /></a>
+		</p:panel>
+		
+		<div id="menu_titulo">
+			<h1 id="titulo">Gestor de Turno</h1>
+			<h1 id="logo">Equatorial Energia</h1>
+		</div>
+		
+		<p:messages autoUpdate="true" closable="true" />
+
+		<div id="menu-acoes">
+			<div id="bloco-tudo">
+				<div>
+					<h1 id="header-title">Criar uma conta</h1>
+				</div>
+				
+				<div>
+					<div>
+						<p>Id:</p>
+						<p:inputText class="inputs" id="id" placeholder="Digite o nome de usuário"
+							value="#{contaController.supervisor.id}" />
+					</div>
+					<div>
+						<p>Usuário:</p>
+						<p:inputText class="inputs" id="username" placeholder="Digite o nome de usuário"
+							value="#{contaController.supervisor.name}" />
+					</div>
+					
+					<div>
+						<p>Email:</p>
+						<p:inputText class="inputs" id="email" placeholder="Digite o nome de usuário"
+							value="#{contaController.supervisor.email}" />
+					</div>
+
+					<div>
+						<p>Senha:</p>
+						<p:inputText type="password" class="inputs" id="password" placeholder="Digite a senha de usuário"
+							value="#{contaController.supervisor.password}" />
+					</div>
+
+					<div>
+						<p>Role:</p>
+						<p:autoComplete
+							value="#{contaController.role}"
+							completeMethod="#{contaController.retornarPapeis()}"
+							dropdown="true" forceSelection="true"
+							placeholder="Nome funcionário"
+							panelStyle="max-height: 700px; overflow-y:auto;position:absolute"
+							inputStyle="width :70%; margin: 0" 
+							style="margin:0;" inputStyleClass="inputs"/>
+					</div>
+				</div>
+				<div id="botoeiras">
+					<p:commandButton class="botao botao-verde" action="#{contaController.merge()}"
+						onclick="return valida()" ajax="true" value="Criar uma conta"
+						update=":formCriarConta" />
+
+					<p:commandButton class="botao botao-vermelho" value="Limpar" update=":formCriarConta"
+						onclick="apagaCampos()" immediate="true" type="button" ajax="true" />
+
+					<p:commandButton class="botao botao-azul" value="Consultar dados" ajax="true"
+						onclick="PF('contas').show()" oncomplete="PF('contas').show()"
+						process="@this" update=":formCriarConta:contas" type="button" />
+				</div>
+			</div>
+
+			<p:dialog id="contas" widgetVar="contas" closable="true" height="90%"
+				position="center" width="70%" header="Dados Criados"
+				draggable="false" resizable="false"
+				modal="true">
+
+				<div id="contasSalvas">
+
+					<p:dataTable id="tableResult"
+						value="#{contaController.listAllSupervisores()}" var="objeto"
+						emptyMessage="Não existem contas criadas até o momento"
+						scrollable="true" scrollHeight="500" style="width: 100%">
+
+						<p:column>
+							<center>
+								<f:facet name="header">Código</f:facet>
+								<h:outputText value="#{objeto.id}" />
+							</center>
+						</p:column>
+
+						<p:column>
+							<center>
+								<f:facet name="header">Usuário</f:facet>
+								<h:outputText value="#{objeto.name}" />
+							</center>
+						</p:column>
+
+						<p:column>
+							<center>
+								<f:facet name="header">Role</f:facet>
+								<h:outputText value="#{objeto.roles.iterator().next().role}" />
+							</center>
+						</p:column>
+
+						<p:column>
+							<center>
+								<f:facet name="header">Consultar Dados</f:facet>
+
+								<p:commandButton ajax="true" onclick="PF('contas').hide()"
+									process="@this" update="formCriarConta" value="🔍"
+									action="#{contaController.setSupervisor(objeto)}" type="submit"
+									styleClass="ui-button-info" />
+							</center>
+						</p:column>
+
+						<p:column>
+							<center>
+								<f:facet name="header">Remover</f:facet>
+
+								<p:commandButton action="#{contaController.remover(objeto)}" oncomplete="PF('contas').show()"
+									ajax="true" value="🗑️" styleClass="ui-button-danger"
+									update=":formCriarConta:contas"
+									process="@this" />
+							</center>
+						</p:column>
+					</p:dataTable>
+				</div>
+
+			</p:dialog>
+		</div>
+
+		<script>
+
+		function validaId(){
+			let id = document.getElementById("formCriarConta:id").value;
+
+			if(id.trim() === "" || id === null){
+				alert("Primeiro faça uma consulta de dados");
+				return false;
+			}
+			return true;
+		}
+
+		function apagaCampos(){
+
+			document.getElementById("formCriarConta:username").value = "";
+			document.getElementById("formCriarConta:password").value = "";
+			document.getElementById("formCriarConta:role").value = "";
+			document.getElementById("formCriarConta:id").value = "";
+		}
+
+		function valida(){
+			let username = document.getElementById("formCriarConta:username").value;
+			let password = document.getElementById("formCriarConta:password").value;
+			let role = document.getElementById("formCriarConta:role").value;
+
+			if(username.trim() === ""){
+				alert("Não esqueça de inserir o login");
+				document.getElementById("formCriarConta:username").focus();
+				return false;
+			}
+			if(password.trim() === ""){
+				alert("Não esqueça de inserir a senha");
+				document.getElementById("formCriarConta:password").focus();
+				return false;
+			}
+			if(role.trim() === ""){
+				alert("Não esqueça de inserir o papel de usuário");
+				document.getElementById("formCriarConta:role").focus();
+				return false;
+			}
+			return true;
+		}
+	</script>
+	</h:form>
+</h:body>
+</html>

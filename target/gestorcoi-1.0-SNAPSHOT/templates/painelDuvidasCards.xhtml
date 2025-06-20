@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+                
+    <p:dialog id="duvidasDialog" widgetVar="duvidasDialog"
+          closable="true" height="60vh" width="40vw"
+          header="Dúvidas?" draggable="false" resizable="false"
+          styleClass="duvidas-dialog"
+          footer="📧 william.almeida@equatorialenergia.com.br">
+
+    <h:panelGroup layout="block" styleClass="duvidas-content">
+        <p><strong>💾 Botão Salvar:</strong> Sempre que for salvar algum objeto no banco, sempre faça use o botão limpar para evitar possíveis erros de cache</p>
+
+        <p><strong> 🔍 Consultar:</strong> Com ele você poderá carregar todos os cartões vermelhos registrados. Ele também retorna o card vermelho para a tela inicial para visualização, mas bastante cuidado, sempre limpe antes de salvar outro objeto</p>
+
+        <p><strong>📝 Termos de compromisso</strong> Não responsabilizar o estagiário <strong>William Fernandes</strong> por quaisquer
+         erros de banco de dados. Ao usar este produto, você automáticamente concorda com estes termos;</p>
+         
+    	</h:panelGroup>
+    </p:dialog>
+</ui:composition>

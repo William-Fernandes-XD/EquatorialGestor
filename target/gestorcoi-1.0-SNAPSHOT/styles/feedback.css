@@ -1,0 +1,84 @@
+@charset "ISO-8859-1";
+
+body{
+	margin: 0;
+	padding: 0;
+	font-family: helvetica;
+}
+
+#menu_titulo{
+	width: 100% - 0.5em;
+	background-color: #005B9F;
+	padding: 1em;
+	height: 5em;
+}
+
+#titulo{
+	float: left;
+	margin-left: 1em;
+	Color: white;
+}
+
+.ui-growl {
+    position: fixed !important;
+    z-index: 9999 !important;
+}
+
+#logo{
+	float: right;
+	margin-right: 1em;
+	color: white;
+}
+
+.corpo-geral{
+	
+	display:flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-content: center;
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 5em; !important ;
+	text-align: center;
+	gap: 50px;
+}
+
+.dataTable-div{
+	width: 60%;
+}
+
+.verde {
+    background-color: #d1f7d1; /* verde claro */
+    color: #1e4620; /* verde escuro para contraste */
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.vermelho {
+    background-color: #fcdada; /* vermelho claro */
+    color: #7b1c1c; /* vermelho escuro */
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.formulario-inputs{
+	width: 40%;
+}
+
+.inputs{
+	margin-top: 4em;
+	display: flex;
+	flex-direction: column;
+}
+
+.botoes{
+	margin-top: 4em;
+}
+
+.botao{
+	padding: 1em;
+}

@@ -1,0 +1,288 @@
+@charset "ISO-8859-1";
+
+body{
+	font-style:arial;
+}
+
+#menu_titulo{
+	width: 100% - 0.5em;
+	background-color: #005B9F;
+	padding: 1em;
+	height: 5em;
+}
+
+.ui-growl {
+    z-index: 9999 !important;
+    position: fixed !important;
+}
+
+.verde {
+    background-color: #d1f7d1; /* verde claro */
+    color: #1e4620; /* verde escuro para contraste */
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.vermelho {
+    background-color: #fcdada; /* vermelho claro */
+    color: #7b1c1c; /* vermelho escuro */
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.logo-card{
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+#titulo{
+	float: left;
+	margin-left: 1em;
+	font-style:helvetica;
+	Color: white;
+}
+
+#logo{
+	float: right;
+	margin-right: 1em;
+	color: white;
+}
+
+.botao{
+	padding: 0.7em;
+}
+
+#tudo{
+	margin-top: 5em;
+	width: 80%;
+	margin: auto;
+	padding-top: 2em;
+}
+
+.card{
+	
+	display: flex;
+	flex-direction: column;
+	align-content: space-between;
+	margin-top: 2em;
+	margin: 0 auto;
+	width: 70vw;
+	height: 80h;
+	justify-content: space-between;
+	padding: 1em;
+	transform: scale(0.8);
+}
+
+.card2{
+	display: flex;
+	flex-direction: column;
+	margin-top: 2em;
+	margin: 0 auto;
+	width: 60%;
+}
+
+.card-row-1{
+	
+	display: grid;
+	flex-direction: row;
+	width: 100%;
+	grid-template-columns: 1fr 1fr; gap: 10px;
+}
+
+.card-row-1-column-1{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
+}
+
+.card-row-1-column-2{
+}
+
+.inputs{
+	display: flex;
+	flex-direction:row;
+	width: 100%;
+	gap: 30px;
+	text-align: center;
+	margin-top: 1em;
+	border: 2px solid black;
+	justify-content: center;
+	border-radius: 5px;
+}
+
+.commandSearch{
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+	padding: 1m;
+	gap: 40px;
+}
+
+.commandSearch-div{
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
+	text-align:center;
+	margin-top: 2em;
+}
+
+.pesquisaTitle{
+	font-weight: bold;
+	font-size: 16px;
+	color: white;
+	background-color: #005B9F;
+	padding: 8px 12px;
+	border-radius: 5px;
+	padding: 1em;
+}
+
+.botoes{
+	margin-top: 1em;
+	padding-bottom:2em;
+}
+
+.output{
+	
+	background-color: red;
+	width: 70%;
+	color: white;
+	text-align:center;
+}
+
+.output-verde{
+	
+	background-color: #4C7B3F;
+	width: 40%;
+	max-width: 40%;
+	min-width: 40%;
+	color: white;
+	text-align:center;
+	padding: 0.2em 1.2em 0.2em 1.2em;
+}
+
+.output-yellow{
+	
+	background-color: #FFD700;
+	width: 30%;
+	max-width: 40%;
+	min-width: 40%;
+	color: black;
+	text-align:center;
+	padding: 0.2em 1.2em 0.2em 1.2em;
+}
+
+.output-vermelho{
+	
+	background-color: #993333;
+	width: 40%;
+	max-width: 40%;
+	min-width: 40%;
+	color: white;
+	text-align:center;
+	padding: 0.2em 2em 0.2em 2em;
+}
+
+.campo-ajustado {
+    height: 40px !important;
+    min-height: 100% !important;
+    display: block !important;
+}
+
+.card-row-1{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.card-row-2{
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	width: 100%;
+	align-content: center;
+	margin: 0 auto;
+	align-items: center;
+	justify-content: center;
+}
+
+.input{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	text-align: center;
+	font-size: 18px;
+	align-items: stretch; 
+	justify-content: space-between;
+	overflow: hidden;
+}
+
+.inputs2{
+	display: flex;
+	flex-direction:row;
+	width: 100%;
+	text-align: center;
+	margin-top: 1em;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+.botoes2{
+	display: flex;
+	flex-direction:row;
+	width: 100%;
+	gap: 40px;
+	text-align: center;
+	margin-top: 1em;
+	border: 2px solid black;
+	justify-content: center;
+}
+
+.input-verde {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	gap: 30px;
+	text-align: center;
+	margin-top: 1em;
+	border: 2px solid black;
+	font-size: 18px;
+	align-items: stretch; 
+	justify-content: space-between;
+	overflow: hidden;
+	border-radius: 5px;
+}
+
+.divColumn{
+	display: flex;
+	flex-direction: row;
+}
+
+.dadoInput {
+	
+	width: 60%;
+	padding: 0.5em 2.5em 0.5em 2.5em;
+	margin-right: 100px;
+	display: flex;
+    justify-content: center;
+  	align-items: center;
+  	white-space: nowrap;
+  	font-size: 16px;
+}
+
+.dadoInputText{
+	width: 60%;
+	padding: 0.5em 2.5em 0.5em 2.5em;
+	display: flex;
+    justify-content: center;
+  	align-items: center;
+  	font-size: 16px;
+}
