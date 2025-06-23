@@ -5,9 +5,10 @@ COPY pom.xml .
 COPY src ./src
 COPY WebContent ./WebContent
 RUN mvn clean package -DskipTests
+RUN mvn dependency:tree
 
 # Etapa de runtime com Tomcat e Java 8
 FROM tomcat:9.0-jdk8-openjdk-slim
 COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 EXPOSE 8080
-# Tomcat inicia automaticamente, não precisa de ENTRYPOINT
+# Tomcat inicia automaticamente, nÃ£o precisa de ENTRYPOINT
