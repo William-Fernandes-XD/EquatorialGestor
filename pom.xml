@@ -38,13 +38,6 @@
 			<version>42.2.23</version>
 		</dependency>
 
-		<!-- JasperReports -->
-		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports</artifactId>
-			<version>6.20.0</version>
-		</dependency>
-
 		<!-- Apache Commons -->
 		<dependency>
 			<groupId>commons-collections</groupId>
