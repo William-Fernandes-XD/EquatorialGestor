@@ -51,7 +51,7 @@ public class FeedbackController {
 	
 	public void salvar() throws Exception{
 		
-		if(feedback.getFuncionario().getNome() != null || !feedback.getFuncionario().getNome().trim().isBlank()
+		if(feedback.getFuncionario().getNome() != null || !feedback.getFuncionario().getNome().trim().equals("")
 				|| feedback.getFuncionario().getNome().trim() != "" || !feedback.getFuncionario().getNome().isEmpty()) {
 			
 			String dataAtual = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
