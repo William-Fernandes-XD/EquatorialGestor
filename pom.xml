@@ -142,6 +142,12 @@
 			<version>3.0.1</version> <!-- ou superior -->
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aop</artifactId>
+    <version>4.3.25.RELEASE</version>
+</dependency>
 
 		<!-- Spring Core -->
 		<dependency>
