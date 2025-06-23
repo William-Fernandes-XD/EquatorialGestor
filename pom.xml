@@ -251,7 +251,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.3.2</version> <!-- Recomendo usar uma versão recente -->
 				<configuration>
-					<warSourceDirectory>webcontent</warSourceDirectory>
+					<warSourceDirectory>WebContent</warSourceDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
