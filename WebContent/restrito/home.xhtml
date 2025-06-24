@@ -3,44 +3,54 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
-    <title>Teste JSF</title>
-    <link rel="stylesheet" type="text/css" href="../styles/home.css"/>
+	<title>Teste JSF</title>
+	<link rel="stylesheet" type="text/css" href="../styles/home.css" />
 </h:head>
 <h:body>
 	<h:form id="forms">
-	
+
 		<ui:include src="/templates/barraProgresso.xhtml" />
-	
+
 		<p:panel id="titulo">
-			<p:outputLabel value="Gestor COI"/>
+			<p:outputLabel value="Gestor COI" />
 		</p:panel>
-		
-		<div class="menu-acoes">
-		  <a href="supervisor.jsf" class="links">Supervisor - Turno</a>
-		  
-		  <c:if test="#{userVerification.admin}">
-		  	  <a href="criarConta.jsf" class="links">Criar uma conta</a>
-		  </c:if>
+
+		<div class="container">
+			<div class="logo-ferramentas">
+				<h1 class="ferramentas">Ferramentas</h1>
+			</div>
+
+			<div class="menu-acoes">
+				<a href="supervisor.jsf"><p:graphicImage class="links"
+						url="../resources/img/supervisorIcon.png"/></a>
+
+				<c:if test="#{userVerification.admin}">
+					<a href="criarConta.jsf"><p:graphicImage class="links"
+							url="../resources/img/criarContaIcon.png"/></a>
+				</c:if>
+
+				<a href="feedback.jsf" ><p:graphicImage class="links"
+						url="../resources/img/feedbackIcon.png"/></a>
+
+				<c:if test="#{userVerification.admin}">
+					<a href="funcionarios.jsf"><p:graphicImage class="links"
+							url="../resources/img/funcionariosIcon.png"/></a>
+				</c:if>
+
+				<a href="gerencia-cards.jsf"><p:graphicImage class="links"
+						url="../resources/img/cardsIcon.png"/></a>
+
+				<a href="geradorTexto.html" ><p:graphicImage class="links"
+						url="../resources/img/geradorTexto.png"/></a>
+			</div>
 		</div>
-		
-		<div class="menu-acoes">
-			<a href="feedback.jsf" class="links">Feedback - Funcionários</a>
-			
-			<c:if test="#{userVerification.admin}">
-				<a href="funcionarios.jsf" class="links">Gerenciar Funcionários</a>
-			</c:if>
-		</div>
-		
-		<div class="menu-acoes">
-			<a href="gerencia-cards.jsf" class="links">Gerenciar Cards</a>
-			<a href="geradorTextoNDS.jsf" class="links">Gerador de Texto NDS</a>
-		</div>
+
 	</h:form>
 </h:body>
 </html>

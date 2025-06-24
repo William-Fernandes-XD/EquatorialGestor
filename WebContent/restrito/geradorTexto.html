@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" content="text/html">
+<title>Gerador de Texto</title>
+<style>
+body {
+	font-family: 'Arial', sans-serif;
+	color: white; /* texto branco */
+	background-color: #F0FFFF;
+	display: flex;
+	flex-direction:column;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	display: flex;
+	gap: 20px;
+	padding: 15px;
+	background-color: #6CA6CD; /* texto azul */
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	width: 95%;
+	max-width: 1400px;
+	height: 80vh;
+	box-sizing: border-box;
+	margin-top: 2em;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 45%;
+	flex-grow: 1;
+}
+
+.result-container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 45%;
+	flex-grow: 1;
+}
+
+label {
+	font-size: 15px;
+	font-weight: bold;
+	color: white; /* texto branco */
+	margin-bottom: 0px;
+}
+
+textarea, select, input {
+	padding: 8px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: #f9f9f9; /* fundo claro */
+	color: #333; /* texto escuro */
+}
+
+select:focus, input:focus, textarea:focus {
+	outline: none;
+	border-color: #006f6f; /* borda azul  */
+}
+
+button {
+	padding: 10px;
+	font-size: 14px;
+	cursor: pointer;
+	background-color: #006f6f; /* azul escuro */
+	color: white;
+	border: none;
+	border-radius: 5px;
+	transition: background-color 0.3s;
+}
+
+button:hover {
+	background-color: #005555; /* azul + escuro */
+}
+
+#resultBox {
+	height: 150px;
+	border: 1px solid #ddd;
+	padding: 10px;
+	background-color: #f9f9f9; /* fundo resultado */
+	border-radius: 5px;
+	overflow-y: auto;
+	flex-grow: 1;
+	color: #333; /* texto preto */
+}
+
+.document-buttons {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+.status-message {
+	font-style: italic;
+	color: #ddd; /* cinza */
+	margin-left: 10px;
+}
+
+.steps-container {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 15px;
+}
+
+.step-box {
+	border: 1px solid #ddd;
+	padding: 8px;
+	border-radius: 5px;
+	background-color: rgba(255, 255, 255); /* branco */
+	color: #027f7f; /* texto branco */
+}
+
+.step-box span {
+	font-weight: bold;
+	color: rgba(0, 0, 139);
+}
+
+.title {
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	color: white; /* White text */
+	margin-bottom: 15px;
+}
+
+#menu_titulo {
+	width: 100%;
+	background-color: #005B9F;
+	padding: 1em 0 1em 0;
+	height: 5em;
+}
+
+#titulo {
+	float: left;
+	margin-left: 1em;
+	Color: white;
+}
+
+.button-container {
+	display: flex;
+	gap: 10px;
+	margin-top: auto;
+}
+
+#logo {
+	float: right;
+	margin-right: 1em;
+	color: white;
+}
+</style>
+</head>
+<body>
+
+	<div id="menu_titulo">
+		<h1 id="titulo"><a href="home.jsf" style="text-decoration: none; color: white">Gerência Funcionários</a></h1>
+		<h1 id="logo">Equatorial Energia</h1>
+	</div>
+
+	<div class="container">
+		<div class="form-container">
+			<div class="title">Gerador de texto - COI</div>
+			<div class="steps-container">
+				<div class="step-box">
+					<span>Passo 1:</span> Selecione o tipo de documento: NDS ou
+					Miscelânea.
+				</div>
+				<div class="step-box">
+					<span>Passo 2:</span> Preencha as informações.
+				</div>
+				<div class="step-box">
+					<span>Passo 3:</span> Clique em "Gerar" para gerar texto.
+				</div>
+				<div class="step-box">
+					<span>Passo 4:</span> Clique em "Copiar" para copiar texto.
+				</div>
+			</div>
+
+			<!-- Botão p selecionar se eh nds ou miscelanea -->
+			<div class="document-buttons">
+				<button onclick="setDocumentType('NDS')">NDS</button>
+				<button onclick="setDocumentType('Miscelânea técnica')">Miscelânea
+					técnica</button>
+				<span id="statusMessage" class="status-message"></span>
+			</div>
+
+			<label for="equipamento">Tipo do Equipamento</label> <select
+				id="equipamento">
+				<option value="" disabled selected>Selecione o tipo</option>
+				<option value="RE| Religador">Religador</option>
+				<option value="BC| Banco de capacitor">Banco de capacitor</option>
+				<option value="CH| Chave">Chave</option>
+				<option value="CZ| Cruzeta">Cruzeta</option>
+				<option value="IS| Isolador">Isolador</option>
+				<option value="TF| Transformador">Transformador</option>
+				<option value="PT| Poste">Poste</option>
+				<option value="ES| Espaçador">Espaçador</option>
+				<option value="BP| Bypasse provisorio">Bypasse provisório</option>
+				<option value="RT| Regulador de tensão">Regulador de tensão</option>
+				<option value="AV| Árvore URGENTE">Árvore URGENTE</option>
+				<option value="FX| Limpeza de faixa">Limpeza de faixa</option>
+				<option value="UC| Unidade consumidora">Unidade consumidora</option>
+			</select> <label id="statusLabel" for="status">Status</label> <select
+				id="status">
+				<option value="" disabled selected>Selecione o status</option>
+			</select> <label for="identificacao">Identificação</label> <input type="text"
+				id="identificacao" placeholder="Digite a identificação"> <label
+				for="observacao">Observação</label>
+			<textarea id="observacao" rows="3"
+				placeholder="Digite suas observações"></textarea>
+
+			<div class="button-container">
+				<button onclick="gerarTexto()">Gerar</button>
+				<button onclick="limparCampos()">Limpar</button>
+			</div>
+		</div>
+
+		<div class="result-container">
+			<label for="resultBox">Texto Gerado</label>
+			<div id="resultBox"></div>
+			<div class="button-container">
+				<button onclick="copiarTexto()">Copiar</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+        // funcao q troca campos dependendo do tipo de doc
+        function setDocumentType(type) {
+            const statusDropdown = document.getElementById("status");
+            const statusLabel = document.getElementById("statusLabel");
+            const statusMessage = document.getElementById("statusMessage");
+
+            if (type === "NDS") {
+                statusLabel.textContent = "Status";
+                statusDropdown.innerHTML = 
+                    `<option value="" disabled selected>Selecione o status</option>
+                    <option value="Equipamento danificado">Equipamento danificado</option>
+                    <option value="Operando com restrição">Operação com restrição</option>
+                    <option value="Fora de operação">Fora de operação</option>`;
+                statusMessage.textContent = "Gerando NDS";
+            } else if (type === "Miscelânea técnica") {
+                statusLabel.textContent = "Situação";
+                statusDropdown.innerHTML = 
+                    `<option value="" disabled selected>Selecione a situação</option>
+                    <option value="Chave religadora desarmada">Chave religadora desarmada</option>
+                    <option value="Coleta de resíduos de poda">Coleta de resíduos de poda</option>
+                    <option value="Implementação de estudo - coordenação de proteção">Implementação de estudo - coordenação de proteção</option>
+                    <option value="Instalar espaçador BT">Instalar espaçador BT</option>
+                    <option value="Levantamento de dados">Levantamento de dados</option>
+                    <option value="Poda de árvore">Poda de árvore</option>
+                    <option value="Retensionamento de rede BT">Retensionamento de rede BT</option>
+                    <option value="Realizar verificação cadastral">Realizar verificação cadastral</option>
+                    <option value="Resetar modem telecontrole">Resetar modem telecontrole</option>
+                    <option value="Retirar animal da rede">Retirar animal da rede</option>
+                    <option value="Retirar objeto da rede">Retirar objeto da rede</option>
+                    <option value="Revitalizar ramal">Revitalizar ramal</option>
+                    <option value="Substituir conector de rede">Substituir conector de rede</option>
+                    <option value="Substituir fusíveis da chave">Substituir fusíveis da chave</option>
+                    <option value="Substituir para-raios">Substituir para-raios</option>
+                    <option value="Verificar conexão MT transformador">Verificar conexão MT transformador</option>`;
+                statusMessage.textContent = "Gerando Miscelânea";
+            }
+        }
+
+        // Função q gera o texto
+		function gerarTexto() {
+			const tipoEquipamento = document.getElementById("equipamento").value;
+			const identificacao = document.getElementById("identificacao").value;
+			const status = document.getElementById("status").value;
+			const observacao = document.getElementById("observacao").value;
+
+			// checar pelo menos 1 campo preenchido
+			if (!tipoEquipamento && !identificacao && !status && !observacao) {
+				document.getElementById("resultBox").textContent = ""; 
+				alert("Preencha pelo menos um campo para gerar o texto!");
+				return;
+			}
+
+			// Só adicionar oq nao estiver vazio
+			const fields = [tipoEquipamento, identificacao, status, observacao].filter(field => field);
+			const resultado = fields.join(" // "); // Join only non-empty fields with " // "
+
+			document.getElementById("resultBox").textContent = resultado;
+		}
+
+
+        // Função q limpa
+        function limparCampos() {
+            document.getElementById("equipamento").value = "";
+            document.getElementById("identificacao").value = "";
+            document.getElementById("status").value = "";
+            document.getElementById("observacao").value = "";
+            document.getElementById("resultBox").textContent = "";
+            document.getElementById("statusMessage").textContent = "";
+        }
+
+        // Função q copia
+		function copiarTexto() {
+			const tipoEquipamento = document.getElementById("equipamento").value;
+			const identificacao = document.getElementById("identificacao").value;
+			const status = document.getElementById("status").value;
+			const observacao = document.getElementById("observacao").value;
+
+			// checar se ta tudo vazio, se tiver - avisar 
+			if (!tipoEquipamento && !identificacao && !status && !observacao) {
+				alert("Nada para copiar. Preencha pelo menos um campo e gere o texto primeiro!");
+			} else {
+				const texto = document.getElementById("resultBox").textContent;
+				if (texto.trim() !== "") {
+					navigator.clipboard.writeText(texto)
+						.then(() => alert("Texto copiado para a área de transferência!"))
+						.catch(err => alert("Erro ao copiar o texto: " + err));
+				} else {
+					alert("Nada para copiar. Gere o texto primeiro!");
+				}
+			}
+		}
+		
+    </script>
+
+</body>
+</html>

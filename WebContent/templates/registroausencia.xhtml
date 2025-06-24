@@ -188,7 +188,9 @@
 			<p:column>
 				<center>
 					<f:facet name="header">Data</f:facet>
-					<h:outputText value="#{objeto.data_ausencia}" />
+					<h:outputText value="#{objeto.data_ausencia}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
 				</center>
 			</p:column>
 			
