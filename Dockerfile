@@ -8,7 +8,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY target/com.gestorcoi.war /usr/local/tomcat/webapps/ROOT.war
 
 # Copia o context.xml do projeto para o local correto
-COPY /WebContent/META-INF/context.xml /usr/local/tomcat/conf/context.xml
+COPY WebContent/META-INF/context.xml /usr/local/tomcat/conf/context.xml
 
 # Exponha a porta padrão do Tomcat
 EXPOSE 8080
