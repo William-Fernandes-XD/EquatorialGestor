@@ -1,196 +1,654 @@
-@charset "ISO-8859-1";
+@charset "UTF-8";
 
-body{
-	font-style:helvetica;
+/* Reset e configurações básicas */
+* {
+    box-sizing: border-box;
 }
 
-#menu_titulo{
-	width: 100% - 0.5em;
-	background-color: #005B9F;
-	padding: 1em;
-	height: 5em;
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    color: #2d3748;
+    line-height: 1.6;
 }
 
+/* Header principal */
+#menu_titulo {
+    width: 100%;
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    padding: 1.2em 2em;
+    height: auto;
+    min-height: 4.5em;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+#titulo {
+    float: left;
+    margin-left: 0;
+    font-size: 1.6em;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#logo {
+    float: right;
+    margin-right: 0;
+    color: #e2e8f0;
+    font-size: 1.2em;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Growl notifications */
 .ui-growl {
     position: fixed !important;
     z-index: 9999 !important;
+    top: 20px !important;
+    right: 20px !important;
 }
 
+/* Status indicators */
 .verde {
-    background-color: #d1f7d1; /* verde claro */
-    color: #1e4620; /* verde escuro para contraste */
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 5px;
+    background: linear-gradient(135deg, #48bb78, #38a169);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
     text-align: center;
+    border: none;
+    box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .vermelho {
-    background-color: #fcdada; /* vermelho claro */
-    color: #7b1c1c; /* vermelho escuro */
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 5px;
+    background: linear-gradient(135deg, #f56565, #e53e3e);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
     text-align: center;
+    border: none;
+    box-shadow: 0 2px 8px rgba(245, 101, 101, 0.3);
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-#titulo{
-	float: left;
-	margin-left: 1em;
-	font-style:helvetica;
-	Color: white;
+/* Container principal */
+#tudo {
+    margin-top: 1.5em;
+    width: 90%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5em;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
 }
 
-#logo{
-	float: right;
-	margin-right: 1em;
-	color: white;
-	font-style:helvetica;
+/* Seção de supervisão */
+#supervisao {
+    margin-top: 1.5em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5em;
+    padding: 1.5em;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
 }
 
-.botao{
-	padding: 0.7em;
+/* Campos de texto */
+.text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 1em;
 }
 
-#menu_dados{
-	display:flex;
-	flex-direction: row;
+.text label {
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 0.4em;
+    font-size: 0.9em;
 }
 
-#tudo{
-	margin-top: 5em;
-	width: 80%;
-	margin: auto;
-	padding-top: 2em;
+.text input, .text textarea {
+    width: 100% !important;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.95em;
+    transition: border-color 0.2s ease;
+    background: #ffffff;
+    font-family: inherit;
 }
 
-#supervisao{
-	margin-top: 2em;
-	display:flex;
-	flex-direction: row;
-	justify-content: space-between;
-	gap: 50px;
+.text input:focus, .text textarea:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.1);
 }
 
-.text{
-	display:flex;
-	flex-direction:column;
-	text-align: center;
-	width: 25%;
-	padding: 5px;
+/* AutoComplete - mantém estilo original */
+.text .ui-autocomplete {
+    /* Não aplicar estilos customizados */
 }
 
-#pendencias{
-	
-	width: 100%;
-	margin-top: 2em;
+/* Seções específicas */
+#pendencias {
+    width: 100%;
+    margin-top: 1.5em;
+    padding: 1.5em;
+    background: #fffbf0;
+    border-radius: 8px;
+    border-left: 4px solid #ed8936;
 }
 
-#ocorrencias{
-	
-	display:flex;
-	flex-direction:row;
-	margin-top:2em;
-	justify-content: space-between;
-	gap: 50px;
+#ocorrencias {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5em;
+    margin-top: 1.5em;
+    padding: 1.5em;
+    background: #f0f8ff;
+    border-radius: 8px;
+    border-left: 4px solid #4299e1;
 }
 
-#observacoes{
-	width: 100%;
-	margin-top: 2em;
+#observacoes {
+    width: 100%;
+    margin-top: 1.5em;
+    padding: 1.5em;
+    background: #f7fafc;
+    border-radius: 8px;
+    border-left: 4px solid #805ad5;
 }
 
-.botoes{
-	
-	display:flex;
-	flex-direction: row;
-	justify-content:flex-end;
-	align-items: flex-end;
+/* Botões */
+.botoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1em;
+    margin-top: 1.5em;
+    flex-wrap: wrap;
 }
 
+.botao {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    background: #4299e1 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    min-height: 40px !important;
+    font-family: inherit !important;
+}
+
+.botao:hover {
+    background: #3182ce !important;
+    transform: translateY(-1px) !important;
+}
+
+.botao:active {
+    transform: translateY(0) !important;
+}
+
+/* Botões de ação específicos */
 .ui-button-info {
- 	background-color: transparent !important; 
-    border: none !important; 
-    color: #007bff !important; 
-    box-shadow: none !important;
+    background: linear-gradient(135deg, #4299e1, #3182ce) !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+    font-size: 1.1em !important;
+    transition: all 0.3s ease !important;
+    min-height: 40px !important;
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3) !important;
+    font-weight: 600 !important;
+}
+
+.ui-button-info:hover {
+    background: linear-gradient(135deg, #3182ce, #2c5282) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4) !important;
 }
 
 .ui-button-danger {
-  background-color: transparent !important; 
-  border: none !important; 
-  color: #dc3545 !important; 
-  box-shadow: none !important;
+    background: linear-gradient(135deg, #f56565, #e53e3e) !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+    font-size: 1.1em !important;
+    transition: all 0.3s ease !important;
+    min-height: 40px !important;
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3) !important;
+    font-weight: 600 !important;
 }
 
-
-
-#duvidasDialog{
-	padding: 1em;
-	display:flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-content: space-between;
+.ui-button-danger:hover {
+    background: linear-gradient(135deg, #e53e3e, #c53030) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(245, 101, 101, 0.4) !important;
 }
 
-#duvidasDialog:div{
-	padding: 1em;
+/* Tabelas - tamanhos originais das colunas */
+.ui-datatable {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    margin-top: 1.5em;
+    border: none !important;
+    background: #ffffff !important;
 }
 
-.textoDuvida{
-	padding: 1em;
+.ui-datatable-header {
+    background: linear-gradient(135deg, #2d3748, #4a5568) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 1.2em !important;
+    font-size: 1.1em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
 }
 
-#corpo-dialog{
-	
-	display: flex;
-	flex-direction: row;
-	width: 100%;
-	height: 100%;
-	justify-content: space-between;
-	background: linear-gradient(to bottom, #ffffff, #e6f0fa);
+.ui-datatable-data tr {
+    transition: all 0.3s ease !important;
+    border-bottom: 1px solid #f1f5f9 !important;
 }
 
-#dataTableAusencia{
-	display:flex;
-	justify-content:center;
-	align-content: center;
-	width: 50%;
-	padding: 1em;
+.ui-datatable-data tr:nth-child(even) {
+    background: #f8fafc !important;
 }
 
-#formulario{
-	display:flex;
-	align-content: center;
-	flex-direction: column;
-	width: 50%;
-	color: #333333;
-	font-family: helvetica;
-	padding: 1em;
+.ui-datatable-data tr:hover {
+    background: #e2e8f0 !important;
+    transform: scale(1.01) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
-
-
-.input-label{
-	margin-top: 3em;
-	display: flex;
-	flex-direction:column;
-	width: 70%;
+.ui-datatable-data td {
+    border-bottom: 1px solid #e2e8f0 !important;
+    font-weight: 500 !important;
+    color: #4a5568 !important;
+    vertical-align: middle !important;
 }
 
-#form_inputs{
-	
-	width: 100%;
-	display: flex;
-	flex-direction:column;
-	justify-content: center;
-	align-items: center;
-	background-color: white;
-	box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
-	border-radius: 10px;
-	padding: 1em 0 5em 0;
-	height: 100%;
+.ui-datatable th {
+    background: linear-gradient(135deg, #1a202c, #2d3748) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    padding: 12px 8px !important;
+    text-align: center !important;
+    font-size: 0.9em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    border: none !important;
 }
 
+/* Dialog styling */
+.ui-dialog {
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+    border: none !important;
+}
 
+.ui-dialog-titlebar {
+    background: #2d3748 !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    padding: 1.2em !important;
+    border-radius: 12px 12px 0 0 !important;
+}
 
+.ui-dialog-content {
+    padding: 1.5em !important;
+    background: #ffffff !important;
+}
 
+/* Corpo do dialog de ausência */
+#corpo-dialog {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1em;
+    gap: 1.5em;
+}
+
+#dataTableAusencia {
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    width: 50%;
+    padding: 1em;
+}
+
+#formulario {
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    width: 50%;
+    color: #4a5568;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 1em;
+}
+
+#form_inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    padding: 1.5em;
+    height: 100%;
+    border: 1px solid #e2e8f0;
+}
+
+#form_inputs h1 {
+    color: #ffffff !important;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    text-align: center !important;
+    background: #2d3748 !important;
+    border-radius: 8px !important;
+    padding: 1em !important;
+    width: 100% !important;
+    margin: 0 0 1.5em 0 !important;
+    font-size: 1.1em !important;
+    font-weight: 500 !important;
+}
+
+.input-label {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-label label {
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 0.4em;
+    font-size: 0.9em;
+}
+
+.input-label input {
+    width: 100% !important;
+    padding: 10px 14px !important;
+    border: 1px solid #cbd5e0 !important;
+    border-radius: 6px !important;
+    font-size: 0.95em !important;
+    transition: border-color 0.2s ease !important;
+    background: #ffffff !important;
+    font-family: inherit !important;
+}
+
+.input-label input:focus {
+    outline: none !important;
+    border-color: #4299e1 !important;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.1) !important;
+}
+
+/* AutoComplete no formulário - mantém estilo original */
+.input-label .ui-autocomplete {
+    /* Não aplicar estilos customizados */
+}
+
+/* Pesquisa de funcionários */
+.pesquisa-funcionarios {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin-top: 1.5em;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5em;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #tudo {
+        width: 95%;
+        padding: 1em;
+    }
+    
+    #supervisao {
+        grid-template-columns: 1fr;
+        gap: 1em;
+    }
+    
+    #ocorrencias {
+        grid-template-columns: 1fr;
+        gap: 1em;
+    }
+    
+    .botoes {
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    #corpo-dialog {
+        flex-direction: column;
+        gap: 1em;
+    }
+    
+    #dataTableAusencia, #formulario {
+        width: 100%;
+    }
+    
+    #titulo, #logo {
+        float: none;
+        text-align: center;
+        margin: 0.5em 0;
+    }
+    
+    .ui-datatable-data td {
+        padding: 12px 8px !important;
+        font-size: 0.9em !important;
+    }
+    
+    .ui-datatable th {
+        padding: 14px 8px !important;
+        font-size: 0.8em !important;
+    }
+}
+
+/* Animações suaves */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.ui-dialog {
+    animation: fadeIn 0.3s ease-out !important;
+}
+
+.ui-datatable-data tr {
+    animation: slideIn 0.4s ease-out !important;
+}
+
+/* Melhorias no calendário */
+.ui-datepicker {
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #4299e1 !important;
+}
+
+.ui-datepicker-header {
+    background: #4299e1 !important;
+    color: #ffffff !important;
+}
+
+/* Salvos section - Tabela com tamanhos originais */
+#salvos {
+    margin-top: 2em;
+    padding: 2em;
+    background: linear-gradient(135deg, #f8fafc, #ffffff);
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+#salvos .ui-datatable {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12) !important;
+    border: none !important;
+    background: #ffffff !important;
+}
+
+#salvos .ui-datatable-scrollable-wrapper {
+    border-radius: 16px !important;
+}
+
+#salvos .ui-datatable-scrollable-header {
+    background: linear-gradient(135deg, #1a202c, #2d3748) !important;
+    border-radius: 16px 16px 0 0 !important;
+}
+
+#salvos .ui-datatable th {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    padding: 12px 8px !important;
+    text-align: center !important;
+    font-size: 0.9em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    border: none !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+#salvos .ui-datatable th:last-child {
+    border-right: none !important;
+}
+
+#salvos .ui-datatable-data tr {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    background: #ffffff !important;
+}
+
+#salvos .ui-datatable-data tr:nth-child(even) {
+    background: #f8fafc !important;
+}
+
+#salvos .ui-datatable-data tr:hover {
+    background: linear-gradient(135deg, #e2e8f0, #f1f5f9) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    border-left: 4px solid #4299e1 !important;
+}
+
+#salvos .ui-datatable-data td {
+    padding: 12px 8px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    font-weight: 500 !important;
+    color: #4a5568 !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    font-size: 0.95em !important;
+    border-right: 1px solid #f1f5f9 !important;
+}
+
+#salvos .ui-datatable-data td:last-child {
+    border-right: none !important;
+}
+
+/* Data formatada */
+#salvos .ui-datatable-data td:first-child {
+    font-weight: 600 !important;
+    color: #2d3748 !important;
+    background: linear-gradient(135deg, #e2e8f0, #f1f5f9) !important;
+    font-family: 'Courier New', monospace !important;
+}
+
+/* Coluna Turno */
+#salvos .ui-datatable-data td:nth-child(2) {
+    font-weight: 700 !important;
+    font-size: 1.1em !important;
+    color: #805ad5 !important;
+    background: rgba(128, 90, 213, 0.1) !important;
+    border-radius: 8px !important;
+}
+
+/* Panel titulo */
+.ui-panel#titulo {
+    background: #2d3748 !important;
+    border-radius: 8px !important;
+    margin-bottom: 1em !important;
+    padding: 1em !important;
+}
+
+.ui-panel#titulo a {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    font-size: 1em !important;
+    text-decoration: none !important;
+}
+
+.ui-panel#titulo a:hover {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Efeitos especiais para as colunas de pendências */
+#salvos .ui-datatable-data td:nth-child(5) {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-style: italic !important;
+    color: #ed8936 !important;
+}
+
+/* Scroll personalizado */
+#salvos .ui-datatable-scrollable-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+#salvos .ui-datatable-scrollable-body::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+#salvos .ui-datatable-scrollable-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #cbd5e0, #a0aec0);
+    border-radius: 4px;
+}
+
+#salvos .ui-datatable-scrollable-body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #a0aec0, #718096);
+}

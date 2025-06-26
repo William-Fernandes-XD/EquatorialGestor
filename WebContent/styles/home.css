@@ -1,52 +1,267 @@
-@charset "ISO-8859-1";
+@charset UTF-8
 
-#titulo{
-	display:flex;
-}
 
-.menu-acoes{
-	display: flex;
-	justify-content: center;
-	align-items:center;
-	margin-top: 3%;
-	
-}
-
-.container{
-	
-	display: flex;
-	flex-direction: column;
-	margin-top: 2em;
-}
-
-.logo-ferramentas{
-	
-	text-align: center;
-	color: black;
-	font-size: 26px;
-	font-family: arial;
-}
-
-.ferramentas{
-	
-	color: black;
-	padding: 1em;
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background: linear-gradient(to bottom, #ffffff, #e6f0fa);
-    height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+  color: #1e293b;
 }
 
-.links{
-	margin: 20px;
-	width: 90px;
-	height: 90px;
-	transition: transform 0.3s;
-	border-radius: 10px;
+/* Painel título */
+#titulo {
+  background: linear-gradient(135deg, #003366 0%, #004080 100%);
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 51, 102, 0.15);
+  margin-bottom: 3rem;
 }
 
-.links:hover{
-	
-	transform: scale(1.5);
+#titulo .ui-panel-content {
+  border: none;
+  background: transparent;
+}
+
+#titulo .ui-outputlabel {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+}
+
+/* Container principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Seção de logo e título das ferramentas */
+.logo-ferramentas {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.ferramentas {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #003366;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.ferramentas::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #003366, #0066cc);
+  border-radius: 2px;
+}
+
+/* Grid de ações/ferramentas */
+.menu-acoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.menu-acoes a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem 1.5rem;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
+}
+
+.menu-acoes a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #003366, #0066cc);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.menu-acoes a:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 51, 102, 0.2);
+}
+
+.menu-acoes a:hover::before {
+  transform: scaleX(1);
+}
+
+/* Ícones das ferramentas */
+.links {
+  width: 64px !important;
+  height: 64px !important;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 51, 102, 0.2));
+  transition: all 0.3s ease;
+}
+
+.menu-acoes a:hover .links {
+  transform: scale(1.1);
+  filter: drop-shadow(0 6px 12px rgba(0, 51, 102, 0.3));
+}
+
+/* Adicionar labels para as ferramentas */
+.menu-acoes a[href="supervisor.jsf"]::after {
+  content: "Supervisor";
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+  margin-top: 0.5rem;
+}
+
+.menu-acoes a[href="criarConta.jsf"]::after {
+  content: "Criar Conta";
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+  margin-top: 0.5rem;
+}
+
+.menu-acoes a[href="feedback.jsf"]::after {
+  content: "Feedback";
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+  margin-top: 0.5rem;
+}
+
+.menu-acoes a[href="funcionarios.jsf"]::after {
+  content: "Funcionários";
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+  margin-top: 0.5rem;
+}
+
+.menu-acoes a[href="gerencia-cards.jsf"]::after {
+  content: "Cards";
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+  margin-top: 0.5rem;
+}
+
+.menu-acoes a[href="geradorTexto.html"]::after {
+  content: "Gerador de Texto";
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+  margin-top: 0.5rem;
+}
+
+/* Barra de progresso (se houver) */
+.ui-progressbar {
+  margin-bottom: 1rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  #titulo .ui-outputlabel {
+    font-size: 2rem;
+  }
+  
+  .ferramentas {
+    font-size: 2rem;
+  }
+  
+  .menu-acoes {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .menu-acoes a {
+    padding: 2rem 1rem;
+    min-height: 150px;
+  }
+  
+  .links {
+    width: 48px !important;
+    height: 48px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-acoes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .menu-acoes a {
+    padding: 1.5rem 0.5rem;
+    min-height: 120px;
+  }
+  
+  .menu-acoes a::after {
+    font-size: 0.9rem;
+  }
+}
+
+/* Animações */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.menu-acoes a {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.menu-acoes a:nth-child(1) { animation-delay: 0.1s; }
+.menu-acoes a:nth-child(2) { animation-delay: 0.2s; }
+.menu-acoes a:nth-child(3) { animation-delay: 0.3s; }
+.menu-acoes a:nth-child(4) { animation-delay: 0.4s; }
+.menu-acoes a:nth-child(5) { animation-delay: 0.5s; }
+.menu-acoes a:nth-child(6) { animation-delay: 0.6s; }
+
+/* Estilos para PrimeFaces */
+.ui-panel-content {
+  border: none;
+  background: transparent;
+}
+
+.ui-panel {
+  border: none;
+  background: transparent;
 }

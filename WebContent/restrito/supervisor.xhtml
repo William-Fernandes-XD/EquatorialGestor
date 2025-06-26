@@ -18,13 +18,13 @@
 			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" sticky="true" />
 	
 	<h:form id="formGestor">
-		<p:panel id="titulo">
-			<a href="#{request.contextPath}/restrito/home.jsf"
-				style="text-decoration: none"><p:outputLabel value="Gestor COI" /></a>
-		</p:panel>
-
 		<div id="menu_titulo">
-			<h1 id="titulo">Gestor de Turno</h1>
+		
+			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo"
+				style="text-decoration: none">
+					<p:outputLabel value="Gestor de Turno"/>
+			</a>
+				
 			<h1 id="logo">Equatorial Energia</h1>
 		</div>
 
@@ -157,7 +157,7 @@
 						<h:outputText value="#{objeto.supervisorEntrando.name}" styleClass="verde"/>
 					</p:column>
 
-					<p:column>
+					<p:column width="10% !important">
 						<f:facet name="header">Pendências</f:facet>
 						<h:outputText value="#{objeto.pendencias}" />
 					</p:column>
