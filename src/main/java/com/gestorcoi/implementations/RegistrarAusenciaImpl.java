@@ -1,6 +1,7 @@
 package com.gestorcoi.implementations;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -101,9 +102,13 @@ public class RegistrarAusenciaImpl implements AbstractMethods<RegistroAusencia>,
 		StringBuilder query = new StringBuilder();
 		
 		query.append("select distinct(entity) from ").append(RegistroAusencia.class.getSimpleName())
-		.append(" entity");
+		.append(" entity where entity.data_ausencia >= :datalimite");
 		
-		List<RegistroAusencia> ausencias = sessionFactory.getCurrentSession().createQuery(query.toString()).list();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -90);
+		
+		List<RegistroAusencia> ausencias = sessionFactory.getCurrentSession().createQuery(query.toString())
+				.setParameter("datalimite", cal.getTime()).setMaxResults(40).list();
 		
 		return ausencias;
 	}

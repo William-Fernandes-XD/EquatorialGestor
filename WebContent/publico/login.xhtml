@@ -18,6 +18,12 @@
 			<div id="div-centro">
 
 				<div id="menu-esquerda">
+					
+					<div style="display: flex; justify-content: center">
+						<p:graphicImage url="/resources/img/logoLogin.png"
+						width="100px" height="100px"/>
+					</div>
+					
 					<div id="logo-equatorial">
 						<h1>Equatorial</h1>
 					</div>
@@ -70,12 +76,12 @@
 				var j_password = document.getElementById("j_password").value;
 
 				if(j_username === null || j_username.trim() === ''){
-					alert('Escreve a porra do login');
+					alert('Preencha os campos corretamente');
 					return false;
 				} 
 
 				if(j_password === null || j_password.trim() === ''){
-					alert('Escreve a porra da senha');
+					alert('Preencha os campos corretamente');
 					return false;
 				}
 

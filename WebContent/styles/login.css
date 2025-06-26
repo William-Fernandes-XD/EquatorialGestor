@@ -1,100 +1,231 @@
-@charset "ISO-8859-1";
+@charset UTF-8
 
-body{
-	margin: 0;
-	padding: 0;
-	font-family: helvetica;
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-#body-div{
-	display:flex;
-	align-content: center;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	margin: 0;
-	padding: 0;
-	background-color: #f5f5f5;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+  min-height: 100vh;
 }
 
-#div-centro{
-	display: flex;
-	flex-direction: row;
-	background-color: white;
-	height: 80%;
-	width: 90%;
-	padding: 1em;
-	box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
-	border-radius: 8px;
+/* Container principal */
+#body-div {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
-#menu-esquerda{
-	width: 50%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	align-content: center;
-	align-items: center;
-	margin-top: 5em;
+#div-centro {
+  width: 100%;
+  max-width: 1200px;
+  background: white;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  min-height: 600px;
 }
 
-#logo-equatorial{
-	
-	display: inline-block;
-	font-size: 32px;
-	text-align:center;
-	background-color: #005AA7;
-	color: white;
-	padding: 1em 4em 1em 4em;
+/* Menu esquerda - tema Equatorial */
+#menu-esquerda {
+  flex: 1;
+  background: linear-gradient(135deg, #003366 0%, #004080 100%);
+  color: white;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
 }
 
-#welcome-text{
-	
-	margin-top: 4em;
-	color: #4A4A4A;
+#logo-equatorial h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 3rem;
 }
 
-#menu-direita{
-	
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 50%;
-	heigh: 100%;
-	flex-direction: column;
+#welcome-text h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
-#title{
-	font-size: 32px;
-	margin-top: 4em;
+#welcome-text h2 {
+  font-size: 1.25rem;
+  color: #bfdbfe;
+  font-weight: normal;
 }
 
-#inputs{
-	margin-bottom: 40%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-content: center;
-	align-items: center;
-	height: 100%;
-	margin-top: 6em;
+#rodape {
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  color: #bfdbfe;
 }
 
-#j_username, #j_password{
-	padding: 1em;
+#rodape::after {
+  content: "© 2024 Equatorial Goiás. Todos os direitos reservados.";
 }
 
-#input-login{
-	
-	margin-bottom: 1em;
+/* Menu direita - formulário */
+#menu-direita {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-#botao{
-	padding: 1em;
-	margin-top: 1em;
-	
+#title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #003366;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-#input-password{
-	
+#inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Estilo para mensagens de erro */
+#inputs h\\:outputLabel {
+  background-color: #fee2e2;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid #fecaca;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+/* Campos de input */
+#input-login, #input-password {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#input-login p, #input-password p {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+#j_username, #j_password {
+  height: 3rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 0 0.75rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background-color: white;
+}
+
+#j_username:focus, #j_password:focus {
+  outline: none;
+  border-color: #003366;
+  box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+}
+
+/* Botão de submit */
+#input-submit {
+  padding-top: 1rem;
+}
+
+#botao {
+  width: 100%;
+  height: 3rem;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#botao:hover {
+  background-color: #004080;
+  transform: translateY(-1px);
+}
+
+#botao:active {
+  transform: translateY(0);
+}
+
+#botao:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  #div-centro {
+    flex-direction: column;
+    max-width: 400px;
+  }
+  
+  #menu-esquerda {
+    padding: 2rem;
+    min-height: 200px;
+  }
+  
+  #menu-direita {
+    padding: 2rem;
+  }
+  
+  #logo-equatorial h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  #welcome-text h1 {
+    font-size: 1.5rem;
+  }
+  
+  #welcome-text h2 {
+    font-size: 1rem;
+  }
+  
+  #title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Animações suaves */
+#div-centro {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para elementos JSF/PrimeFaces se necessário */
+.ui-outputlabel {
+  background-color: #fee2e2;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid #fecaca;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  display: block;
 }

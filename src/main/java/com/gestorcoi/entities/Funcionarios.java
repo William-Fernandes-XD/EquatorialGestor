@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table
@@ -46,6 +47,7 @@ public class Funcionarios implements Serializable{
 		this.id = id;
 	}
 
+	@Transient
 	public List<Feedback> getFeedbacks() {
 		return feedbacks;
 	}
@@ -62,6 +64,7 @@ public class Funcionarios implements Serializable{
 		this.nome = nome;
 	}
 	
+	@Transient
 	public List<RegistroAusencia> getAusencias() {
 		return ausencias;
 	}

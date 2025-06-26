@@ -18,8 +18,8 @@
 		minEvictableIdleTimeMillis="60000"
 		antiJARLocking="false"
 		antiResourceLocking="false"
-		username="gestorcoi_user"
-		password="rbBkHybfgJWGvqVyvp5WZa81bokLeYUR"
-		url="jdbc:postgresql://dpg-d18rsmqli9vc73fu89gg-a.oregon-postgres.render.com:5432/gestorcoi?autoReconnect=true"
+		username="postgres"
+		password="gugudada"
+		url="jdbc:postgresql://localhost:5432/gestorcoi?autoReconnect=true"
 	/>
 </Context>

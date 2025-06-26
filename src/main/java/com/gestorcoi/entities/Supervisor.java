@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "supervisor")
@@ -62,6 +63,7 @@ public class Supervisor {
 		this.email = email;
 	}
 	
+	@Transient
 	public List<Feedback> getFeedbacks() {
 		return feedbacks;
 	}
@@ -70,10 +72,12 @@ public class Supervisor {
 		this.feedbacks = feedbacks;
 	}
 	
+	@Transient
 	public List<GestorEntity> getDeclarados() {
 		return declarados;
 	}
 	
+	@Transient
 	public List<GestorEntity> getPendenciasOcorrencias() {
 		return pendenciasOcorrencias;
 	}
@@ -86,6 +90,7 @@ public class Supervisor {
 		this.pendenciasOcorrencias = pendenciasOcorrencias;
 	}
 	
+	@Transient
 	public List<Ocorrencia> getOcorrencias() {
 		return ocorrencias;
 	}
