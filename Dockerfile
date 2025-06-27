@@ -1,17 +1,21 @@
-# Usa uma imagem Tomcat com Java 8
+# Usa Tomcat com Java 8
 FROM tomcat:8-jdk8
 
-# Remove as aplicaÃ§Ãµes padrÃ£o do Tomcat
+# Remove apps padrão
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copia seu WAR para dentro do container, com o nome ROOT.war (assim abre direto na /)
+# Copia seu WAR para abrir em /
 COPY target/com.gestorcoi.war /usr/local/tomcat/webapps/ROOT.war
 
-# Copia o context.xml corretamente
+# Copia seu context.xml
 COPY Context.xml /usr/local/tomcat/conf/context.xml
 
-# Exponha a porta padrÃ£o do Tomcat
+#APENAS PARA O RENDER.COM
+# Troca o <Connector port="8080"> para <Connector port="${PORT}">
+RUN sed -i 's/port="8080"/port="${PORT}"/' /usr/local/tomcat/conf/server.xml
+
+# Exponha a porta padrão (Render não usa EXPOSE pra mapear, mas é boa prática)
 EXPOSE 8080
 
-# Comando para iniciar o Tomcat
+# Starta o Tomcat
 CMD ["catalina.sh", "run"]
