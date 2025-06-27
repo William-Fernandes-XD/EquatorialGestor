@@ -255,7 +255,6 @@ body {
 /* Tabelas - tamanhos originais das colunas */
 .ui-datatable {
     border-radius: 12px !important;
-    overflow: hidden !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
     margin-top: 1.5em;
     border: none !important;
@@ -319,6 +318,14 @@ body {
     font-weight: 500 !important;
     padding: 1.2em !important;
     border-radius: 12px 12px 0 0 !important;
+}
+
+.ui-datatable-scrollable thead {
+    display: table-header-group !important;
+}
+.ui-datatable-scrollable-header {
+    z-index: 2 !important;
+    position: relative !important;
 }
 
 .ui-dialog-content {

@@ -1,114 +1,587 @@
-@charset "ISO-8859-1";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-body{
-	background-color: #e0e0e0;
-	font-family: helvetica, arial;
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
 }
 
-#formCriarConta{
-	
-	height: 90%;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-#menu_titulo{
-	width: 100% - 0.5em;
-	background-color: #005B9F;
-	padding: 1em;
-	height: 5em;
+/* CSS PARA PÁGINA DE CRIAÇÃO DE CONTA - NOVA ABORDAGEM */
+
+/* Reset e configurações básicas */
+#body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #2d3748;
 }
 
+/* Form principal */
+#formCriarConta {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header principal com design mais clean */
+#menu_titulo {
+    width: 100%;
+    background: linear-gradient(90deg, #1a202c 0%, #2d3748 50%, #4a5568 100%);
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-bottom: 3px solid #4299e1;
+}
+
+#titulo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-left: 1em;
+}
+
+#logo {
+    color: #e2e8f0;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    opacity: 0.9;
+    padding-right: 1em;
+}
+
+/* Growl notifications */
 .ui-growl {
     position: fixed !important;
     z-index: 9999 !important;
+    top: 20px !important;
+    right: 20px !important;
 }
 
-#titulo{
-	float: left;
-	margin-left: 1em;
-	Color: white;
+/* Container principal com nova estrutura */
+#menu-acoes {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
 }
 
-#logo{
-	float: right;
-	margin-right: 1em;
-	color: white;
+/* Card principal redesenhado */
+#bloco-tudo {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* Header do card */
+#bloco-tudo > div:first-child {
+    background: linear-gradient(135deg, #4299e1, #3182ce);
+    padding: 30px;
+    text-align: center;
+}
+
+#header-title {
+    font-size: 28px !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+/* Área de campos redesenhada */
+#bloco-tudo > div:nth-child(2) {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#bloco-tudo > div:nth-child(2) > div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels com novo estilo */
+#bloco-tudo p {
+    font-size: 14px !important;
+    color: #4a5568 !important;
+    font-weight: 600 !important;
+    margin: 0 0 8px 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Inputs com design mais moderno */
+.inputs {
+    padding: 14px 16px !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-family: inherit !important;
+    transition: all 0.2s ease !important;
+    background: #f8fafc !important;
+    color: #2d3748 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.inputs:focus {
+    outline: none !important;
+    border-color: #4299e1 !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+}
+
+.inputs::placeholder {
+    color: #a0aec0 !important;
+    font-style: italic !important;
+}
+
+/* AutoComplete styling */
+.ui-autocomplete {
+    width: 100% !important;
+}
+
+.ui-autocomplete .ui-inputtext {
+    padding: 14px 16px !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-family: inherit !important;
+    transition: all 0.2s ease !important;
+    background: #f8fafc !important;
+    color: #2d3748 !important;
+    width: 100% !important;
+}
+
+.ui-autocomplete .ui-inputtext:focus {
+    outline: none !important;
+    border-color: #4299e1 !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+}
+
+/* Área de botões redesenhada */
+#botoeiras {
+    padding: 20px 30px 30px 30px;
+    background: #f8fafc;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* Botões com novo design mais compacto */
+.botao {
+    padding: 12px 16px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    font-family: inherit !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    flex: 1 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.botao:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.botao:active {
+    transform: translateY(0) !important;
+}
+
+/* Cores dos botões mantidas */
+.botao-verde {
+    background: linear-gradient(135deg, #48bb78, #38a169) !important;
+}
+
+.botao-verde:hover {
+    background: linear-gradient(135deg, #38a169, #2f855a) !important;
+}
+
+.botao-vermelho {
+    background: linear-gradient(135deg, #f56565, #e53e3e) !important;
+}
+
+.botao-vermelho:hover {
+    background: linear-gradient(135deg, #e53e3e, #c53030) !important;
+}
+
+.botao-azul {
+    background: linear-gradient(135deg, #4299e1, #3182ce) !important;
+}
+
+.botao-azul:hover {
+    background: linear-gradient(135deg, #3182ce, #2c5282) !important;
+}
+
+/* Botões de ação na tabela */
 .ui-button-info {
- 	background-color: transparent !important; 
-    border: none !important; 
-    color: #007bff !important; 
-    box-shadow: none !important;
+    background: linear-gradient(135deg, #4299e1, #3182ce) !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(66, 153, 225, 0.3) !important;
+    font-weight: 600 !important;
+}
+
+.ui-button-info:hover {
+    background: linear-gradient(135deg, #3182ce, #2c5282) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.4) !important;
 }
 
 .ui-button-danger {
-  background-color: transparent !important; 
-  border: none !important; 
-  color: #dc3545 !important; 
-  box-shadow: none !important;
+    background: linear-gradient(135deg, #f56565, #e53e3e) !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(245, 101, 101, 0.3) !important;
+    font-weight: 600 !important;
 }
 
-#menu-acoes{
-	
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	margin-top: 1%;
-	height: 100%;
+.ui-button-danger:hover {
+    background: linear-gradient(135deg, #e53e3e, #c53030) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4) !important;
 }
 
-#bloco-tudo{
-	
-	width: 60%;
-	height: 70%;
-	background-color: white;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	padding: 2em;
-	border-radius: 10px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-}
-#botoeiras{
-	
-	margin: 4%;
+/* Dialog de contas com design limpo */
+#contas.ui-dialog {
+    border-radius: 12px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+    border: none !important;
+    overflow: hidden !important;
 }
 
-.botao{
-	
-	padding: 1em;
-	border: none;
+#contas .ui-dialog-titlebar {
+    background: linear-gradient(135deg, #2d3748, #4a5568) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 20px 30px !important;
+    font-size: 18px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
 }
 
-p{
-	font-size:24px;
-	color: #333333;
+#contas .ui-dialog-content {
+    padding: 0 !important;
+    background: #ffffff !important;
 }
 
-h1{
-	font-size:40px;
-	color: #333333;
+/* Container da tabela no dialog */
+#contasSalvas {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    background: #ffffff;
 }
 
-.botao-verde{
-	
-	background-color: green;
+/* Tabela no dialog com design mais clean */
+#contas .ui-datatable {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    width: 100% !important;
 }
 
-.botao-vermelho{
-	background-color: red;
-}
-	
-.botao-azul{
-	background-color: blue;
-}	
-
-.inputs{
-	
-	padding: 1em;
+#contas .ui-datatable-scrollable-wrapper {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    width: 100% !important;
 }
 
+#contas .ui-datatable-scrollable-header {
+    background: linear-gradient(135deg, #1a202c, #2d3748) !important;
+    width: 100% !important;
+}
 
+#contas .ui-datatable-scrollable-header table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
 
+#contas .ui-datatable th {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 16px 12px !important;
+    text-align: center !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: none !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    vertical-align: middle !important;
+}
+
+#contas .ui-datatable th:last-child {
+    border-right: none !important;
+}
+
+#contas .ui-datatable-scrollable-body {
+    max-height: 400px !important;
+    overflow: auto !important;
+    width: 100% !important;
+}
+
+#contas .ui-datatable-scrollable-body table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+#contas .ui-datatable-data tr {
+    transition: all 0.2s ease !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    background: #ffffff !important;
+}
+
+#contas .ui-datatable-data tr:nth-child(even) {
+    background: #f8fafc !important;
+}
+
+#contas .ui-datatable-data tr:hover {
+    background: #e2e8f0 !important;
+    border-left: 3px solid #4299e1 !important;
+}
+
+#contas .ui-datatable-data td {
+    padding: 12px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    font-weight: 500 !important;
+    color: #4a5568 !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    border-right: 1px solid #f1f5f9 !important;
+}
+
+#contas .ui-datatable-data td:last-child {
+    border-right: none !important;
+}
+
+#contas .ui-datatable-data td:first-child {
+    font-weight: 600 !important;
+    color: #2d3748 !important;
+    background: rgba(66, 153, 225, 0.05) !important;
+}
+
+/* Mensagem vazia */
+#contas .ui-datatable-empty-message td {
+    text-align: center !important;
+    padding: 40px !important;
+    color: #718096 !important;
+    font-style: italic !important;
+    background: #f8fafc !important;
+    font-size: 16px !important;
+}
+
+/* Scrollbar personalizada */
+#contas .ui-datatable-scrollable-body::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+#contas .ui-datatable-scrollable-body::-webkit-scrollbar-track {
+    background: #f1f5f9 !important;
+    border-radius: 3px !important;
+}
+
+#contas .ui-datatable-scrollable-body::-webkit-scrollbar-thumb {
+    background: #cbd5e0 !important;
+    border-radius: 3px !important;
+}
+
+#contas .ui-datatable-scrollable-body::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0 !important;
+}
+
+/* Responsividade melhorada */
+@media (max-width: 768px) {
+    #menu_titulo {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #titulo, #logo {
+        font-size: 18px;
+    }
+    
+    #menu-acoes {
+        padding: 20px 15px;
+    }
+    
+    #bloco-tudo {
+        max-width: 100%;
+        margin: 0 10px;
+    }
+    
+    #header-title {
+        font-size: 22px !important;
+    }
+    
+    #bloco-tudo > div:nth-child(2) {
+        padding: 20px;
+        gap: 15px;
+    }
+    
+    #botoeiras {
+        padding: 15px 20px 20px 20px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .botao {
+        padding: 14px 20px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Animações suaves */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#bloco-tudo {
+    animation: slideUp 0.4s ease-out;
+}
+
+#contas.ui-dialog {
+    animation: slideUp 0.3s ease-out;
+}

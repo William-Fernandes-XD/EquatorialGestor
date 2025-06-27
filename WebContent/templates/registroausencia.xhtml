@@ -14,9 +14,9 @@
 			<div id="dataTableAusencia">
 				<p:dataTable var="objeto" 
 					value="#{ausenciaController.listAllAusencia()}"
-					emptyMessage="Não existem ausências" scrollable="true"
-					style="background-color: white; border-radius: 10px; padding: 1em;"
-					scrollHeight="660">
+					emptyMessage="Não existem ausências"
+					style="background-color: white; border-radius: 10px; padding: 1em;overflow: auto; max-height: 660px;"
+				>
 					<p:column>
 						<center>
 							<f:facet name="header">Nome</f:facet>
@@ -151,8 +151,8 @@
 			oncomplete="PF('registroAusencia').show(), PF('funcionariosDialog').show(), PF('ausenciasFuncionario').show()"/>
 		</div>
 
-		<p:dataTable value="#{ausenciaController.listaFuncionariosAusencia}" var="funcionario" scrollable="true"
-		scrollHeight="600">
+		<p:dataTable value="#{ausenciaController.listaFuncionariosAusencia}" var="funcionario"
+		style="overflow: auto; max-height: 320px;">
 		
 			<p:column>
 				<center>
@@ -175,8 +175,9 @@
 	<p:dialog position="center" draggable="false" resizable="false" height="75vh" width="75vw"
 	header="Ausências Registradas" widgetVar="ausenciasFuncionario" id="ausenciasFuncionario">
 	
-		<p:dataTable id="ausenciaTableFuncionario" widgetVar="ausenciaTableFuncionario" scrollHeight="750" scrollable="true" value="#{ausenciaController.listaAusenciasFuncionario}"
-		 emptyMessage="Não foi possível carregar os dados ou não há nenhum registro" var="objeto">
+		<p:dataTable id="ausenciaTableFuncionario" widgetVar="ausenciaTableFuncionario" value="#{ausenciaController.listaAusenciasFuncionario}"
+		 emptyMessage="Não foi possível carregar os dados ou não há nenhum registro" var="objeto"
+		 style="overflow: auto; max-height: 660px;">
 		
 			<p:column>
 				<center>

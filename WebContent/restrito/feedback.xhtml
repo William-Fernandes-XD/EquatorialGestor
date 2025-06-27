@@ -15,13 +15,9 @@
 <h:body>
 	<h:form id="formFeedBack">
 
-		<p:panel id="titulo">
-			<a href="#{request.contextPath}/restrito/home.jsf"
-				style="text-decoration: none"><p:outputLabel value="Gestor COI" /></a>
-		</p:panel>
-
 		<div id="menu_titulo">
-			<h1 id="titulo">Feedback - Funcionários</h1>
+			<a href="#{request.contextPath}/restrito/home.jsf"
+				style="text-decoration: none"><h1 id="titulo">Feedback - Funcionários</h1></a>
 			<h1 id="logo">Equatorial Energia</h1>
 		</div>
 
@@ -38,9 +34,9 @@
 								 value="#{feedback.listarAll()}"
 								 var="objeto"
 								 scrollable="true" 
-							     style="padding: 1em;"
 							     scrollHeight="500"
-							     id="datatableresultados">
+							     class="datatableresultados"
+>
 						<p:column width="20%">
 							<center>
 								<f:facet name="header">Funcionário</f:facet>
@@ -183,7 +179,7 @@
 			oncomplete="PF('consulta').show(), PF('feedbacks').show()"/>
 		</div>
 				
-				<p:dataTable value="#{feedback.allFuncionariosObjeto}" var="objeto" scrollable="true">
+				<p:dataTable value="#{feedback.allFuncionariosObjeto}" var="objeto" scrollable="true" class="datatableresultados">
 					<p:column>
 						<center>
 							<f:facet name="header">Nome</f:facet>
