@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -30,6 +31,8 @@ public class GestorTurnoController {
 	private SupervisorImpl supervisorImpl = new SupervisorImpl();
 	private OcorrenciaImpl ocorrenciaImpl = new OcorrenciaImpl();
 	private GestorEntityImpl gestorEntityImpl = new GestorEntityImpl();
+	
+	private List<String> supervisoresName = new ArrayList<>();
 	
 	@PostConstruct
 	public void init() {
@@ -115,17 +118,40 @@ public class GestorTurnoController {
 	
 	public List<String> findAllName(String query) throws Exception{
 		
-		List<Supervisor> supervisores = supervisorImpl.findAll(Supervisor.class);
 		
-		List<String> supervisoresName = new ArrayList<>();
-		
-		for(Supervisor obj : supervisores) {
-			if(obj.getName().toLowerCase().contains(query.toLowerCase())) {
-				supervisoresName.add(obj.getName());
+		if(supervisoresName == null || supervisoresName.isEmpty()) {
+			
+			List<Supervisor> supervisores = supervisorImpl.findAll(Supervisor.class);
+			
+			for (Supervisor supervisor : supervisores) {
+				supervisoresName.add(supervisor.getName());
 			}
 		}
 		
-		return supervisoresName;
+		List<String> nomes = supervisoresName;
+		
+		return nomes.stream().filter(name -> name.toLowerCase().contains(query.toLowerCase()))
+				.collect(Collectors.toList());
+	}
+	
+	public List<String> findAllName2(String query) throws Exception{
+		
+		if (supervisoresName == null) {
+		    supervisoresName = new ArrayList<>();
+		}
+
+		if (supervisoresName.isEmpty()) {
+		    List<Supervisor> supervisores = supervisorImpl.findAll(Supervisor.class);
+
+		    for (Supervisor supervisor : supervisores) {
+		        supervisoresName.add(supervisor.getName());
+		    }
+		}
+		
+		List<String> nomes = supervisoresName;
+		
+		return nomes.stream().filter(name -> name.toLowerCase().contains(query.toLowerCase()))
+				.collect(Collectors.toList());
 	}
 	
 	public List<Ocorrencia> listAllOcorrencias() throws Exception{
@@ -215,6 +241,14 @@ public class GestorTurnoController {
 	
 	public Ocorrencia getOcorrencia() {
 		return ocorrencia;
+	}
+	
+	public List<String> getSupervisoresName() {
+		return supervisoresName;
+	}
+	
+	public void setSupervisoresName(List<String> supervisoresName) {
+		this.supervisoresName = supervisoresName;
 	}
 	
 	public void setOcorrencia(Ocorrencia ocorrencia) {

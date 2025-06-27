@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -13,6 +14,7 @@ import org.primefaces.PrimeFaces;
 
 import com.gestorcoi.entities.Funcionarios;
 import com.gestorcoi.entities.RegistroAusencia;
+import com.gestorcoi.entities.Supervisor;
 import com.gestorcoi.implementations.FuncionarioImpl;
 import com.gestorcoi.implementations.RegistrarAusenciaImpl;
 import com.gestorcoi.utils.MensagensJSF;
@@ -29,6 +31,8 @@ public class RegistrarAusenciaController {
 	
 	private List<Funcionarios> listaFuncionariosAusencia = new ArrayList<>();
 	private List<RegistroAusencia> listaAusenciasFuncionario = new ArrayList<>();
+	
+	private List<String> funcionariosNomesAutoComplete = new ArrayList<>();
 	
 	@PostConstruct
 	public void init() {
@@ -53,18 +57,25 @@ public class RegistrarAusenciaController {
 	 */
 	public List<String> buscarFuncionarios(String query) throws Exception{
 		
-	    List<Funcionarios> funcionarios = funcionarioImpl.findAll(Funcionarios.class);
-	    List<String> nomesFiltrados = new ArrayList<>();
+		
+		if(funcionariosNomesAutoComplete == null) {
+			funcionariosNomesAutoComplete = new ArrayList<>();
+		}
+		
+		if(funcionariosNomesAutoComplete.isEmpty()) {
+			
+			List<Funcionarios> funcionarios = funcionarioImpl.findAll(Funcionarios.class);
+			
+			for (Funcionarios funcionario : funcionarios) {
+				funcionariosNomesAutoComplete.add(funcionario.getNome());
+			}
+		}
+		
+		List<String> nomesFiltrados = funcionariosNomesAutoComplete;
 
-	    for (Funcionarios obj : funcionarios) {
-	        if (obj.getNome().toLowerCase().contains(query.toLowerCase())) {
-	            nomesFiltrados.add(obj.getNome());
-	        }
-	    }
-
-	    return nomesFiltrados;
+	    return nomesFiltrados.stream().filter(name -> name.toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList());
 	}
-	
+		
 	public void limpar() {
 		funcionarios = new Funcionarios();
 		ausencia = new RegistroAusencia();
