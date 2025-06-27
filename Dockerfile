@@ -12,7 +12,9 @@ COPY Context.xml /usr/local/tomcat/conf/context.xml
 
 #APENAS PARA O RENDER.COM
 # Troca o <Connector port="8080"> para <Connector port="${PORT}">
-RUN sed -i 's/port="8080"/port="${PORT}"/' /usr/local/tomcat/conf/server.xml
+ARG PORT=8080
+ENV PORT=${PORT}
+RUN sed -i "s/port=\"8080\"/port=\"$PORT\"/" /usr/local/tomcat/conf/server.xml
 
 # Exponha a porta padrão (Render não usa EXPOSE pra mapear, mas é boa prática)
 EXPOSE 8080
