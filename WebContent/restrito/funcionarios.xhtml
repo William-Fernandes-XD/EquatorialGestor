@@ -14,15 +14,16 @@
 <h:body>
 	<h:form id="forms">
 	
-		<ui:include src="/templates/barraProgresso.xhtml" />
-	
-		<p:panel id="titulo">
-			<a href="#{request.contextPath}/restrito/home.jsf"
-				style="text-decoration: none"><p:outputLabel value="Gestor COI" /></a>
-		</p:panel>
-		
 		<div id="menu_titulo">
-			<h1 id="titulo">Gerência Funcionários</h1>
+
+			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo"
+				style="text-decoration: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 16px;">
+
+				<p:graphicImage url="../resources/img/home.png"
+					style="max-width: 40px; max-height: 40px;" /> <span
+				style="color: white; font-size: 1.2em;"> Gerencia Colaboradores </span>
+			</a>
+
 			<h1 id="logo">Equatorial Energia</h1>
 		</div>
 
@@ -30,7 +31,7 @@
 			life="7000"
 			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
 			
-			<div id="corpo-geral">
+			<div class="corpo-geral">
 			
 				<div id="formulario">
 					<div class="input">
@@ -57,7 +58,8 @@
 						<p:column>
 							<center>
 								<f:facet name="header">Remover</f:facet>
-								<p:commandButton value="🗑️" action="#{gerenciaFuncionarios.remover(objeto)}" ajax="true"/>
+								<p:commandButton value="🗑️" action="#{gerenciaFuncionarios.remover(objeto)}" ajax="true"
+								styleClass="ui-button-danger"/>
 							</center>
 						</p:column>
 					</p:dataTable>

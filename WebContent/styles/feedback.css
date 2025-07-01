@@ -114,7 +114,6 @@ body {
     background: #f5f5f5 !important; /* Cinza claro padrão */
     color: #2d3748;
     line-height: 1.6;
-    min-height: 100vh;
 }
 
 /* Form principal do feedback */
@@ -127,38 +126,39 @@ body {
 /* Header principal do feedback */
 #menu_titulo {
     width: 100%;
-    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-    padding: 1.5em 2em;
-    height: auto;
-    min-height: 5em;
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
-    position: relative;
-    margin-bottom: 2em;
-    display: flex;
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    padding: 1.2em 2em;
+    display :flex;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
 }
 
 #titulo {
     color: #ffffff;
-    font-size: 1.8em;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 24px;
+    font-weight: 600;
     margin: 0;
-    text-decoration: none;
+    letter-spacing: 1px;
+    padding-left: 1em;
+}
+
+#logo {
+    float: right;
+    margin-right: 5em;
+    color: #e2e8f0;
+    font-size: 1.2em;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 #menu_titulo a {
     text-decoration: none;
     color: inherit;
-}
-
-#logo {
-    color: #e2e8f0;
-    font-size: 1.3em;
-    font-weight: 500;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    margin: 0;
 }
 
 /* Growl notifications */
@@ -175,17 +175,17 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-content: flex-start;
-    width: 95%;
-    max-width: 1400px;
+    width: 100%;
+    max-width: 1700px;
     margin: 0 auto;
-    margin-top: 2em;
+    margin-top: 9em;
     gap: 2em;
     padding: 0 1em;
 }
 
 /* Seção da tabela de dados */
 .dataTable-div {
-    width: 80%;
+    width: 100%;
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
@@ -206,7 +206,6 @@ body {
 .datatableresultados .ui-datatable-header {
     background: #0f172a !important;
     color: #ffffff !important;
-    padding: 1em 0 !important;
     font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
@@ -245,7 +244,6 @@ body {
     background: transparent !important;
     color: #ffffff !important;
     font-weight: 600 !important;
-    padding: 12px 0 !important;
     text-align: center !important;
     font-size: 0.9em !important;
     text-transform: uppercase !important;
@@ -271,6 +269,61 @@ body {
 
 .datatableresultados td:last-child {
     border-right: none !important;
+}
+
+/* AutoComplete styling */
+.inputs .ui-autocomplete {
+    width: 100% !important;
+}
+
+.inputs .ui-autocomplete .ui-inputtext,
+.inputs .ui-inputtext {
+    padding: 12px 16px !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    font-size: 1em !important;
+    font-family: inherit !important;
+    transition: all 0.3s ease !important;
+    background: #f8fafc !important;
+    color: #2d3748 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.inputs .ui-autocomplete .ui-inputtext:focus,
+.inputs .ui-inputtext:focus {
+    outline: none !important;
+    border-color: #2563eb !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Painel dropdown do AutoComplete */
+.ui-autocomplete-panel {
+    border: 2px solid #2563eb !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15) !important;
+    background: #ffffff !important;
+    margin-top: 4px !important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-items {
+    border: none !important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-item {
+    padding: 10px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: #4a5568 !important;
+    transition: all 0.2s ease !important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-item:hover,
+.ui-autocomplete-panel .ui-autocomplete-item.ui-state-highlight {
+    background: linear-gradient(135deg, #dbeafe, #eff6ff) !important;
+    color: #1e40af !important;
+    border-left: 3px solid #2563eb !important;
 }
 
 /* Badges de expressão */
@@ -370,6 +423,7 @@ body {
 /* AutoComplete styling */
 .inputs .ui-autocomplete {
     width: 100% !important;
+    
 }
 
 .inputs .ui-autocomplete .ui-inputtext,
@@ -453,6 +507,45 @@ body {
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4) !important;
 }
 
+/* Campos de texto */
+.inputs {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 1em;
+}
+
+.inputs label {
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 0.4em;
+    font-size: 0.9em;
+}
+
+.inputs input, .inputs textarea {
+    width: 90% !important;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.95em;
+    transition: border-color 0.2s ease;
+    background: #ffffff;
+    font-family: inherit;
+}
+
+.inputs input:focus, .inputs textarea:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.1);
+}
+
+/* AutoComplete - mantém estilo original */
+.inputs .ui-autocomplete {
+    /* Não aplicar estilos customizados */
+}
+
 /* Dialogs */
 .ui-dialog {
     border-radius: 16px !important;
@@ -526,57 +619,57 @@ body {
     transform: translateY(-2px) !important;
 }
 
-/* Tabelas nos dialogs */
-.ui-dialog .ui-datatable {
+/* Tabelas - tamanhos originais das colunas */
+.ui-datatable {
     border-radius: 12px !important;
-    overflow: hidden !important;
-    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15) !important;
-    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    margin-top: 1.5em;
+    border: none !important;
+    background: #ffffff !important;
 }
 
-.ui-dialog .ui-datatable-scrollable-wrapper {
-    border-radius: 12px !important;
-    overflow: hidden !important;
-}
-
-.ui-dialog .ui-datatable-scrollable-header {
-    background: #0f172a !important;
-}
-
-.ui-dialog .ui-datatable th {
-    background: transparent !important;
+.ui-datatable-header {
+    background: linear-gradient(135deg, #2d3748, #4a5568) !important;
     color: #ffffff !important;
     font-weight: 600 !important;
-    padding: 12px !important;
+    padding: 1.2em !important;
+    font-size: 1.1em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+.ui-datatable-data tr {
+    transition: all 0.3s ease !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.ui-datatable-data tr:nth-child(even) {
+    background: #f8fafc !important;
+}
+
+.ui-datatable-data tr:hover {
+    background: #e2e8f0 !important;
+    transform: scale(1.01) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.ui-datatable-data td {
+    border-bottom: 1px solid #e2e8f0 !important;
+    font-weight: 500 !important;
+    color: #4a5568 !important;
+    vertical-align: middle !important;
+}
+
+.ui-datatable th {
+    background: linear-gradient(135deg, #1a202c, #2d3748) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    padding: 12px 8px !important;
     text-align: center !important;
     font-size: 0.9em !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
+    letter-spacing: 0.8px !important;
     border: none !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-.ui-dialog .ui-datatable th:last-child {
-    border-right: none !important;
-}
-
-.ui-dialog .ui-datatable td {
-    padding: 12px !important;
-    font-weight: 500 !important;
-    color: #4a5568 !important;
-    text-align: center !important;
-    font-size: 0.9em !important;
-    border-bottom: 1px solid #f1f5f9 !important;
-    border-right: 1px solid #f1f5f9 !important;
-}
-
-.ui-dialog .ui-datatable td:last-child {
-    border-right: none !important;
-}
-
-.ui-dialog .ui-datatable tr:hover {
-    background: linear-gradient(135deg, #dbeafe, #eff6ff) !important;
-    transform: translateY(-1px) !important;
 }
 
 /* Botões de ação nas tabelas */
@@ -673,7 +766,6 @@ body {
     margin: 0;
     padding: 0;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
     color: #2d3748;
 }
 
@@ -683,35 +775,6 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-}
-
-/* Header principal com design mais clean */
-#menu_titulo {
-    width: 100%;
-    background: linear-gradient(90deg, #1a202c 0%, #2d3748 50%, #4a5568 100%);
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    border-bottom: 3px solid #4299e1;
-}
-
-#titulo {
-    color: #ffffff;
-    font-size: 24px;
-    font-weight: 600;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-#logo {
-    color: #e2e8f0;
-    font-size: 20px;
-    font-weight: 500;
-    margin: 0;
-    opacity: 0.9;
 }
 
 /* Container principal com nova estrutura */
@@ -1138,4 +1201,22 @@ body {
 
 #contas.ui-dialog {
     animation: slideUp 0.3s ease-out;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #003366;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #004080;
 }

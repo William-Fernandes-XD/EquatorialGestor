@@ -14,7 +14,6 @@ import org.primefaces.PrimeFaces;
 
 import com.gestorcoi.entities.Funcionarios;
 import com.gestorcoi.entities.RegistroAusencia;
-import com.gestorcoi.entities.Supervisor;
 import com.gestorcoi.implementations.FuncionarioImpl;
 import com.gestorcoi.implementations.RegistrarAusenciaImpl;
 import com.gestorcoi.utils.MensagensJSF;

@@ -13,13 +13,16 @@
 </h:head>
 <h:body>
 	<h:form id="formCards">
-		<p:panel id="titulo">
-			<a href="#{request.contextPath}/restrito/home.jsf"
-				style="text-decoration: none"><p:outputLabel value="Gestor COI" /></a>
-		</p:panel>
+		<div id="menu_titulo">
 
-		<div id="menu_titulo" style="font-style: helvetica">
-			<h1 id="titulo">Gerenciamento de Cards</h1>
+			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo"
+				style="text-decoration: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 16px;">
+
+				<p:graphicImage url="../resources/img/home.png"
+					style="max-width: 40px; max-height: 40px;" /> <span
+				style="color: white; font-size: 1.2em;"> Gerência Cards </span>
+			</a>
+
 			<h1 id="logo">Equatorial Energia</h1>
 		</div>
 
@@ -59,13 +62,11 @@
 					 	</div>
 					 	
 					 	<div class="inputs">
-					 		<h:outputText value="DATA/HORA ÍNICIO" class="output" style="width: 44.8%"/>
+					 		<h:outputText value="DATA/HORA ÍNICIO" class="output" style=""/>
 					 		<p:calendar id="data"
             				value="#{cardsController.redCard.dataInicio}"
-            				placeholder="dd/MM/yyyy HH:mm:ss"
             				pattern="dd/MM/yyyy HH:mm:ss"
-            				styleClass="input-data"
-            				inputStyle="width :96%; margin: 0; float: right" />
+            				styleClass="input" />
 					 	</div>
 					 	
 					 	<div class="inputs">
@@ -158,13 +159,17 @@
 					
 					<div class="card-row-3">
 						<div class="botoes2" style="border: none; !important">
-							<p:commandButton value="Salvar 💾" class="botao" action="#{cardsController.salvar()}"/>
-							<p:commandButton value="Limpar 🧹" class="botao" action="#{cardsController.limpar()}" 
-							update="formCards"/>
-							<p:commandButton value="Consultar 🔍" oncomplete="PF('redCardsDialog').show()"
+							<p:commandButton value="Salvar 💾" class="botao" action="#{cardsController.salvar()}" styleClass="ui-button-add"
+							style="padding: 1em !important;"/>
+							
+							<p:commandButton value="Limpar 🧹" class="botao" action="#{cardsController.limpar()}" styleClass="ui-button-danger"
+							update="formCards" style="padding: 1em !important;"/>
+							
+							<p:commandButton value="Consultar 🔍" oncomplete="PF('redCardsDialog').show()" styleClass="ui-button-info"
+							style="padding: 1em !important;"
 							ajax="true" update="formCards" action="#{cardsController.findAll()}"/>
 							
-							<p:commandButton value="Dúvidas? 🤔" oncomplete="PF('duvidasDialog').show()" class="botao"/>
+							<p:commandButton value="Dúvidas? 🤔" style="padding: 1em !important;" oncomplete="PF('duvidasDialog').show()" class="botao" styleClass="ui-button-info"/>
 						</div>
 					</div>
 				</div>

@@ -9,6 +9,44 @@ body {
             margin: 0;
             padding: 10px;
         }
+        
+        #menu_titulo {
+    width: 100%;
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    padding: 1.2em 2em;
+    display :flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+#titulo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 1px;
+    padding-left: 1em;
+}
+
+#logo {
+    float: right;
+    margin-right: 5em;
+    color: #e2e8f0;
+    font-size: 1.2em;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#menu_titulo a {
+    text-decoration: none;
+}
+        
+        
         .container {
             display: flex;
             gap: 20px;
@@ -82,6 +120,8 @@ body {
             gap: 10px;
             align-items: center;
         }
+        
+        
         .status-message {
             font-style: italic;
             color: #ddd; /* cinza */
@@ -116,3 +156,22 @@ body {
             gap: 10px;
             margin-top: auto;
         }
+        
+        /* Scrollbar customizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #003366;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #004080;
+}
+

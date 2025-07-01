@@ -1,14 +1,44 @@
-@charset "ISO-8859-1";
+@charset "UTF-8";
 
 body{
 	font-style:arial;
 }
 
-#menu_titulo{
-	width: 100% - 0.5em;
-	background-color: #005B9F;
-	padding: 1em;
-	height: 5em;
+/* Header principal do feedback */
+#menu_titulo {
+    width: 100%;
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    padding: 1.2em 2em;
+    display :flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+#titulo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 1px;
+    padding-left: 1em;
+}
+
+#logo {
+    float: right;
+    margin-right: 5em;
+    color: #e2e8f0;
+    font-size: 1.2em;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#menu_titulo a {
+    text-decoration: none;
 }
 
 .ui-growl {
@@ -41,28 +71,14 @@ body{
 	justify-content: space-between;
 }
 
-#titulo{
-	float: left;
-	margin-left: 1em;
-	font-style:helvetica;
-	Color: white;
-}
-
-#logo{
-	float: right;
-	margin-right: 1em;
-	color: white;
-}
-
 .botao{
 	padding: 0.7em;
 }
 
 #tudo{
-	margin-top: 5em;
-	width: 80%;
+	padding-top: 10em;
+	width: 1600px;
 	margin: auto;
-	padding-top: 2em;
 }
 
 .card{
@@ -72,7 +88,7 @@ body{
 	align-content: space-between;
 	margin-top: 2em;
 	margin: 0 auto;
-	width: 70vw;
+	width: 1200px;
 	height: 80h;
 	justify-content: space-between;
 	padding: 1em;
@@ -108,12 +124,11 @@ body{
 .inputs{
 	display: flex;
 	flex-direction:row;
-	width: 100%;
 	gap: 30px;
 	text-align: center;
 	margin-top: 1em;
 	border: 2px solid black;
-	justify-content: center;
+	justify-content: space-between;
 	border-radius: 5px;
 }
 
@@ -152,7 +167,7 @@ body{
 
 .output{
 	
-	background-color: red;
+	background-color: #993333;
 	width: 70%;
 	color: white;
 	text-align:center;
@@ -285,4 +300,172 @@ body{
     justify-content: center;
   	align-items: center;
   	font-size: 16px;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #003366;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #004080;
+}
+
+@media(max-width: 1600px) {
+	
+	
+#tudo{
+	width: 1600px;
+}
+
+.dadoInput {
+	
+	width: 90%;
+}
+}
+
+/* Botões de ação na tabela */
+.ui-button-info {
+    background: linear-gradient(135deg, #4299e1, #3182ce) !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(66, 153, 225, 0.3) !important;
+    font-weight: 600 !important;
+}
+
+.ui-button-info:hover {
+    background: linear-gradient(135deg, #3182ce, #2c5282) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.4) !important;
+}
+
+.ui-button-add {
+    background: #28a745 !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(66, 153, 225, 0.3) !important;
+    font-weight: 600 !important;
+}
+
+.ui-button-add:hover {
+    background: linear-gradient(135deg, #3182ce, #2c5282) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.4) !important;
+}
+
+.ui-button-danger {
+    background: linear-gradient(135deg, #f56565, #e53e3e) !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(245, 101, 101, 0.3) !important;
+    font-weight: 600 !important;
+}
+
+.ui-button-danger:hover {
+    background: linear-gradient(135deg, #e53e3e, #c53030) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4) !important;
+}
+
+/* Dialogs */
+.ui-dialog {
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2) !important;
+    border: none !important;
+    overflow: hidden !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 1.5em 2em !important;
+    font-size: 1.1em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    padding: 1.5em !important;
+    background: #ffffff !important;
+}
+
+/* Tabelas - tamanhos originais das colunas */
+.ui-datatable {
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    margin-top: 1.5em;
+    border: none !important;
+    background: #ffffff !important;
+}
+
+.ui-datatable-header {
+    background: linear-gradient(135deg, #2d3748, #4a5568) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 1.2em !important;
+    font-size: 1.1em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+.ui-datatable-data tr {
+    transition: all 0.3s ease !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.ui-datatable-data tr:nth-child(even) {
+    background: #f8fafc !important;
+}
+
+.ui-datatable-data tr:hover {
+    background: #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.ui-datatable-data td {
+    border-bottom: 1px solid #e2e8f0 !important;
+    font-weight: 500 !important;
+    color: #4a5568 !important;
+    padding: 0.5em 0;
+    vertical-align: middle !important;
+}
+
+.ui-datatable th {
+    background: linear-gradient(135deg, #1a202c, #2d3748) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    padding: 12px 8px !important;
+    text-align: center !important;
+    font-size: 0.9em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    border: none !important;
+}
+
+
+/* AutoComplete styling */
+.inputs .ui-autocomplete {
+    width: 100% !important;
 }

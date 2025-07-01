@@ -1,59 +1,377 @@
-@charset "ISO-8859-1";
 
-body{
-	margin: 0;
-	padding: 0;
-	font-family: helvetica;
+@charset "UTF-8";
+
+* {
+    box-sizing: border-box;
 }
 
-#menu_titulo{
-	width: 100% - 0.5em;
-	background-color: #005B9F;
-	padding: 1em;
-	height: 5em;
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    color: #2d3748;
+    line-height: 1.6;
 }
 
+/* Header principal */
+#menu_titulo {
+    width: 100%;
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    padding: 1.2em 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+#titulo {
+    float: left;
+    margin-left: 0;
+    font-size: 1.6em;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#logo {
+    float: right;
+    margin-right: 0;
+    color: #e2e8f0;
+    font-size: 1.2em;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Container principal */
+.corpo-geral {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 9em;
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+/* Formulário */
+#formulario {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 51, 102, 0.08);
+    border-left: 4px solid #003366;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input .ui-outputlabel {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.input .ui-inputfield,
+.input input {
+    padding: 0.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+    width: 100%;
+}
+
+.input .ui-inputfield:focus,
+.input input:focus {
+    outline: none;
+    border-color: #003366;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+}
+
+/* Botões */
+.botoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.botao,
+.ui-button {
+    background: linear-gradient(135deg, #003366 0%, #004080 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.botao:hover,
+.ui-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 51, 102, 0.3);
+    background: linear-gradient(135deg, #004080 0%, #0066cc 100%);
+}
+
+/* DataTable */
+#dataTableFuncionarios {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 51, 102, 0.08);
+    border-left: 4px solid #003366;
+    width: 100%;
+    margin: 0 auto;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.ui-datatable {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.ui-datatable .ui-datatable-header {
+    background: linear-gradient(135deg, #003366 0%, #004080 100%);
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+.ui-datatable .ui-datatable-thead > tr > th {
+    background: #f1f5f9;
+    color: #003366;
+    font-weight: 600;
+    padding: 1rem;
+    border: none;
+    border-bottom: 2px solid #e2e8f0;
+    text-align: center;
+}
+
+.ui-datatable .ui-datatable-tbody > tr > td {
+    padding: 1rem;
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: center;
+}
+
+.ui-datatable .ui-datatable-tbody > tr:hover {
+    background: #f8fafc;
+}
+
+.ui-datatable .ui-datatable-tbody .ui-button {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+}
+
+.ui-datatable .ui-datatable-tbody .ui-button:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+}
+
+/* Estilos específicos para o botão de remover */
+.ui-button-danger {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.5rem !important;
+    border-radius: 6px !important;
+    font-size: 1.2rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3) !important;
+}
+
+.ui-button-danger:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4) !important;
+}
+
+/* Growl (mensagens) */
 .ui-growl {
     position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 350px !important;
     z-index: 9999 !important;
 }
 
-#titulo{
-	float: left;
-	margin-left: 1em;
-	Color: white;
+.ui-growl .ui-growl-item {
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    margin-bottom: 1rem;
 }
 
-#logo{
-	float: right;
-	margin-right: 1em;
-	color: white;
+/* Responsividade */
+@media (max-width: 768px) {
+    .corpo-geral {
+        padding: 0 1rem;
+        margin-top: 8em;
+    }
+    
+    #formulario {
+        padding: 1.5rem;
+    }
+    
+    #dataTableFuncionarios {
+        padding: 1.5rem;
+    }
+    
+    .botoes {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .botao,
+    .ui-button {
+        width: 100%;
+        text-align: center;
+    }
 }
 
-#formulario{
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-content: center;
-	align-items: center;
-	margin-top: 4em;
+@media (max-width: 480px) {
+    #menu_titulo {
+        padding: 1rem;
+    }
+    
+    #titulo {
+        font-size: 1.4em;
+    }
+    
+    #logo {
+        font-size: 1em;
+    }
 }
 
-.botoes{
-	
-	display:flex;
-	flex-direction: row;
-	justify-content:flex-end;
-	align-items: center;
-	margin-top: 4em;
+/* Animações */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.botao{
-	padding: 0.7em;
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-#dataTableFuncionarios{
-	
-	width: 40%;
-	margin: 4em auto;
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #003366;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #004080;
+}
+
+/* Dialogs */
+.ui-dialog {
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2) !important;
+    border: none !important;
+    overflow: hidden !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 1.5em 2em !important;
+    font-size: 1.1em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    padding: 1.5em !important;
+    background: #ffffff !important;
+}
+
+/* Tabelas - tamanhos originais das colunas */
+.ui-datatable {
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    margin-top: 1.5em;
+    border: none !important;
+    background: #ffffff !important;
+}
+
+.ui-datatable-header {
+    background: linear-gradient(135deg, #2d3748, #4a5568) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 1.2em !important;
+    font-size: 1.1em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+.ui-datatable-data tr {
+    transition: all 0.3s ease !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.ui-datatable-data tr:nth-child(even) {
+    background: #f8fafc !important;
+}
+
+.ui-datatable-data tr:hover {
+    background: #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.ui-datatable-data td {
+    border-bottom: 1px solid #e2e8f0 !important;
+    font-weight: 500 !important;
+    color: #4a5568 !important;
+    padding: 0.5em 0;
+    vertical-align: middle !important;
+}
+
+.ui-datatable th {
+    background: linear-gradient(135deg, #1a202c, #2d3748) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    padding: 12px 8px !important;
+    text-align: center !important;
+    font-size: 0.9em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    border: none !important;
 }

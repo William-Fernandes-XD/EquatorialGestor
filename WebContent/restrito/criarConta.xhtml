@@ -15,7 +15,15 @@
 
 	<h:form id="formCriarConta" >
 		<div id="menu_titulo">
-			<a href="#{request.contextPath}/restrito/home.jsf" style="text-decoration:none"><h1 id="titulo">Gestor de Turno</h1></a>
+
+			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo"
+				style="text-decoration: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 16px;">
+
+				<p:graphicImage url="../resources/img/home.png"
+					style="max-width: 40px; max-height: 40px;" /> <span
+				style="color: white; font-size: 1.2em;"> Criar Conta </span>
+			</a>
+
 			<h1 id="logo">Equatorial Energia</h1>
 		</div>
 		

@@ -1,6 +1,7 @@
 package com.gestorcoi.implementations;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -101,16 +102,19 @@ public class FeedbackImpl implements AbstractMethods<Feedback>, Serializable{
 		StringBuilder query = new StringBuilder();
 		
 		query.append("select distinct(entity) from ").append(Feedback.class.getSimpleName())
-		.append(" entity");
+		.append(" entity where entity.data >= :data");
 		
-		List<Feedback> feedbacks = sessionFactory.getCurrentSession().createQuery(query.toString()).list();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -30);
+		
+		List<Feedback> feedbacks = sessionFactory.getCurrentSession().createQuery(query.toString())
+				.setParameter("data", cal.getTime()).setMaxResults(20).list();
 		
 		return feedbacks;
 	}
 
 	@Override
 	public List<Feedback> findAllOnCondition(Class<Feedback> classe, String condition) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

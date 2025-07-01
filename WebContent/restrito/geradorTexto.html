@@ -7,7 +7,7 @@
 body {
 	font-family: 'Arial', sans-serif;
 	color: white; /* texto branco */
-	background-color: #F0FFFF;
+	background-color: #FFFFFF;
 	display: flex;
 	flex-direction:column;
 	justify-content: center;
@@ -16,18 +16,54 @@ body {
 	padding: 0;
 }
 
+#menu_titulo {
+    width: 100%;
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    padding: 1.2em 2em;
+    display :flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+#titulo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 1px;
+    padding-left: 1em;
+}
+
+#logo {
+    float: right;
+    margin-right: 5em;
+    color: #e2e8f0;
+    font-size: 1.2em;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#menu_titulo a {
+    text-decoration: none;
+}
+
 .container {
 	display: flex;
 	gap: 20px;
 	padding: 15px;
-	background-color: #6CA6CD; /* texto azul */
+	background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%); /* texto azul */
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	width: 95%;
 	max-width: 1400px;
 	height: 80vh;
 	box-sizing: border-box;
-	margin-top: 2em;
+	margin-top: 9em;
 }
 
 .form-container {
@@ -55,17 +91,19 @@ label {
 
 textarea, select, input {
 	padding: 8px;
+	background-color: #e9e9e9;
 	border-radius: 5px;
 	border: 1px solid #ddd;
 	width: 100%;
 	box-sizing: border-box;
-	background-color: #f9f9f9; /* fundo claro */
+	background-color: #e9e9e9; /* fundo claro */
 	color: #333; /* texto escuro */
 }
 
 select:focus, input:focus, textarea:focus {
 	outline: none;
 	border-color: #006f6f; /* borda azul  */
+	background-color: #e9e9e9;
 }
 
 button {
@@ -134,54 +172,43 @@ button:hover {
 	margin-bottom: 15px;
 }
 
-#menu_titulo {
-	width: 100%;
-	background-color: #005B9F;
-	padding: 1em 0 1em 0;
-	height: 5em;
-}
-
-#titulo {
-	float: left;
-	margin-left: 1em;
-	Color: white;
-}
-
 .button-container {
 	display: flex;
 	gap: 10px;
 	margin-top: auto;
 }
 
-#logo {
-	float: right;
-	margin-right: 1em;
-	color: white;
-}
 </style>
 </head>
 <body>
 
 	<div id="menu_titulo">
-		<h1 id="titulo"><a href="home.jsf" style="text-decoration: none; color: white">Gerência Funcionários</a></h1>
-		<h1 id="logo">Equatorial Energia</h1>
-	</div>
+
+			<a href="../restrito/home.jsf" id="titulo"
+				style="text-decoration: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 16px;">
+
+				<img src="../resources/img/home.png" width="40px" height="40px"> <span
+				style="color: white; font-size: 1.2em;"> Gestor Turno </span>
+			</a>
+
+			<h1 id="logo">Equatorial Energia</h1>
+		</div>
 
 	<div class="container">
 		<div class="form-container">
 			<div class="title">Gerador de texto - COI</div>
 			<div class="steps-container">
-				<div class="step-box">
+				<div class="step-box" style="background-color: #e9e9e9;">
 					<span>Passo 1:</span> Selecione o tipo de documento: NDS ou
 					Miscelânea.
 				</div>
-				<div class="step-box">
+				<div class="step-box" style="background-color: #e9e9e9;">
 					<span>Passo 2:</span> Preencha as informações.
 				</div>
-				<div class="step-box">
+				<div class="step-box" style="background-color: #e9e9e9;">
 					<span>Passo 3:</span> Clique em "Gerar" para gerar texto.
 				</div>
-				<div class="step-box">
+				<div class="step-box" style="background-color: #e9e9e9;">
 					<span>Passo 4:</span> Clique em "Copiar" para copiar texto.
 				</div>
 			</div>
@@ -227,7 +254,7 @@ button:hover {
 
 		<div class="result-container">
 			<label for="resultBox">Texto Gerado</label>
-			<div id="resultBox"></div>
+			<div id="resultBox" style="background-color: #e9e9e9;"></div>
 			<div class="button-container">
 				<button onclick="copiarTexto()">Copiar</button>
 			</div>

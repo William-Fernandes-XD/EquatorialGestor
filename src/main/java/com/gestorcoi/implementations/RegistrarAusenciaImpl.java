@@ -105,10 +105,10 @@ public class RegistrarAusenciaImpl implements AbstractMethods<RegistroAusencia>,
 		.append(" entity where entity.data_ausencia >= :datalimite");
 		
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -90);
+		cal.add(Calendar.DAY_OF_YEAR, -10);
 		
 		List<RegistroAusencia> ausencias = sessionFactory.getCurrentSession().createQuery(query.toString())
-				.setParameter("datalimite", cal.getTime()).setMaxResults(40).list();
+				.setParameter("datalimite", cal.getTime()).setMaxResults(10).list();
 		
 		return ausencias;
 	}

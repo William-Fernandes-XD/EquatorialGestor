@@ -19,10 +19,69 @@ body {
     width: 100%;
     background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
     padding: 1.2em 2em;
-    height: auto;
-    min-height: 4.5em;
+    display :flex;
+    flex-direction: row;
+    justify-content: space-between;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    position: relative;
+    position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+/* AutoComplete styling */
+.inputs .ui-autocomplete {
+    width: 100% !important;
+}
+
+.inputs .ui-autocomplete .ui-inputtext,
+.inputs .ui-inputtext {
+    padding: 12px 16px !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    font-size: 1em !important;
+    font-family: inherit !important;
+    transition: all 0.3s ease !important;
+    background: #f8fafc !important;
+    color: #2d3748 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.inputs .ui-autocomplete .ui-inputtext:focus,
+.inputs .ui-inputtext:focus {
+    outline: none !important;
+    border-color: #2563eb !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Painel dropdown do AutoComplete */
+.ui-autocomplete-panel {
+    border: 2px solid #2563eb !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15) !important;
+    background: #ffffff !important;
+    margin-top: 4px !important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-items {
+    border: none !important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-item {
+    padding: 10px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: #4a5568 !important;
+    transition: all 0.2s ease !important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-item:hover,
+.ui-autocomplete-panel .ui-autocomplete-item.ui-state-highlight {
+    background: linear-gradient(135deg, #dbeafe, #eff6ff) !important;
+    color: #1e40af !important;
+    border-left: 3px solid #2563eb !important;
 }
 
 #titulo {
@@ -82,7 +141,7 @@ body {
 
 /* Container principal */
 #tudo {
-    margin-top: 1.5em;
+    margin-top: 4.5em;
     width: 90%;
     max-width: 1200px;
     margin-left: auto;
@@ -658,4 +717,22 @@ body {
 
 #salvos .ui-datatable-scrollable-body::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #a0aec0, #718096);
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #003366;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #004080;
 }

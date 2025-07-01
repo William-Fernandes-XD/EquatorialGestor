@@ -12,14 +12,15 @@
 		<div id="corpo-dialog">
 
 			<div id="dataTableAusencia">
-				<p:dataTable var="objeto" 
+				<p:dataTable var="objeto"
 					value="#{ausenciaController.listAllAusencia()}"
 					emptyMessage="Não existem ausências"
 					style="background-color: white; border-radius: 10px; padding: 1em;overflow: auto; max-height: 660px;">
 					<p:column>
 						<center>
 							<f:facet name="header">Nome</f:facet>
-							<h:outputText value="#{objeto.funcionarios.nome}" />
+							<h:outputText value="#{objeto.funcionarios.nome}"
+								style="font-size: 12px;" />
 						</center>
 					</p:column>
 
@@ -39,7 +40,7 @@
 						</center>
 					</p:column>
 
-					<p:column>
+					<p:column width="26%">
 						<center>
 							<f:facet name="header">Justificativa</f:facet>
 							<h:outputText value="#{objeto.justificativa}" />
@@ -51,22 +52,17 @@
 							<f:facet name="header">Deletar</f:facet>
 							<p:commandButton value="🗑️"
 								action="#{ausenciaController.removerAusencia(objeto)}"
-								update=":formGestor" oncomplete="PF('registroAusencia').show()" />
+								update=":formGestor" oncomplete="PF('registroAusencia').show()"
+								styleClass="ui-button-danger" />
 						</center>
 					</p:column>
 				</p:dataTable>
 			</div>
 			<div id="formulario">
 				<div id="form_inputs">
-				
+
 					<h1
-						style="color: white;
-						 font-style: helvetica;
-						  text-align: center;
-						   background-color: #003366;
-						    border-radius: 10px;
-						     padding: 1em;
-						      width: 70%;">
+						style="color: white; font-style: helvetica; text-align: center; background-color: #003366; border-radius: 10px; padding: 1em; width: 70%;">
 						Registrar Ausência</h1>
 
 					<div class="input-label">
@@ -75,31 +71,31 @@
 						<p:autoComplete id="nomeFuncionario"
 							value="#{ausenciaController.ausencia.funcionarios.nome}"
 							completeMethod="#{ausenciaController.buscarFuncionarios}"
-							dropdown="true"
-							forceSelection="true"
+							dropdown="true" forceSelection="true"
 							placeholder="Nome funcionário"
-							panelStyle="max-height: 400px; overflow-y:auto;"
-							style="width:500px;" inputStyle="width: 70%;"
-							 />
+							panelStyle="max-height: 400px; overflow-y:auto;" style=""
+							inputStyle="width: 100%;" />
 					</div>
 
 					<div class="input-label">
 						<p:outputLabel value="Data" />
 						<p:calendar placeholder="Data Ausência" pattern="dd/MM/yyyy"
-							value="#{ausenciaController.ausencia.data_ausencia}" autocomplete="false"
-							inputStyle="width: 90%"/>
+							value="#{ausenciaController.ausencia.data_ausencia}"
+							autocomplete="false" inputStyle="width: 90%" />
 					</div>
 
 					<div class="input-label">
 						<p:outputLabel value="Turno" />
 						<p:inputText placeholder="Turno de trabalho"
-							value="#{ausenciaController.ausencia.turno}" style="width: 90%"/>
+							value="#{ausenciaController.ausencia.turno}" style="width: 90%"
+							autocomplete="false" />
 					</div>
 
 					<div class="input-label">
 						<p:outputLabel value="Justificativa" />
 						<p:inputText placeholder="Justificativa"
-							value="#{ausenciaController.ausencia.justificativa}" style="width: 90%"/>
+							value="#{ausenciaController.ausencia.justificativa}"
+							style="width: 90%" autocomplete="false" />
 					</div>
 
 					<div class="botoes" style="margin-top: 1em;">
@@ -125,81 +121,82 @@
 	<p:dialog id="funcionariosDialog" widgetVar="funcionariosDialog"
 		header="Funcionários" position="center" height="80vh" width="80vw"
 		draggable="false" resizable="false">
-		
-		<div class="pesquisa-funcionarios" style="
-		display: flex;
-		flex-direction: column;
-		gap: 40px;
-		margin-top: 3em;
-		align-items: center;
-		justify-content: center;
-		padding-bottom: 3em;">
-		
-			<p:autoComplete 
-							value="#{ausenciaController.funcionarios.nome}"
-    						completeMethod="#{ausenciaController.buscarFuncionarios}"
-    						dropdown="true"
-    						forceSelection="true"
-    						placeholder="Nome funcionário"
-    						panelStyle="max-height: 400px; overflow-y:auto;"
-    						style="width:340px;"
-							 />
-							 
-			<p:commandButton value="Pesquisar"  ajax="true" update=":formGestor:ausenciaTableFuncionario"
-			action="#{ausenciaController.carregarAusenciasFuncionarioByName(ausenciaController.funcionarios.nome)}"
-			oncomplete="PF('registroAusencia').show(), PF('funcionariosDialog').show(), PF('ausenciasFuncionario').show()"/>
+
+		<div class="input-label"
+			style="display: flex; flex-direction: column; gap: 40px; margin-top: 1em; align-items: center;
+			justify-content: center; padding: 3em; background: #f7fafc;
+			/* ciano transparente */ border-radius: 12px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+			backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+			border-left: 4px solid #805ad5;">
+
+			<p:autoComplete value="#{ausenciaController.funcionarios.nome}"
+				completeMethod="#{ausenciaController.buscarFuncionarios}"
+				dropdown="true" forceSelection="true" placeholder="Nome funcionário"
+				panelStyle="max-height: 400px; overflow-y:auto;"
+				inputStyle="width: 100%;" />
+
+			<p:commandButton value="Pesquisar" ajax="true"
+				update=":formGestor:ausenciaTableFuncionario"
+				action="#{ausenciaController.carregarAusenciasFuncionarioByName(ausenciaController.funcionarios.nome)}"
+				oncomplete="PF('registroAusencia').show(), PF('funcionariosDialog').show(), PF('ausenciasFuncionario').show()"
+				styleClass="ui-button-info" />
 		</div>
 
-		<p:dataTable value="#{ausenciaController.listaFuncionariosAusencia}" var="funcionario"
-		style="overflow: auto; max-height: 320px;">
-		
+		<p:dataTable value="#{ausenciaController.listaFuncionariosAusencia}"
+			var="funcionario" style="overflow: auto; max-height: 500px;">
+
 			<p:column>
 				<center>
 					<f:facet name="header">Nome</f:facet>
 					<h:outputText value="#{funcionario.nome}" />
 				</center>
 			</p:column>
-			
+
 			<p:column>
 				<center>
 					<f:facet name="header">Visualizar Ausências</f:facet>
-					<p:commandButton value="🔍" action="#{ausenciaController.carregarAusenciasFuncionarioByObject(funcionario)}"
-					update=":formGestor:ausenciaTableFuncionario"
-					oncomplete="PF('registroAusencia').show(), PF('funcionariosDialog').show(), PF('ausenciasFuncionario').show()"/>
+					<p:commandButton value="🔍"
+						action="#{ausenciaController.carregarAusenciasFuncionarioByObject(funcionario)}"
+						update=":formGestor:ausenciaTableFuncionario"
+						oncomplete="PF('registroAusencia').show(), PF('funcionariosDialog').show(), PF('ausenciasFuncionario').show()"
+						styleClass="ui-button-info" />
 				</center>
 			</p:column>
 		</p:dataTable>
 	</p:dialog>
-	
-	<p:dialog position="center" draggable="false" resizable="false" height="75vh" width="75vw"
-	header="Ausências Registradas" widgetVar="ausenciasFuncionario" id="ausenciasFuncionario">
-	
-		<p:dataTable id="ausenciaTableFuncionario" widgetVar="ausenciaTableFuncionario" value="#{ausenciaController.listaAusenciasFuncionario}"
-		 emptyMessage="Não foi possível carregar os dados ou não há nenhum registro" var="objeto"
-		 style="overflow: auto; max-height: 660px;">
-		
+
+	<p:dialog position="center" draggable="false" resizable="false"
+		height="75vh" width="75vw" header="Ausências Registradas"
+		widgetVar="ausenciasFuncionario" id="ausenciasFuncionario">
+
+		<p:dataTable id="ausenciaTableFuncionario"
+			widgetVar="ausenciaTableFuncionario"
+			value="#{ausenciaController.listaAusenciasFuncionario}"
+			emptyMessage="Não foi possível carregar os dados ou não há nenhum registro"
+			var="objeto" style="overflow: auto; max-height: 660px;">
+
 			<p:column>
 				<center>
 					<f:facet name="header">Nome</f:facet>
 					<h:outputText value="#{objeto.funcionarios.nome}" />
 				</center>
 			</p:column>
-			
+
 			<p:column>
 				<center>
 					<f:facet name="header">Data</f:facet>
 					<h:outputText value="#{objeto.data_ausencia}">
-						<f:convertDateTime pattern="dd/MM/yyyy"/>
+						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:outputText>
 				</center>
 			</p:column>
-			
+
 			<p:column>
 				<center>
 					<f:facet name="header">Justificativa</f:facet>
 					<h:outputText value="#{objeto.justificativa}" />
 				</center>
 			</p:column>
-		</p:dataTable>	
+		</p:dataTable>
 	</p:dialog>
 </ui:composition>

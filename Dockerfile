@@ -10,14 +10,8 @@ COPY target/com.gestorcoi.war /usr/local/tomcat/webapps/ROOT.war
 # Copia o context.xml corretamente
 COPY Context.xml /usr/local/tomcat/conf/context.xml
 
-#Só para rail
-ENV PORT=8080
-
-#Se for koyeb use 8080
 # Exponha a porta padrÃƒÂ£o do Tomcat
-EXPOSE ${PORT}
-RUN sed -i "s/port=\"8080\"/port=\"${PORT}\"/" /usr/local/tomcat/conf/server.xml
-
+EXPOSE 8080
 
 # Comando para iniciar o Tomcat
 CMD ["catalina.sh", "run"]
