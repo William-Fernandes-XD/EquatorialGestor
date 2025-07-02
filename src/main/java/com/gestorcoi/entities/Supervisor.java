@@ -10,7 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "supervisor")
@@ -63,7 +64,7 @@ public class Supervisor {
 		this.email = email;
 	}
 	
-	@Transient
+	@JsonIgnore
 	public List<Feedback> getFeedbacks() {
 		return feedbacks;
 	}
@@ -72,12 +73,12 @@ public class Supervisor {
 		this.feedbacks = feedbacks;
 	}
 	
-	@Transient
+	@JsonIgnore
 	public List<GestorEntity> getDeclarados() {
 		return declarados;
 	}
 	
-	@Transient
+	@JsonIgnore
 	public List<GestorEntity> getPendenciasOcorrencias() {
 		return pendenciasOcorrencias;
 	}
@@ -90,7 +91,7 @@ public class Supervisor {
 		this.pendenciasOcorrencias = pendenciasOcorrencias;
 	}
 	
-	@Transient
+	@JsonIgnore
 	public List<Ocorrencia> getOcorrencias() {
 		return ocorrencias;
 	}

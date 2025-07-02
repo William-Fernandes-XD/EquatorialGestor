@@ -136,17 +136,17 @@
 			</div>
 
 			<div id="salvos">
-				<p:dataTable scrollable="true" scrollHeight="500" var="objeto"
+				<p:dataTable var="objeto"
 					value="#{gestorTurnoController.listAllGestor()}"
 					style="padding: 1em; text-align:center; padding-top: 2em;">
-					<p:column width="10%">
+					<p:column width="12%">
 						<f:facet name="header">Data</f:facet>
 						<h:outputText value="#{objeto.date}">
 							<f:convertDateTime pattern="dd/MM/yy" />
 						</h:outputText>
 					</p:column>
 
-					<p:column width="6%">
+					<p:column width="10%">
 						<center>
 							<f:facet name="header">Turno</f:facet>
 							<h:outputText value="#{objeto.turno}" />

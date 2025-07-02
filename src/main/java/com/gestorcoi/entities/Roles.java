@@ -7,7 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "roles")
@@ -47,7 +48,7 @@ public class Roles {
 		this.role = role;
 	}
 
-	@Transient
+	@JsonIgnore
 	public Supervisor getSupervisor() {
 		return supervisor;
 	}

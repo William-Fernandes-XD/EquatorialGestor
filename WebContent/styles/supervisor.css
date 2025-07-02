@@ -318,6 +318,7 @@ body {
     margin-top: 1.5em;
     border: none !important;
     background: #ffffff !important;
+    text-align: center;
 }
 
 .ui-datatable-header {
@@ -341,7 +342,6 @@ body {
 
 .ui-datatable-data tr:hover {
     background: #e2e8f0 !important;
-    transform: scale(1.01) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
@@ -589,88 +589,6 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
-#salvos .ui-datatable {
-    border-radius: 16px !important;
-    overflow: hidden !important;
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12) !important;
-    border: none !important;
-    background: #ffffff !important;
-}
-
-#salvos .ui-datatable-scrollable-wrapper {
-    border-radius: 16px !important;
-}
-
-#salvos .ui-datatable-scrollable-header {
-    background: linear-gradient(135deg, #1a202c, #2d3748) !important;
-    border-radius: 16px 16px 0 0 !important;
-}
-
-#salvos .ui-datatable th {
-    background: transparent !important;
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    padding: 12px 8px !important;
-    text-align: center !important;
-    font-size: 0.9em !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.8px !important;
-    border: none !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-#salvos .ui-datatable th:last-child {
-    border-right: none !important;
-}
-
-#salvos .ui-datatable-data tr {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-bottom: 1px solid #f1f5f9 !important;
-    background: #ffffff !important;
-}
-
-#salvos .ui-datatable-data tr:nth-child(even) {
-    background: #f8fafc !important;
-}
-
-#salvos .ui-datatable-data tr:hover {
-    background: linear-gradient(135deg, #e2e8f0, #f1f5f9) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-    border-left: 4px solid #4299e1 !important;
-}
-
-#salvos .ui-datatable-data td {
-    padding: 12px 8px !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-    font-weight: 500 !important;
-    color: #4a5568 !important;
-    vertical-align: middle !important;
-    text-align: center !important;
-    font-size: 0.95em !important;
-    border-right: 1px solid #f1f5f9 !important;
-}
-
-#salvos .ui-datatable-data td:last-child {
-    border-right: none !important;
-}
-
-/* Data formatada */
-#salvos .ui-datatable-data td:first-child {
-    font-weight: 600 !important;
-    color: #2d3748 !important;
-    background: linear-gradient(135deg, #e2e8f0, #f1f5f9) !important;
-    font-family: 'Courier New', monospace !important;
-}
-
-/* Coluna Turno */
-#salvos .ui-datatable-data td:nth-child(2) {
-    font-weight: 700 !important;
-    font-size: 1.1em !important;
-    color: #805ad5 !important;
-    background: rgba(128, 90, 213, 0.1) !important;
-    border-radius: 8px !important;
-}
 
 /* Panel titulo */
 .ui-panel#titulo {

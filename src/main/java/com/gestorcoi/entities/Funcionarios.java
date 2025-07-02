@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table
 public class Funcionarios implements Serializable{
@@ -64,7 +66,7 @@ public class Funcionarios implements Serializable{
 		this.nome = nome;
 	}
 	
-	@Transient
+	@JsonIgnore
 	public List<RegistroAusencia> getAusencias() {
 		return ausencias;
 	}

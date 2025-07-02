@@ -469,3 +469,30 @@ body{
 .inputs .ui-autocomplete {
     width: 100% !important;
 }
+
+/* Painel dropdown do AutoComplete */
+.ui-autocomplete-panel {
+    border: 2px solid #2563eb !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15) !important;
+    background: #ffffff !important;
+    margin-top: 4px !important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-items {
+    border: none !important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-item {
+    padding: 10px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: #4a5568 !important;
+    transition: all 0.2s ease !important;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-item:hover,
+.ui-autocomplete-panel .ui-autocomplete-item.ui-state-highlight {
+    background: linear-gradient(135deg, #dbeafe, #eff6ff) !important;
+    color: #1e40af !important;
+    border-left: 3px solid #2563eb !important;
+}

@@ -24,6 +24,8 @@ public class ContasController {
 	
 	private Supervisor supervisor = new Supervisor();
 	
+	private List<Roles> rolesSupervisor = new ArrayList<>();
+	
 	private String role;
 	
 	public ContasController() {
@@ -77,12 +79,21 @@ public class ContasController {
 		}
 	}
 	
+	public void carregarSupervisorRoles(Supervisor obj) {
+		setRolesSupervisor(obj.getRoles());
+	}
+	
 	public void remover(Supervisor obj) throws Exception{
 		
 		if(obj.getId() != null) {
 			metodo.remove(obj);
-			listAllSupervisores();
+			MensagensJSF.msgSeverityInfo("Acesso removido com sucesso!");
 		}
+	}
+	
+	public void removerRole() throws Exception{
+		
+			MensagensJSF.msgSeverityInfo("Permissão removida com sucesso!");
 	}
 	
 	public List<String> retornarPapeis() {
@@ -107,6 +118,14 @@ public class ContasController {
 	public String getRole() {
 		
 		return this.role;
+	}
+	
+	public List<Roles> getRolesSupervisor() {
+		return rolesSupervisor;
+	}
+	
+	public void setRolesSupervisor(List<Roles> rolesSupervisor) {
+		this.rolesSupervisor = rolesSupervisor;
 	}
 	
 	public void setRole(String role) {

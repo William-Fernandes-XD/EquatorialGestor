@@ -13,6 +13,8 @@
 </h:head>
 <h:body id="body">
 
+	<p:growl autoUpdate="true"/>
+
 	<h:form id="formCriarConta" >
 		<div id="menu_titulo">
 
@@ -27,8 +29,6 @@
 			<h1 id="logo">Equatorial Energia</h1>
 		</div>
 		
-		<p:messages autoUpdate="true" closable="true" />
-
 		<div id="menu-acoes">
 			<div id="bloco-tudo">
 				<div>
@@ -84,9 +84,34 @@
 						process="@this" update=":formCriarConta:contas" type="button" />
 				</div>
 			</div>
+			
+			<p:dialog widgetVar="rolesSupervisor" id="rolesSupervisor" position="center" width="80%" height="80%"
+			draggable="true" header="Permissões de usuário" resizable="false">
+				
+				<p:dataTable value="#{contaController.rolesSupervisor}" var="role">
+					
+					<p:column>
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{role.supervisor.name}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">Permissão</f:facet>
+						<h:outputText value="#{role.role}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">Remover</f:facet>
+						<p:commandButton action="#{contaController.removerRole()}" oncomplete="PF('contas').show()"
+									ajax="true" value="🗑️" styleClass="ui-button-danger"
+									update=":formCriarConta:contas"
+									process="@this" />
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
 
 			<p:dialog id="contas" widgetVar="contas" closable="true" height="90%"
-				position="center" width="70%" header="Dados Criados"
+				position="center" width="80%" header="Dados Criados"
 				draggable="false" resizable="false"
 				modal="true">
 
@@ -95,7 +120,7 @@
 					<p:dataTable id="tableResult"
 						value="#{contaController.listAllSupervisores()}" var="objeto"
 						emptyMessage="Não existem contas criadas até o momento"
-						scrollable="true" scrollHeight="500" style="width: 100%">
+						style="width: 100%">
 
 						<p:column>
 							<center>
@@ -128,6 +153,17 @@
 									styleClass="ui-button-info" />
 							</center>
 						</p:column>
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Permissões</f:facet>
+
+								<p:commandButton ajax="true"
+									process="@this" update="formCriarConta" value="🔍"
+									action="#{contaController.carregarSupervisorRoles(objeto)}"
+									styleClass="ui-button-info" oncomplete="PF('contas').show(), PF('rolesSupervisor').show()"/>
+							</center>
+						</p:column>
 
 						<p:column>
 							<center>
@@ -157,12 +193,11 @@
 			return true;
 		}
 
-		function apagaCampos(){
-
-			document.getElementById("formCriarConta:username").value = "";
-			document.getElementById("formCriarConta:password").value = "";
-			document.getElementById("formCriarConta:role").value = "";
-			document.getElementById("formCriarConta:id").value = "";
+		function apagaCampos() {
+		    document.getElementById("formCriarConta:username").value = "";
+		    document.getElementById("formCriarConta:password").value = "";
+		    document.getElementById("formCriarConta:email").value = "";
+		    document.getElementById("formCriarConta:id").value = "";
 		}
 
 		function valida(){

@@ -103,6 +103,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tomcat-jdbc-9.0.89.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tomcat-juli-9.0.89.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.servlet-api-3.0.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-annotations-2.18.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="module" value="true"/>
