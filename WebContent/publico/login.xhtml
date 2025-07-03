@@ -48,6 +48,9 @@
 							<h:outputLabel 
 								rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Maximum sessions of 1 for this principal exceeded'}"
 								value="Máximo de sessão alcançado" style="color:red;" />
+								
+							<p:commandButton type="submit" rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Maximum sessions of 1 for this principal exceeded'}"
+							styleClass="ui-button-danger" onclick="this.form.action='#{request.contextPath}/j_spring_security_logout'" value="Logout" ajax="false"/>
 						</h:panelGroup>
 
 						<div id="input-login">

@@ -17,9 +17,19 @@
 
 		<ui:include src="/templates/barraProgresso.xhtml" />
 
-		<p:panel id="titulo">
-			<p:outputLabel value="Gestor COI" />
-		</p:panel>
+		<div class="painel-topo">
+			<p:outputLabel value="Gestor COI" style="margin-left: 20px; font-size: 20px"/>
+			
+			<div class="div-informacoes-supervisor" style="margin-right: 20px; font-size: 17px">
+				<h:outputText value="Usuário: #{userVerification.supervisorLogado.name}" style="display: block;"/>
+				<h:outputText value="Email: #{userVerification.supervisorLogado.email}" style="display: block"/>
+				
+				<div style="text-align: center; margin-top: 5px;">
+					<p:commandButton value="Sair" styleClass="ui-button-danger"
+				    onclick="this.form.action='#{request.contextPath}/j_spring_security_logout'"/>
+				</div>
+			</div>
+		</div>
 
 		<div class="container">
 			<div class="logo-ferramentas">
