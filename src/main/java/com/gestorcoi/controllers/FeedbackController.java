@@ -60,7 +60,7 @@ public class FeedbackController {
 			funcionarios = funcionarioImpl.findByName(funcionarios.getNome());
 			
 			if(funcionarios == null) {
-				MensagensJSF.msgSeverityInfo("Não foi possível encontrar esse funcionário");
+				MensagensJSF.msgSeverityInfo("Não foi possível encontrar esse funcionário", "Dados ilegíveis");
 			}else {
 				
 				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -81,11 +81,11 @@ public class FeedbackController {
 				
 				limpar();
 			
-				MensagensJSF.msgSeverityInfo("Feedback realizado com sucesso");
+				MensagensJSF.msgSeverityInfo("Feedback realizado com sucesso!", "Salvo");
 			
 			}
 		}else {
-			MensagensJSF.msgSeverityInfo("Você deve inserir um funcionário antes");
+			MensagensJSF.msgSeverityInfo("Você deve inserir um funcionário antes!", "Dados Incompletos");
 		}
 	}
 	

@@ -6,14 +6,12 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table
@@ -49,7 +47,6 @@ public class Funcionarios implements Serializable{
 		this.id = id;
 	}
 
-	@Transient
 	public List<Feedback> getFeedbacks() {
 		return feedbacks;
 	}
@@ -66,7 +63,6 @@ public class Funcionarios implements Serializable{
 		this.nome = nome;
 	}
 	
-	@JsonIgnore
 	public List<RegistroAusencia> getAusencias() {
 		return ausencias;
 	}

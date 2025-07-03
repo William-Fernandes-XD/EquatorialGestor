@@ -4,8 +4,8 @@ package com.gestorcoi.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
+import javax.faces.bean.ViewScoped;
+
 
 import com.gestorcoi.entities.Roles;
 import com.gestorcoi.entities.Supervisor;
@@ -13,8 +13,7 @@ import com.gestorcoi.implementations.RoleImpl;
 import com.gestorcoi.implementations.SupervisorImpl;
 import com.gestorcoi.utils.MensagensJSF;
 
-@Controller
-@Scope(value="request")
+@ViewScoped
 @javax.faces.bean.ManagedBean(name = "contaController")
 public class ContasController {
 
@@ -52,7 +51,7 @@ public class ContasController {
 			
 			supervisor.setRoles(roleslist);
 			
-			MensagensJSF.msgSeverityInfo("Salvo com sucesso");
+			MensagensJSF.msgSeverityInfo("Conta salva com sucesso!", "Salvo");
 		}
 	}
 	
@@ -73,7 +72,7 @@ public class ContasController {
 			
 			supervisor = metodo.merge2(supervisor);
 			
-			MensagensJSF.msgSeverityInfo("Salvo ou atualizado com sucesso");
+			MensagensJSF.msgSeverityInfo("Salvo ou atualizado com sucesso", "Atualizado");
 		}else {
 			salvar();
 		}
@@ -87,13 +86,35 @@ public class ContasController {
 		
 		if(obj.getId() != null) {
 			metodo.remove(obj);
-			MensagensJSF.msgSeverityInfo("Acesso removido com sucesso!");
+			MensagensJSF.msgSeverityInfo("Acesso removido com sucesso!", "Removido");
 		}
 	}
 	
-	public void removerRole() throws Exception{
+	public void removerRole(Roles role) throws Exception{
 		
-			MensagensJSF.msgSeverityInfo("Permissão removida com sucesso!");
+		if(role.getId() != null) {
+			
+			Supervisor supervisor = metodo.findById(role.getSupervisor().getId());
+			
+			int quant = supervisor.getRoles().size();
+			
+			if(quant <= 1){
+				MensagensJSF.msgSeverityInfo("O usuário não pode ficar sem permissões", "Negado");
+			}else {
+				
+				for (Roles rol : supervisor.getRoles()) {
+					if(role.getId().equals(rol.getId())) {
+						role = rol;
+					}
+				}
+				
+				supervisor.getRoles().remove(role);
+				
+				metodo.merge2(supervisor);
+				
+				MensagensJSF.msgSeverityInfo("Permissão removida com sucesso!", "Removido");
+			}
+		}
 	}
 	
 	public List<String> retornarPapeis() {

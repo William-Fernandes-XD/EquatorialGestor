@@ -13,9 +13,8 @@
 </h:head>
 <h:body id="body">
 
-	<p:growl autoUpdate="true"/>
-
 	<h:form id="formCriarConta" >
+	
 		<div id="menu_titulo">
 
 			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo"
@@ -28,6 +27,10 @@
 
 			<h1 id="logo">Equatorial Energia</h1>
 		</div>
+		
+		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true" widgetVar="msg"
+			life="7000"
+			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
 		
 		<div id="menu-acoes">
 			<div id="bloco-tudo">
@@ -62,6 +65,7 @@
 					<div>
 						<p>Role:</p>
 						<p:autoComplete
+							id="role"
 							value="#{contaController.role}"
 							completeMethod="#{contaController.retornarPapeis()}"
 							dropdown="true" forceSelection="true"
@@ -86,9 +90,9 @@
 			</div>
 			
 			<p:dialog widgetVar="rolesSupervisor" id="rolesSupervisor" position="center" width="80%" height="80%"
-			draggable="true" header="Permissões de usuário" resizable="false">
+			draggable="true" header="Permissões de usuário" resizable="false" modal="true">
 				
-				<p:dataTable value="#{contaController.rolesSupervisor}" var="role">
+				<p:dataTable value="#{contaController.rolesSupervisor}" var="role" id="rolesDataTable">
 					
 					<p:column>
 						<f:facet name="header">Nome</f:facet>
@@ -102,10 +106,8 @@
 					
 					<p:column>
 						<f:facet name="header">Remover</f:facet>
-						<p:commandButton action="#{contaController.removerRole()}" oncomplete="PF('contas').show()"
-									ajax="true" value="🗑️" styleClass="ui-button-danger"
-									update=":formCriarConta:contas"
-									process="@this" />
+						<p:commandButton action="#{contaController.removerRole(role)}" oncomplete="PF('contas').show()"
+						value="🗑️" styleClass="ui-button-danger" update=":formCriarConta" process="@this"/>
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
@@ -198,28 +200,60 @@
 		    document.getElementById("formCriarConta:password").value = "";
 		    document.getElementById("formCriarConta:email").value = "";
 		    document.getElementById("formCriarConta:id").value = "";
+		    document.getElementById("formCriarConta:role_input").value = "";
+		    document.getElementById().reset("formCriarConta");
 		}
 
 		function valida(){
 			let username = document.getElementById("formCriarConta:username").value;
 			let password = document.getElementById("formCriarConta:password").value;
-			let role = document.getElementById("formCriarConta:role").value;
+			let role = document.getElementById("formCriarConta:role_input").value;
+			let email = document.getElementById("formCriarConta:email").value;
 
 			if(username.trim() === ""){
-				alert("Não esqueça de inserir o login");
+
+				PF('msg').renderMessage({
+					summary: 'Campos incompletos',
+					detail: 'Não se esqueça de preencher o campo username', 
+					severity: 'warn'
+				});
+				
 				document.getElementById("formCriarConta:username").focus();
 				return false;
 			}
+			if(email.trim() === ""){
+				
+				PF('msg').renderMessage({
+					summary: 'Campos incompletos',
+					detail: 'Não se esqueça de preencher o campo email', 
+					severity: 'warn'
+				});
+				
+				document.getElementById("formCriarConta:email").focus();
+				return false;
+			}
 			if(password.trim() === ""){
-				alert("Não esqueça de inserir a senha");
+				
+				PF('msg').renderMessage({
+					summary: 'Campos incompletos',
+					detail: 'Não se esqueça de preencher o campo de senha',
+					severity: 'warn'	
+				});
+				
 				document.getElementById("formCriarConta:password").focus();
 				return false;
 			}
 			if(role.trim() === ""){
-				alert("Não esqueça de inserir o papel de usuário");
+
+				PF('msg').renderMessage({
+					summary: 'Campos incompletos',
+					detail: 'Não esqueça de preencher o campo de papel do usuário',
+				});
+				
 				document.getElementById("formCriarConta:role").focus();
 				return false;
 			}
+			
 			return true;
 		}
 	</script>

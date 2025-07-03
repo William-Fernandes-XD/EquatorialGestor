@@ -55,10 +55,10 @@ public abstract class MensagensJSF extends FacesContext implements Serializable{
 		}
 	}
 
-	public static void msgSeverityInfo(String msg) {
+	public static void msgSeverityInfo(String msg, String summary) {
 	
 		if(facesContextValido()) {
-		getFacesContext().addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+		getFacesContext().addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, summary, msg));
 		}
 	}
 	
@@ -70,13 +70,13 @@ public abstract class MensagensJSF extends FacesContext implements Serializable{
 	
 	public static void sucesso() {
 		if(facesContextValido()) {
-			msgSeverityInfo(ConstanteMensagem.SUCESSO);
+			msgSeverityInfo(ConstanteMensagem.SUCESSO, "Sucesso");
 		}
 	}
 	
 	public static void msg(String msg) {
 		if(facesContextValido()) {
-			msgSeverityInfo(msg);
+			msgSeverityInfo(msg, msg);
 		}
 	}
 }

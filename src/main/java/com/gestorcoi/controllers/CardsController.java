@@ -57,16 +57,16 @@ public class CardsController {
 			
 			if(this.redCard.getId() != null) {
 				
-				MensagensJSF.msgSeverityInfo("Ao salvar, sempre faça a limpeza primeiro");
+				MensagensJSF.msgSeverityInfo("Ao salvar, sempre faça a limpeza primeiro", "Dados no campo ID");
 				limpar();
 			}else if (this.redCard.getUnidadeInterrompidas() == null || this.redCard.getDataInicio() == null
 					|| this.redCard.getRegional() == null) {
-				MensagensJSF.msgSeverityInfo("Preencha as informações primeiro");
+				MensagensJSF.msgSeverityInfo("Preencha as informações primeiro", "Dados Incompletos");
 			}else {
 				
 				redCardImpl.merge2(redCard);
 				
-				MensagensJSF.msgSeverityInfo("Card Salvo com Sucesso");
+				MensagensJSF.msgSeverityInfo("Card Salvo com Sucesso", "Salvo");
 			}
 		}catch(Exception e) {
 			MensagensJSF.msgSeverityError("Não foi possível salvar o novo card no banco");
@@ -88,7 +88,7 @@ public class CardsController {
 				|| this.yellowCard.getSe() == null || this.yellowCard.getAlimentador() == null
 				|| this.yellowCard.getObservacao() == null) {
 			
-			MensagensJSF.msgSeverityInfo("Preencha os dados");
+			MensagensJSF.msgSeverityInfo("Preencha os dados", "Dados Incompletos");
 		}else {
 			this.redCard = redCardImpl.findRedCardById(this.redCard.getId());
 			this.redCard.getYellowCards().add(this.yellowCard);
@@ -106,7 +106,7 @@ public class CardsController {
 			
 			this.redCard = redCardImpl.merge2(this.redCard);
 			
-			MensagensJSF.msgSeverityInfo("Salvo com sucesso!");
+			MensagensJSF.msgSeverityInfo("Card amarelo salvo com sucesso!", "Salvo");
 		}
 	}
 	
@@ -131,7 +131,7 @@ public class CardsController {
 			if(this.greenCard.getDataInicio() == null || this.greenCard.getDataNormalizada() == null
 				|| this.greenCard.getCausa() == null	) {
 				
-				MensagensJSF.msgSeverityInfo("Preencha as informações para salvar");
+				MensagensJSF.msgSeverityInfo("Preencha as informações para salvar", "Dados Incompletos");
 			}else {
 				
 				this.redCard = redCardImpl.findRedCardById(this.redCard.getId());
@@ -141,7 +141,7 @@ public class CardsController {
 				this.redCard.setGreenCard(this.greenCard);
 				
 				this.redCard = redCardImpl.merge2(this.redCard);
-				MensagensJSF.msgSeverityInfo("Salvo com sucesso!");
+				MensagensJSF.msgSeverityInfo("Card verde salvo com sucesso!", "Salvo");
 			}
 		}catch(Exception e) {
 			MensagensJSF.msgSeverityError("Ocorreu um erro ao tentar salvar um card verde");
@@ -182,7 +182,7 @@ public class CardsController {
 				
 				this.redCard = redCardImpl.merge2(this.redCard);
 				
-				MensagensJSF.msgSeverityInfo("Removido com sucesso!");
+				MensagensJSF.msgSeverityInfo("Card amarelo removido com sucesso!", "Removido");
 				
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -219,7 +219,7 @@ public class CardsController {
 
 	        limpar();
 
-	        MensagensJSF.msgSeverityInfo("Removido com sucesso");
+	        MensagensJSF.msgSeverityInfo("Card verde removido com sucesso!", "Removido");
 	    } else {
 	        MensagensJSF.msgSeverityError("Não existe esse green card");
 	    }
@@ -394,7 +394,7 @@ public class CardsController {
 		}else {
 			validado = false;
 			PrimeFaces.current().executeScript("PF('redCardsDialog').show();");
-			MensagensJSF.msgSeverityInfo("Já existe um card verde para essa ocorrência");
+			MensagensJSF.msgSeverityInfo("Já existe um card verde para essa ocorrência", "Card existente");
 		}
 	}
 	

@@ -91,7 +91,7 @@ public class RegistrarAusenciaController {
 			
 			funcionarioImpl.merge2(funcionarios);
 			
-			MensagensJSF.msgSeverityInfo("Removido com sucesso");
+			MensagensJSF.msgSeverityInfo("Ausência removida com sucesso!", "Removido");
 		}else {
 			MensagensJSF.msgSeverityError("Não foi possível identificar essa ausência");
 		}
@@ -114,7 +114,7 @@ public class RegistrarAusenciaController {
 				
 				funcionarioImpl.merge2(funcionarios);
 				
-				MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome());
+				MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome(), "Salvo");
 				
 				limpar();
 		}

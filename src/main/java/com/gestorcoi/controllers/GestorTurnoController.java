@@ -80,15 +80,15 @@ public class GestorTurnoController {
 					
 					gestorEntity = gestorEntityImpl.merge2(gestorEntity);
 					
-					 MensagensJSF.msgSeverityInfo("Salvo com sucesso");
+					 MensagensJSF.msgSeverityInfo("Gestão salva com sucesso!", "Salvo");
 				}else {
 					MensagensJSF.msgSeverityError("Esse usuário não pode ser encontrado ou não existe");
 				}
 			}else {
-				MensagensJSF.msgSeverityInfo("Preencha os dados corretamente");
+				MensagensJSF.msgSeverityInfo("Preencha os dados corretamente", "Dados Incompletos");
 			}
 		}else {
-			MensagensJSF.msgSeverityInfo("Limpe a seleção primeiramente antes de salvar outra gestão");
+			MensagensJSF.msgSeverityInfo("Limpe a seleção primeiramente antes de salvar outra gestão", "Negado");
 		}
 	}
 	
@@ -180,13 +180,13 @@ public class GestorTurnoController {
 		            
 		            gestorEntityImpl.merge2(gestorEntity);
 		            
-		            MensagensJSF.msgSeverityInfo("Removido com sucesso");
+		            MensagensJSF.msgSeverityInfo("Ocorrência removida com sucesso", "Removido");
 		        } else {
 		            MensagensJSF.msgSeverityError("Ocorrência não encontrada na gestão");
 		        }
 		        
 		    } else {
-		        MensagensJSF.msgSeverityInfo("Não foi possível identificar essa ocorrência");
+		        MensagensJSF.msgSeverityInfo("Não foi possível identificar essa ocorrência, tente atualizar ou chamar a equipe TI", "Dados ilegíveis");
 		    }
 	}
 	
@@ -216,9 +216,9 @@ public class GestorTurnoController {
 	        
 	        gestorEntity = gestorEntityImpl.merge2(gestorEntity);
 	        
-	        MensagensJSF.msgSeverityInfo("Adicionado com sucesso");
+	        MensagensJSF.msgSeverityInfo("Ocorrência adicionada com sucesso!", "Salvo");
 	    } else {
-	        MensagensJSF.msgSeverityInfo("Crie uma gestão primeiro");
+	        MensagensJSF.msgSeverityInfo("Crie uma gestão primeiro", "Dados Incompletos");
 	    }
 	}
 	

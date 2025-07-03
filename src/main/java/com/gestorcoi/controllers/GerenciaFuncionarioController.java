@@ -70,9 +70,9 @@ public class GerenciaFuncionarioController {
 
 	        limpar();
 
-	        MensagensJSF.msgSeverityInfo("Funcionário criado com sucesso");
+	        MensagensJSF.msgSeverityInfo("Funcionário criado com sucesso", "Salvo");
 	    } else {
-	        MensagensJSF.msgSeverityInfo("Você deve inserir um funcionário antes");
+	        MensagensJSF.msgSeverityInfo("Você deve inserir um funcionário antes", "Dados Incompletos");
 	    }
 	}
 	
@@ -99,7 +99,7 @@ public class GerenciaFuncionarioController {
 			funcionarios.getFeedbacks().add(feedback);
 			funcionarioImpl.merge(funcionarios);
 			
-			MensagensJSF.msgSeverityInfo("Colaborador salvo com sucesso!");
+			MensagensJSF.msgSeverityInfo("Colaborador salvo com sucesso!", "Salvo");
 			
 			limpar();
 			

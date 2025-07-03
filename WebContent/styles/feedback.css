@@ -649,7 +649,6 @@ body {
 
 .ui-datatable-data tr:hover {
     background: #e2e8f0 !important;
-    transform: scale(1.01) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
