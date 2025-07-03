@@ -12,6 +12,8 @@
 </h:head>
 <h:body>
 
+	<p:growl autoUpdate="true" life="7000" widgetVar="msg" id="msg"/>
+
 	<form onsubmit="return validaSenhaLogin()" method="post"
 		action="#{request.contextPath}/j_spring_security_check" >
 		<div id="body-div">
@@ -74,14 +76,35 @@
 				var j_password = document.getElementById("j_password").value;
 
 				if(j_username === null || j_username.trim() === ''){
-					alert('Preencha os campos corretamente');
+
+					PF('msg').renderMessage({
+						summary: 'Dados Incompletos',
+						detail: 'Não se esqueça de preencher o campo de username',
+						severity: 'warn'
+					});
+
+					document.getElementById("j_username").focus();
 					return false;
 				} 
 
 				if(j_password === null || j_password.trim() === ''){
-					alert('Preencha os campos corretamente');
+
+					PF('msg').renderMessage({
+						summary: 'Dados Incompletos',
+						detail: 'Não se esqueça de preencher o campo de senha',
+						severity: 'warn'
+					});
+
+					document.getElementById('j_password').focus();
+					
 					return false;
 				}
+
+				PF('msg').renderMessage({
+					summary: 'Carregando.....',
+					detail: 'Login realizado com sucesso!',
+					severity: 'info'
+				});
 
 				return true;
 			}	

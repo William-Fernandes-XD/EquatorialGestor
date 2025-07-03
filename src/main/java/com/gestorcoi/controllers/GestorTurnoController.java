@@ -226,6 +226,7 @@ public class GestorTurnoController {
 		
 		if(gestorEntity.getId() != null) {
 			gestorEntityImpl.remove(gestorEntity);
+			MensagensJSF.msgSeverityInfo("Ocorrência removida com sucesso!", "Removido");
 		}else {
 			MensagensJSF.msgSeverityError("Não foi possível identificar essa gestão");
 		}

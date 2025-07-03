@@ -41,9 +41,176 @@ body{
     text-decoration: none;
 }
 
+/* Painel geral do calendário */
+.ui-datepicker {
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #4299e1 !important;
+    background: #ffffff !important;
+    padding: 8px !important;
+}
+
+/* Cabeçalho do calendário */
+.ui-datepicker-header {
+    background: #4299e1 !important;
+    color: #ffffff !important;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+    padding: 10px !important;
+    font-weight: 600 !important;
+}
+
+/* Dias do calendário */
+.ui-datepicker-calendar td a {
+    padding: 6px 10px !important;
+    color: #2d3748 !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+.ui-datepicker-calendar td a:hover {
+    background: #ebf4ff !important;
+    color: #1e40af !important;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-today a {
+    background: #4299e1 !important;
+    color: #ffffff !important;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-current-day a {
+    background: #3182ce !important;
+    color: #ffffff !important;
+}
+
+/* Barras (inputs) de hora, minuto, segundo */
+.ui-timepicker-div {
+    background: #ffffff !important;
+    border: 1px solid #4299e1 !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    margin-top: 4px !important;
+}
+
+.ui-timepicker-div .ui-widget-header {
+    background: #4299e1 !important;
+    color: #ffffff !important;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+    padding: 8px !important;
+    font-weight: 600 !important;
+}
+
+/* Spinner (setas e campos de hora, minuto, segundo) */
+.ui-timepicker-div .ui-spinner {
+    margin: 0 6px !important;
+}
+
+.ui-timepicker-div .ui-spinner input {
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    font-size: 0.95em !important;
+    transition: all 0.2s ease !important;
+}
+
+.ui-timepicker-div .ui-spinner input:focus {
+    outline: none !important;
+    border-color: #4299e1 !important;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.1) !important;
+}
+
+/* Botões up/down do spinner */
+.ui-timepicker-div .ui-spinner-button {
+    background: linear-gradient(135deg, #4299e1, #3182ce) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 4px !important;
+    font-size: 1em !important;
+    cursor: pointer !important;
+    transition: background 0.2s ease !important;
+}
+
+.ui-timepicker-div .ui-spinner-button:hover {
+    background: linear-gradient(135deg, #3182ce, #2c5282) !important;
+}
+
+/* Growl container fixo no topo direito */
 .ui-growl {
+    top: 20px !important;
+    right: 20px !important;
+    width: auto !important;
     z-index: 9999 !important;
-    position: fixed !important;
+}
+
+/* Cada item do growl */
+.ui-growl-item-container {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left-width: 6px !important;
+    border-left-style: solid !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+    padding: 12px 16px !important;
+    margin-bottom: 12px !important;
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* Força fundo totalmente branco, sem background amarelo/vermelho */
+.ui-growl-item-container.ui-growl-info,
+.ui-growl-item-container.ui-growl-warn,
+.ui-growl-item-container.ui-growl-error,
+.ui-growl-item-container.ui-growl-fatal {
+    background: #ffffff !important;
+}
+
+/* Cada tipo: apenas a faixa esquerda colorida */
+.ui-growl-item-container.ui-growl-info {
+    border-left-color: #4299e1 !important; /* azul */
+}
+
+.ui-growl-item-container.ui-growl-warn {
+    border-left-color: #ed8936 !important; /* laranja */
+}
+
+.ui-growl-item-container.ui-growl-error,
+.ui-growl-item-container.ui-growl-fatal {
+    border-left-color: #e53e3e !important; /* vermelho */
+}
+
+/* Título (summary) */
+.ui-growl-title {
+    font-weight: 600 !important;
+    font-size: 1em !important;
+    color: #2d3748 !important;
+    margin-bottom: 4px !important;
+}
+
+/* Detalhe (detail) */
+.ui-growl-message {
+    font-size: 0.95em !important;
+    color: #4a5568 !important;
+}
+
+/* Ícone close */
+.ui-growl-icon-close {
+    top: 8px !important;
+    right: 8px !important;
+    color: #a0aec0 !important;
+    font-size: 1.2em !important;
+    transition: color 0.2s ease;
+}
+
+.ui-growl-icon-close:hover {
+    color: #2d3748 !important;
+}
+
+/* Fade suave */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .verde {
