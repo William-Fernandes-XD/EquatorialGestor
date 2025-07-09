@@ -151,9 +151,9 @@
 
 			<div class="card-row-3">
 				<div class="botoes2" style="border: none; !important">
+				
 					<p:commandButton value="Salvar 💾" class="botao" styleClass="ui-button-info"
-						action="#{cardsController.salvarVerde()}" update=":formCards" oncomplete="PF('redCardsDialog').show(),
-						PF('adicionarGreenCard').show()"/>
+						action="#{cardsController.salvarVerde()}" update=":formCards"/>
 					<p:commandButton value="Limpar 🧹" class="botao" styleClass="ui-button-danger"
 						action="#{cardsController.limparVerdeOuAmarelo()}"
 						update=":formCards:adicionarGreenCard"

@@ -8,8 +8,9 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>Teste JSF</title>
+	<title>Gestor de Turno</title>
 	<link rel="stylesheet" type="text/css" href="../styles/supervisor.css" />
+	<link rel="icon" type="image/png" href="../resources/img/pageIcon.png"/> 
 </h:head>
 <h:body>
 
@@ -21,15 +22,15 @@
 	<h:form id="formGestor">
 		<div id="menu_titulo">
 
-			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo"
+			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo" title="Ir para página inicial"
 				style="text-decoration: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 16px;">
 
 				<p:graphicImage url="../resources/img/home.png"
 					style="max-width: 40px; max-height: 40px;" /> <span
-				style="color: white; font-size: 1.2em;"> Gestor Turno </span>
+				style="color: white; font-size: 1.2em;"> Equatorial Energia </span>
 			</a>
 
-			<h1 id="logo">Equatorial Energia</h1>
+			<h1 id="logo">Gestor Turno</h1>
 		</div>
 
 		<div id="tudo">
@@ -82,14 +83,23 @@
 			<div id="ocorrencias">
 				<div class="text">
 					<p:outputLabel value="Ocorrência" />
-					<p:inputText placeholder="Insira o código da ocorrência"
+						
+						<p:autoComplete
 						value="#{gestorTurnoController.ocorrencia.ocorrencia}"
-						styleClass="" />
+						completeMethod="#{gestorTurnoController.retornaOcorrenciasNumber}"
+						onblur="#{gestorTurnoController}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="width :60%; margin: 0" style="margin:0;" >
+							
+							<p:ajax event="itemSelect" listener="#{gestorTurnoController.retornaValorPontoDefeito}" update="pontoDefeito"/>
+							
+						</p:autoComplete>
 				</div>
 
 				<div class="text">
 					<p:outputLabel value="Ponto de defeito" />
-					<p:inputText placeholder="Insira o ponto de defeito"
+					<p:inputText placeholder="Insira o ponto de defeito" id="pontoDefeito"
 						value="#{gestorTurnoController.ocorrencia.ponto_defeito}" />
 				</div>
 

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body{
-	font-style:arial;
+	font-family: 'Arial', sans-serif;
 }
 
 /* Header principal do feedback */

@@ -139,4 +139,19 @@ public class SupervisorImpl implements AbstractMethods<Supervisor>, Serializable
 		 
 		 return supervisores;
 	}
+	
+	public boolean autentico(String login, String password) throws Exception{
+		
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append("Select count(1) as autentica from ")
+		.append(Supervisor.class.getSimpleName())
+		.append(" where name = :name and password = :password");
+		
+		Long count = (Long) sessionFactory.getCurrentSession().createQuery(builder.toString())
+				.setParameter("name", login).setParameter("password", password)
+				.uniqueResult();
+		
+		return count != null && count > 0;
+	}
 }

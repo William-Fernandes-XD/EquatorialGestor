@@ -72,7 +72,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/smoothness-1.0.10.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/start-1.0.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/taglib-core-0.4.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xmlbeans-1.0.3.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tomcat-dbcp-9.0.87.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/primefaces-6.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.faces-2.2.20.jar"/>
@@ -104,6 +103,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tomcat-juli-9.0.89.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.servlet-api-3.0.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-annotations-2.18.3.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xmlbeans-2.3.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="module" value="true"/>

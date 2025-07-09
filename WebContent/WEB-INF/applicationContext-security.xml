@@ -23,6 +23,8 @@
 		   	   
 		   	   <intercept-url pattern="/templates/**" access="isAuthenticated() and hasAnyRole('USER')"/>
 		   	   
+		   	   <intercept-url pattern="/restrito/**" access="isAuthenticated() and hasAnyRole('ADMIN')"/>
+		   	   
 		   	   <intercept-url pattern="/publico/**" access="permitAll"/>
 		   	   
 		   	   <form-login login-page="/publico/login.jsf" always-use-default-target="true"
@@ -37,7 +39,7 @@
 		   	    
 		   	    <session-management invalid-session-url="/publico/login.jsf" 
 		   	    session-fixation-protection="migrateSession">
-		   	    	<concurrency-control max-sessions="1" expired-url="/public/login.jsf" error-if-maximum-exceeded="true"/>
+		   	    	<concurrency-control max-sessions="2" expired-url="/public/login.jsf" error-if-maximum-exceeded="true"/>
 		   	    </session-management>
 		   </http>       
 		   

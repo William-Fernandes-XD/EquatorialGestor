@@ -12,10 +12,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.primefaces.event.SelectEvent;
 
 import com.gestorcoi.entities.GestorEntity;
 import com.gestorcoi.entities.Ocorrencia;
 import com.gestorcoi.entities.Supervisor;
+import com.gestorcoi.excels.ExcelScanner;
 import com.gestorcoi.implementations.GestorEntityImpl;
 import com.gestorcoi.implementations.OcorrenciaImpl;
 import com.gestorcoi.implementations.SupervisorImpl;
@@ -24,6 +28,8 @@ import com.gestorcoi.utils.MensagensJSF;
 @ManagedBean(name = "gestorTurnoController")
 @ViewScoped
 public class GestorTurnoController {
+	
+	private List<Row> rowsOcorrenciasXlsx = ExcelScanner.retornarOcorrencia(); 
 
 	private Ocorrencia ocorrencia = new Ocorrencia();
 	private GestorEntity gestorEntity = new GestorEntity();
@@ -33,6 +39,8 @@ public class GestorTurnoController {
 	private GestorEntityImpl gestorEntityImpl = new GestorEntityImpl();
 	
 	private List<String> supervisoresName = new ArrayList<>();
+	
+	private List<String> ocorrenciasAutoComplete = new ArrayList<>();
 	
 	@PostConstruct
 	public void init() {
@@ -169,6 +177,78 @@ public class GestorTurnoController {
 		return ocorrencias;
 	}
 	
+	/**
+	 * Responsável pelo autocomplete de ocorrências da página
+	 * @param ocorrencia
+	 */
+	public List<String> retornaOcorrenciasNumber(String query){
+		
+		List<Row> rows = rowsOcorrenciasXlsx;
+
+		if(ocorrenciasAutoComplete.isEmpty()) {
+			for (Row row : rows) {
+				// Na coluna 1 será as ocorrencias
+				ocorrenciasAutoComplete.add(row.getCell(0).toString());
+			}
+		}
+		
+		List<String> retorno = ocorrenciasAutoComplete;
+		
+		return retorno.stream().filter(string -> string.contains(query)).collect(Collectors.toList());
+	}
+	
+	/**
+	 * Seta o valor de ponto de defeito automático
+	 * @param event
+	 */
+	public void retornaValorPontoDefeito(SelectEvent event) {
+		
+		Object itemSelecionado = event.getObject();
+		
+		if(itemSelecionado instanceof String) {
+			
+			List<Row> rows = rowsOcorrenciasXlsx;
+			
+			for (Row row : rows) {
+				
+				Cell cell = row.getCell(0);
+				String valorCelula;
+				
+				if(cell.getCellType() == cell.CELL_TYPE_STRING) {
+					valorCelula = cell.getStringCellValue();
+				}else if(cell.getCellType() == cell.CELL_TYPE_NUMERIC){
+					valorCelula = String.valueOf((int)cell.getNumericCellValue());
+				}else {
+					valorCelula = "";
+					System.out.println("Entrou aqui");
+				}
+				
+				System.out.println("valor Celula: " + valorCelula.toString());
+				System.out.println("Item selecionado" + itemSelecionado.toString());
+				
+				if(valorCelula.equals(itemSelecionado.toString().split("\\.")[0])){
+					Cell cellPontoDefeito = row.getCell(1);
+					String pontoDefeito;
+					
+					if(cellPontoDefeito != null) {
+						
+						if(cellPontoDefeito.getCellType() == cellPontoDefeito.CELL_TYPE_STRING) {
+							pontoDefeito = cellPontoDefeito.getStringCellValue();
+						}else if(cellPontoDefeito.getCellType() == cellPontoDefeito.CELL_TYPE_NUMERIC){
+							pontoDefeito = String.valueOf((int)cellPontoDefeito.getNumericCellValue());
+						}else {
+							pontoDefeito = "";
+						}
+					}else {
+						pontoDefeito = "";
+					}
+					
+					this.ocorrencia.setPonto_defeito(pontoDefeito);
+				}
+			}
+		}
+	}
+	
 	public void removerOcorrencia(Ocorrencia ocorrencia) throws Exception{
 		
 		 if (gestorEntity.getId() != null) {
@@ -250,6 +330,14 @@ public class GestorTurnoController {
 	
 	public void setSupervisoresName(List<String> supervisoresName) {
 		this.supervisoresName = supervisoresName;
+	}
+	
+	public List<String> getOcorrenciasAutoComplete() {
+		return ocorrenciasAutoComplete;
+	}
+	
+	public void setOcorrenciasAutoComplete(List<String> ocorrenciasAutoComplete) {
+		this.ocorrenciasAutoComplete = ocorrenciasAutoComplete;
 	}
 	
 	public void setOcorrencia(Ocorrencia ocorrencia) {

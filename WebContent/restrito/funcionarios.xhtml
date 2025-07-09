@@ -8,23 +8,24 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-    <title>Teste JSF</title>
+    <title>Gerência Funcionários</title>
     <link rel="stylesheet" type="text/css" href="../styles/funcionarios.css"/>
+    <link rel="icon" type="image/png" href="../resources/img/pageIcon.png"/> 
 </h:head>
 <h:body>
 	<h:form id="forms">
 	
 		<div id="menu_titulo">
 
-			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo"
+			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo" title="Ir para página inicial"
 				style="text-decoration: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 16px;">
 
 				<p:graphicImage url="../resources/img/home.png"
 					style="max-width: 40px; max-height: 40px;" /> <span
-				style="color: white; font-size: 1.2em;"> Gerencia Colaboradores </span>
+				style="color: white; font-size: 1.2em;"> Equatorial Energia</span>
 			</a>
 
-			<h1 id="logo">Equatorial Energia</h1>
+			<h1 id="logo">Gerencia Colaboradores</h1>
 		</div>
 
 		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"

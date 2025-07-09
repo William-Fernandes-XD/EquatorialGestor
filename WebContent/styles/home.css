@@ -276,18 +276,16 @@ body {
   width: 64px !important;
   height: 64px !important;
   margin-bottom: 1rem;
-  filter: drop-shadow(0 4px 8px rgba(0, 51, 102, 0.2));
   transition: all 0.3s ease;
 }
 
 .menu-acoes a:hover .links {
   transform: scale(1.1);
-  filter: drop-shadow(0 6px 12px rgba(0, 51, 102, 0.3));
 }
 
 /* Adicionar labels para as ferramentas */
 .menu-acoes a[href="supervisor.jsf"]::after {
-  content: "Supervisor";
+  content: "Supervisor - Turno";
   font-size: 1.1rem;
   font-weight: 600;
   color: #003366;
@@ -328,6 +326,14 @@ body {
 
 .menu-acoes a[href="geradorTexto.html"]::after {
   content: "Gerador de Texto";
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+  margin-top: 0.5rem;
+}
+
+.menu-acoes a[href="gestorTurno.jsf"]::after {
+  content: "Gestoria de Turnos";
   font-size: 1.1rem;
   font-weight: 600;
   color: #003366;

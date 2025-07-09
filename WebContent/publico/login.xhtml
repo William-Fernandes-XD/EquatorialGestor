@@ -9,6 +9,7 @@
 <h:head>
 	<title>Realize o Login</title>
 	<link rel="stylesheet" type="text/css" href="../styles/login.css" />
+	<link rel="icon" type="image/png" href="../resources/img/pageIcon.png"/> 
 </h:head>
 <h:body>
 
@@ -46,11 +47,8 @@
 								value="Login ou senha incorretos" style="color:red;" />
 
 							<h:outputLabel 
-								rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Maximum sessions of 1 for this principal exceeded'}"
-								value="Máximo de sessão alcançado" style="color:red;" />
-								
-							<p:commandButton type="submit" rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Maximum sessions of 1 for this principal exceeded'}"
-							styleClass="ui-button-danger" onclick="this.form.action='#{request.contextPath}/j_spring_security_logout'" value="Logout" ajax="false"/>
+								rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Maximum sessions of 2 for this principal exceeded'}"
+								value="Máximo de sessões alcançado" style="color:red;" />
 						</h:panelGroup>
 
 						<div id="input-login">
