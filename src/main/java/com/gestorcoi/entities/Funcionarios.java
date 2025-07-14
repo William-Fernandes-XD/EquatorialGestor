@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +21,15 @@ public class Funcionarios implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	private String tipo;
+	private String atividadeSuperintendencia;
+	private String regional;
+	
+	// Seções e escala de trabalho
+	
+	private String escala;
+	private String secao;
 	
 	private String nome;
 	
@@ -67,8 +75,43 @@ public class Funcionarios implements Serializable{
 		return ausencias;
 	}
 	
+	public String getEscala() {
+		return escala;
+	}
+	
+	public String getSecao() {
+		return secao;
+	}
+	
+	public void setEscala(String escala) {
+		this.escala = escala;
+	}
+	
+	public void setSecao(String secao) {
+		this.secao = secao;
+	}
+	
 	public void setAusencias(List<RegistroAusencia> ausencias) {
 		this.ausencias = ausencias;
+	}
+	
+	public String getAtividadeSuperintendencia() {
+		return atividadeSuperintendencia;
+	}
+	public String getRegional() {
+		return regional;
+	}
+	public String getTipo() {
+		return tipo;
+	}
+	public void setAtividadeSuperintendencia(String atividadeSuperintendencia) {
+		this.atividadeSuperintendencia = atividadeSuperintendencia;
+	}
+	public void setRegional(String regional) {
+		this.regional = regional;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	@Override
@@ -94,10 +137,5 @@ public class Funcionarios implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Funcionarios [id=" + id + ", nome=" + nome + ", ausencias=" + ausencias + "]";
 	}
 }

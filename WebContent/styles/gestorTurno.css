@@ -28,33 +28,134 @@ body {
 	left: 0;
 	z-index: 1000;
 }
-
-/* AutoComplete styling */
-.inputs .ui-autocomplete {
-    width: 100% !important;
+.tudo{
+	
+	padding-top: 8em;
+	width: 80vw;
+	margin: auto;
 }
 
-.inputs .ui-autocomplete .ui-inputtext,
-.inputs .ui-inputtext {
-    padding: 12px 16px !important;
+.registroEscalas{
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+/* Campos de texto */
+.text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 0;
+    margin-bottom: 1em;
+}
+
+.text label {
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 0.4em;
+    font-size: 0.9em;
+}
+
+.text input, .text textarea {
+    padding: 10px 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.95em;
+    transition: border-color 0.2s ease;
+    background: #ffffff;
+    font-family: inherit;
+}
+
+.tabela-larga{
+	font-size: 12px;
+}
+
+.fundo-verde{
+	background-color: green;
+}
+
+.text input:focus, .text textarea:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.1);
+}
+
+/* AutoComplete - mantém estilo original */
+.text .ui-autocomplete {
+    /* Não aplicar estilos customizados */
+}
+
+/* Melhorias no calendário */
+.ui-datepicker {
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #4299e1 !important;
+}
+
+.ui-datepicker-header {
+    background: #4299e1 !important;
+    color: #ffffff !important;
+}
+
+/* Inputs com design mais moderno */
+.inputs {
+    padding: 14px 16px !important;
     border: 2px solid #e2e8f0 !important;
     border-radius: 8px !important;
-    font-size: 1em !important;
+    font-size: 16px !important;
     font-family: inherit !important;
-    transition: all 0.3s ease !important;
+    transition: all 0.2s ease !important;
     background: #f8fafc !important;
     color: #2d3748 !important;
     width: 100% !important;
     box-sizing: border-box !important;
 }
 
-.inputs .ui-autocomplete .ui-inputtext:focus,
-.inputs .ui-inputtext:focus {
+.inputs:focus {
     outline: none !important;
-    border-color: #2563eb !important;
+    border-color: #4299e1 !important;
     background: #ffffff !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
-    transform: translateY(-1px) !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+}
+
+.inputs::placeholder {
+    color: #a0aec0 !important;
+    font-style: italic !important;
+}
+
+/* AutoComplete styling */
+.ui-autocomplete {
+    width: 100% !important;
+}
+
+.ui-autocomplete .ui-inputtext {
+    padding: 14px 16px !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-family: inherit !important;
+    transition: all 0.2s ease !important;
+    background: #f8fafc !important;
+    color: #2d3748 !important;
+    width: 100% !important;
+}
+
+.ui-autocomplete .ui-inputtext:focus {
+    outline: none !important;
+    border-color: #4299e1 !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+}
+
+/* Área de botões redesenhada */
+#botoeiras {
+    padding: 20px 30px 30px 30px;
+    background: #f8fafc;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
 }
 
 /* Painel dropdown do AutoComplete */
