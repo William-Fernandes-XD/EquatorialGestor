@@ -61,8 +61,21 @@
 
 					<h:outputLabel value="Emergencial Folga" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.folgaEmergencialDia}"
-						placeholder="Ex: 0 = Primeiro dia com uma folga" />
+					<p:inputText value="#{gestorTurnoFuncionarios.folgaEmergencialDia}"/>
+				</div>
+				
+				<div class="text">
+
+					<h:outputLabel value="Comercial Folga" />
+
+					<p:inputText value="#{gestorTurnoFuncionarios.comercialFolga}"/>
+				</div>
+				
+				<div class="text">
+
+					<h:outputLabel value="PTP folga" />
+
+					<p:inputText value="#{gestorTurnoFuncionarios.folgaPtpDia}"/>
 				</div>
 
 				<div class="text">
@@ -119,7 +132,7 @@
 					</f:facet>
 
 					<h:panelGroup layout="block"
-						styleClass="#{gestorTurnoFuncionarios.getValor(funcionarios.nome, dia) eq 'X' ? 'fundo-verde' : ''}">
+						styleClass="#{gestorTurnoFuncionarios.getClasseCelula(funcionarios.nome, dia)}">
 
 						<h:outputText
 							value="#{gestorTurnoFuncionarios.getValor(funcionarios.nome, dia)}" />

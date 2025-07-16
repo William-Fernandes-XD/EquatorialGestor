@@ -76,6 +76,10 @@ body {
 	background-color: green;
 }
 
+.fundo-azul{
+	background-color: #a6c9ec;
+}
+
 .text input:focus, .text textarea:focus {
     outline: none;
     border-color: #4299e1;
