@@ -164,27 +164,21 @@
 			<p:dataTable
 				value="#{gestorTurnoFuncionarios.carregarFuncionariosTabelaPrincipal()}"
 				var="funcionarios" id="tabela" resizableColumns="true"
-				styleClass="tabela-larga">
+				styleClass="tabela-larga" scrollable="true" scrollHeight="600">
 
 				<p:column width="300px">
-					<center>
 						<f:facet name="header">Nome</f:facet>
 						<h:outputText value="#{funcionarios.nome}" />
-					</center>
 				</p:column>
 
 				<p:column width="200px">
-					<center>
 						<f:facet name="header">Tipo</f:facet>
 						<h:outputText value="#{funcionarios.atividadeSuperintendencia}" />
-					</center>
 				</p:column>
 
 				<p:column width="200px">
-					<center>
 						<f:facet name="header">Regional</f:facet>
 						<h:outputText value="#{funcionarios.regional}" />
-					</center>
 				</p:column>
 
 				<p:columns value="#{gestorTurnoFuncionarios.dias}" var="dia"
