@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +29,15 @@ public class GestorTurnoFuncionariosController {
 	private String folgaEmergencialDia;
 	private String folgaPtpDia;
 	private String comercialFolga;
+	private String folgaAvaliacao;
+	private String ilhaRiscoFolga;
+	private String triagemFolga;
+	private String impactoFolga;
+	private String impactoFolga2;
+	private String impactoFolga3;
+	private String impactoFolga4;
+	private String impactoFolga5;
+	private String impactoFolga6;
 
 	private Date datainicio;
 	private Date datafinal;
@@ -41,6 +51,15 @@ public class GestorTurnoFuncionariosController {
 	public List<Funcionarios> carregarFuncionariosTabelaPrincipal() throws Exception {
 
 		funcionarios = funcionarioImpl.findAll(Funcionarios.class);
+		
+		funcionarios.sort(Comparator.comparing(Funcionarios::getAtividadeSuperintendencia, Comparator.nullsLast(String::compareToIgnoreCase))
+				.thenComparing(Funcionarios::getSecao, Comparator.nullsLast(String::compareToIgnoreCase))
+				.thenComparing(
+						Funcionarios::getEscala,
+						Comparator.nullsLast(String::compareToIgnoreCase).reversed())
+				.thenComparing(Funcionarios::getNome, Comparator.nullsLast(String::compareToIgnoreCase))
+				);
+		
 		return funcionarios;
 	}
 
@@ -53,9 +72,6 @@ public class GestorTurnoFuncionariosController {
 			 * Organizando tabela
 			 */
 			
-			funcionarios.sort(Comparator.comparing(Funcionarios::getAtividadeSuperintendencia, Comparator.nullsLast(String::compareToIgnoreCase))
-					.thenComparing(Funcionarios::getNome, Comparator.nullsLast(String::compareToIgnoreCase)));
-
 			dias = new ArrayList<>();
 
 			LocalDate inicio = new java.sql.Date(datainicio.getTime()).toLocalDate();
@@ -207,6 +223,235 @@ public class GestorTurnoFuncionariosController {
 						}
 					}
 					
+					if("Avaliação".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())){
+						
+						try {
+							offset = Integer.parseInt(folgaAvaliacao);
+						}catch(Exception e) {
+							offset = 0;
+						}
+						
+						if("2".equalsIgnoreCase(funcionario.getSecao())) {
+							offset += 3;
+						}
+						
+						if("3".equals(funcionario.getSecao())) {
+							offset -= 1; 
+						}
+						
+						if("4".equals(funcionario.getSecao())) {
+							offset += 1;
+						}
+						
+						int index = 0;
+						
+						if("6666".equals(funcionario.getEscala())) {
+							for(LocalDate dia : dias) {
+								int ciclo = (index - offset + 6) % 6;
+								
+								String valor = (ciclo >= 4) ? "X" : "6";
+								
+								mapadias.put(dia, valor);
+								index++;
+							}
+						}
+						
+						else if("15151515".equals(funcionario.getEscala())) {
+							for(LocalDate dia : dias) {
+								int ciclo = (index - offset + 6) % 6;
+								
+								String valor = (ciclo >= 4) ? "X" : "15";
+								
+								mapadias.put(dia, valor);
+								index++;
+							}
+						}
+					}
+					
+					if("ilha de risco".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())){
+						
+						try {
+							offset = Integer.parseInt(ilhaRiscoFolga);
+						}catch(Exception e) {
+							offset = 0;
+						}
+						
+						if("2".equals(funcionario.getSecao())) {
+							offset += 2;
+						}
+						
+						if("3".equals(funcionario.getSecao())) {
+							offset += 4;
+						}
+						
+						int index = 0;
+						
+						if("6666".equals(funcionario.getEscala())) {
+							
+							for(LocalDate dia : dias) {
+								
+								int ciclo = (index - offset + 6) % 6;
+								
+								String valor = (ciclo >= 4) ? "X" : "6";
+								
+								mapadias.put(dia, valor);
+								index++;
+							}
+						}
+						
+						else if("15151515".equals(funcionario.getEscala())) {
+							
+							for(LocalDate dia : dias) {
+								
+								int ciclo = (index - offset + 6) % 6;
+								
+								String valor = (ciclo >= 4) ? "X" : "15";
+								
+								mapadias.put(dia, valor);
+								index++;
+							}
+						}
+					}
+					
+					if("triagem".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())){
+						
+						try {
+							offset = Integer.parseInt(triagemFolga);
+						}catch(Exception e) {
+							offset = 0;
+						}
+						
+						int index = 0;
+						
+						if("88888".equals(funcionario.getEscala())) {
+							
+							for(LocalDate dia : dias) {
+								
+								int ciclo = (index - offset + 7) % 7;
+								
+								String valor = (ciclo >= 5) ? "X" : "8";
+								
+								mapadias.put(dia, valor);
+								index++;
+							}
+						}
+						
+						else if("66666".equals(funcionario.getEscala())) {
+							
+							for(LocalDate dia : dias) {
+								
+								int ciclo = (index - offset + 7) % 7;
+								
+								String valor = (ciclo >= 5) ? "X" : "6";
+								
+								mapadias.put(dia, valor);
+								index++;
+							}
+						}
+					}
+					
+					if ("impacto".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())
+							|| "manobra".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())) {
+
+						try {
+							offset = Integer.parseInt(impactoFolga);
+							
+							if("1".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
+								offset = Integer.parseInt(impactoFolga);
+								
+							}else if("2".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
+								offset = Integer.parseInt(impactoFolga2);
+								
+							}else if("3".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
+								offset = Integer.parseInt(impactoFolga3);
+							}
+							else if("4".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
+								offset = Integer.parseInt(impactoFolga4);
+								
+							}else if("5".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
+								offset = Integer.parseInt(impactoFolga5);
+							}
+							
+							/**
+							 * Escala normal fixa
+							 */
+							
+							else if("1".equals(funcionario.getSecao()) && !"4321".equals(funcionario.getEscala())) {
+								offset = Integer.parseInt(impactoFolga6);
+							}else if("2".equals(funcionario.getSecao()) && !"4321".equals(funcionario.getEscala())) {
+								offset = Integer.parseInt(impactoFolga6) + 2;
+							}else if("3".equals(funcionario.getSecao()) && !"4321".equals(funcionario.getEscala())) {
+								offset = Integer.parseInt(impactoFolga6) + 4;
+							}
+						} catch (Exception e) {
+							offset = 0;
+						}
+
+						int secao = 0;
+						try {
+							secao = Integer.parseInt(funcionario.getSecao());
+						} catch (Exception e) {
+							secao = 0;
+						}
+
+						// Seção 1: offset = 0, Seção 2: offset = 2, Seção 3: offset = 4, ...
+						offset += (secao > 1) ? (secao - 1) * 2 : 0;
+
+						List<String> sequenciaEscala = Arrays.asList(
+							"4", "3", "2", "1", "X", "X",
+							"4", "3", "2", "1", "X",
+							"4", "4", "3", "2", "1", "X",
+							"4", "3", "3", "2", "1", "X",
+							"4", "3", "2", "2", "1", "X",
+							"4", "3", "2", "1", "1", "X"
+						); 
+
+						if ("4321".equals(funcionario.getEscala())) {
+							int totalDiasCiclo = sequenciaEscala.size();
+							int index = 0;
+
+							for (LocalDate dia : dias) {
+								int posicaoLista = (index - offset + totalDiasCiclo) % totalDiasCiclo;
+								String valor = sequenciaEscala.get(posicaoLista);
+
+								mapadias.put(dia, valor);
+								index++;
+							}
+						}
+						
+						/**
+						 * Impacto de escala fixa
+						 */
+						
+						int indexEscalaFixa = 0;
+						
+						if("6666".equals(funcionario.getEscala())) {
+							
+							for(LocalDate dia : dias) {
+								
+								int ciclo = (indexEscalaFixa - offset + 6) % 6;
+								
+								String valor = (ciclo >= 4) ? "X" : "6";
+								
+								mapadias.put(dia, valor);
+								indexEscalaFixa++;
+							}
+						}
+						
+						if("15151515".equals(funcionario.getEscala())) {
+							
+							for(LocalDate dia : dias) {
+								
+								int ciclo = (indexEscalaFixa - offset + 6) % 6;
+								
+								String valor = (ciclo >= 4) ? "X" : "15";
+								
+								mapadias.put(dia, valor);
+								indexEscalaFixa++;
+							}
+						}
+					}
+					
 					tabelaDados.put(funcionario.getNome(), mapadias);
 				}
 			} else {
@@ -248,6 +493,14 @@ public class GestorTurnoFuncionariosController {
 		tipos.add("Emergencial");
 
 		return tipos;
+	}
+	
+	public String getFolgaAvaliacao() {
+		return folgaAvaliacao;
+	}
+	
+	public void setFolgaAvaliacao(String folgaAvaliacao) {
+		this.folgaAvaliacao = folgaAvaliacao;
 	}
 
 	public Date getDatafinal() {
@@ -294,6 +547,14 @@ public class GestorTurnoFuncionariosController {
 		this.dias = dias;
 	}
 	
+	public String getIlhaRiscoFolga() {
+		return ilhaRiscoFolga;
+	}
+	
+	public void setIlhaRiscoFolga(String ilhaRiscoFolga) {
+		this.ilhaRiscoFolga = ilhaRiscoFolga;
+	}
+	
 	public String getFolgaPtpDia() {
 		return folgaPtpDia;
 	}
@@ -301,6 +562,62 @@ public class GestorTurnoFuncionariosController {
 		this.folgaPtpDia = folgaPtpDia;
 	}
 
+	public String getTriagemFolga() {
+		return triagemFolga;
+	}
+	
+	public void setTriagemFolga(String triagemFolga) {
+		this.triagemFolga = triagemFolga;
+	}
+	
+	public String getImpactoFolga() {
+		return impactoFolga;
+	}
+	
+	public String getImpactoFolga2() {
+		return impactoFolga2;
+	}
+	
+	public void setImpactoFolga2(String impactoFolga2) {
+		this.impactoFolga2 = impactoFolga2;
+	}
+	
+	public String getImpactoFolga3() {
+		return impactoFolga3;
+	}
+	
+	public void setImpactoFolga3(String impactoFolga3) {
+		this.impactoFolga3 = impactoFolga3;
+	}
+	
+	public String getImpactoFolga4() {
+		return impactoFolga4;
+	}
+	
+	public void setImpactoFolga4(String impactoFolga4) {
+		this.impactoFolga4 = impactoFolga4;
+	}
+	
+	public String getImpactoFolga5() {
+		return impactoFolga5;
+	}
+	
+	public void setImpactoFolga5(String impactoFolga5) {
+		this.impactoFolga5 = impactoFolga5;
+	}
+	
+	public void setImpactoFolga(String impactoFolga) {
+		this.impactoFolga = impactoFolga;
+	}
+	
+	public String getImpactoFolga6() {
+		return impactoFolga6;
+	}
+	
+	public void setImpactoFolga6(String impactoFolga6) {
+		this.impactoFolga6 = impactoFolga6;
+	}
+	
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
