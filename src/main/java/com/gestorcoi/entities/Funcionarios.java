@@ -26,6 +26,9 @@ public class Funcionarios implements Serializable{
 	private String atividadeSuperintendencia;
 	private String regional;
 	
+	private Date feriasInicio;
+	private Date feriasFim;
+	
 	// Seções e escala de trabalho
 	
 	private String escala;
@@ -112,6 +115,22 @@ public class Funcionarios implements Serializable{
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	
+	public Date getFeriasFim() {
+		return feriasFim;
+	}
+	
+	public Date getFeriasInicio() {
+		return feriasInicio;
+	}
+	
+	public void setFeriasFim(Date feriasFim) {
+		this.feriasFim = feriasFim;
+	}
+	
+	public void setFeriasInicio(Date feriasInicio) {
+		this.feriasInicio = feriasInicio;
 	}
 
 	@Override

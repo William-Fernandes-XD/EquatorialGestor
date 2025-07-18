@@ -25,6 +25,8 @@ public class GerenciaFuncionarioController {
 	
 	private SupervisorImpl supervisorImpl = new SupervisorImpl();
 	
+	private List<Funcionarios> funcionariosCarregadosTela = new ArrayList<>();
+	
 	@PostConstruct
 	public void init() {
 		
@@ -41,44 +43,39 @@ public class GerenciaFuncionarioController {
 		}
 	}
 	
-	public void salvar() throws Exception {
-
-	    if (funcionarios.getNome() != null && !funcionarios.getNome().trim().isEmpty()) {
-
-	        if (funcionarios.getAusencias() == null) {
-	            funcionarios.setAusencias(new ArrayList<>());
-	        } else {
-	            funcionarios.getAusencias().clear();
-	        }
-
-	        if (funcionarios.getFeedbacks() == null) {
-	            funcionarios.setFeedbacks(new ArrayList<>());
-	        } else {
-	            funcionarios.getFeedbacks().clear();
-	        }
-
-	        RegistroAusencia registroAusencia = new RegistroAusencia();
-	        registroAusencia.setFuncionarios(funcionarios);
-
-	        Feedback feedback = new Feedback();
-	        feedback.setFuncionario(funcionarios);
-
-	        funcionarios.getAusencias().add(registroAusencia);
-	        funcionarios.getFeedbacks().add(feedback);
-
-	        funcionarioImpl.merge2(funcionarios); 
-
-	        limpar();
-
-	        MensagensJSF.msgSeverityInfo("Funcionário criado com sucesso", "Salvo");
-	    } else {
-	        MensagensJSF.msgSeverityInfo("Você deve inserir um funcionário antes", "Dados Incompletos");
-	    }
+	public void mergeFuncionario() {
+		
+		try {
+			
+			if(funcionarios.getId() != null) {
+				
+				Date feriasInicio = funcionarios.getFeriasInicio();
+				Date feriasFim = funcionarios.getFeriasFim();
+				
+				funcionarios = funcionarioImpl.findById(funcionarios.getId());
+				
+				funcionarios.setFeriasInicio(feriasInicio);
+				funcionarios.setFeriasFim(feriasFim);
+				
+				funcionarios = funcionarioImpl.merge2(funcionarios);
+				
+			}else {
+				MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			}
+			
+		}catch(Exception e) {
+			MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			e.printStackTrace();
+		}
 	}
 	
 	public void salvarFuncionario() throws Exception{
 		
 		try {
+			
+			/**
+			 * Tentar apagar isso com urgência
+			 * 
 			RegistroAusencia registroAusencia = new RegistroAusencia();
 			registroAusencia.setFuncionarios(funcionarios);
 			
@@ -101,7 +98,7 @@ public class GerenciaFuncionarioController {
 			
 			MensagensJSF.msgSeverityInfo("Colaborador salvo com sucesso!", "Salvo");
 			
-			limpar();
+			limpar();**/
 			
 		}catch(Exception e) {
 			MensagensJSF.msgSeverityError("Não foi possível salvar o funcionário");
@@ -121,11 +118,21 @@ public class GerenciaFuncionarioController {
 	public List<Funcionarios> findAllFuncionariosObjeto() throws Exception{
 		
 		List<Funcionarios> funcionariosObjeto = funcionarioImpl.findAll(Funcionarios.class);
+		funcionariosCarregadosTela = funcionariosObjeto;
+		
 		return funcionariosObjeto;
 	}
 	
 	public Funcionarios getFuncionarios() {
 		return funcionarios;
+	}
+	
+	public List<Funcionarios> getFuncionariosCarregadosTela() {
+		return funcionariosCarregadosTela;
+	}
+	
+	public void setFuncionariosCarregadosTela(List<Funcionarios> funcionariosCarregadosTela) {
+		this.funcionariosCarregadosTela = funcionariosCarregadosTela;
 	}
 
 	public void setFuncionarios(Funcionarios funcionarios) {

@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import com.gestorcoi.entities.Funcionarios;
+import com.gestorcoi.excels.ExcelScanner;
 import com.gestorcoi.implementations.FuncionarioImpl;
 import com.gestorcoi.utils.MensagensJSF;
 
@@ -28,6 +29,7 @@ public class GestorTurnoFuncionariosController {
 	private String tipo;
 	private String folgaEmergencialDia;
 	private String folgaPtpDia;
+	private String folgaPtpDia2;
 	private String comercialFolga;
 	private String folgaAvaliacao;
 	private String ilhaRiscoFolga;
@@ -47,7 +49,7 @@ public class GestorTurnoFuncionariosController {
 	private List<Funcionarios> funcionarios = new ArrayList<>();
 
 	private Map<String, Map<LocalDate, String>> tabelaDados;
-
+	
 	public List<Funcionarios> carregarFuncionariosTabelaPrincipal() throws Exception {
 
 		funcionarios = funcionarioImpl.findAll(Funcionarios.class);
@@ -142,7 +144,12 @@ public class GestorTurnoFuncionariosController {
 					if(funcionario.getAtividadeSuperintendencia().equalsIgnoreCase("ptp")) {
 						
 						try{
-							offset = Integer.parseInt(folgaPtpDia);
+							
+							if(funcionario.getEscala().equalsIgnoreCase("4-PTP")) {
+								offset = Integer.parseInt(folgaPtpDia2);
+							}else if(funcionario.getEscala().equalsIgnoreCase("5-PTP")){
+								offset = Integer.parseInt(folgaPtpDia);
+							}
 						}catch(Exception e) {
 							offset = 0;
 						}
@@ -452,6 +459,19 @@ public class GestorTurnoFuncionariosController {
 						}
 					}
 					
+					if("supervisão".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())) {
+						
+						Map<String, Map<LocalDate, String>> supervisoresDados = new HashMap<>();
+						
+						if(supervisoresDados == null || supervisoresDados.isEmpty()) {
+							supervisoresDados = ExcelScanner.carregarSupervisoresDadosTurno(inicio);
+						}
+						
+						for (LocalDate dia : dias) {
+							mapadias.put(dia, supervisoresDados.get(funcionario.getNome()).get(dia));
+						}
+					}
+					
 					tabelaDados.put(funcionario.getNome(), mapadias);
 				}
 			} else {
@@ -471,8 +491,16 @@ public class GestorTurnoFuncionariosController {
 				return "fundo-verde";
 			case "PTP":
 				return "fundo-azul";
-			case "FERIAS":
+			case "FÉRIAS":
 				return "fundo-laranja";
+			case "R":
+				return "fundo-azul-claro";
+			case "S":
+				return "fundo-azul-claro";
+			case "A":
+				return "fundo-azul-claro";
+			case "T":
+				return "fundo-azul-claro";
 			default:
 				return "";
 		}
@@ -616,6 +644,14 @@ public class GestorTurnoFuncionariosController {
 	
 	public void setImpactoFolga6(String impactoFolga6) {
 		this.impactoFolga6 = impactoFolga6;
+	}
+	
+	public String getFolgaPtpDia2() {
+		return folgaPtpDia2;
+	}
+	
+	public void setFolgaPtpDia2(String folgaPtpDia2) {
+		this.folgaPtpDia2 = folgaPtpDia2;
 	}
 	
 	public void setTipo(String tipo) {

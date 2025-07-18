@@ -89,6 +89,20 @@ public class FuncionarioImpl implements AbstractMethods<Funcionarios>, Serializa
 		
 		return funcionario;
 	}
+	
+	public Funcionarios findById(Long id) throws Exception{
+		
+		validateSessionFactory();
+		StringBuilder query = new StringBuilder();
+		
+		query.append("Select distinct(entity) from ").append(Funcionarios.class.getSimpleName())
+		.append(" entity where id = :id");
+		
+		Funcionarios funcionario = (Funcionarios) sessionFactory.getCurrentSession().createQuery(query.toString())
+				.setParameter("id", id).uniqueResult();
+		
+		return funcionario;
+	}
 
 	@Override
 	public List<Funcionarios> findAllOnCondition(Class<Funcionarios> classe, String condition) throws Exception {

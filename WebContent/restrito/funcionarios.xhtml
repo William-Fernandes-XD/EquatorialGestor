@@ -3,21 +3,23 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-    <title>Gerência Funcionários</title>
-    <link rel="stylesheet" type="text/css" href="../styles/funcionarios.css"/>
-    <link rel="icon" type="image/png" href="../resources/img/pageIcon.png"/> 
+	<title>Gerência Funcionários</title>
+	<link rel="stylesheet" type="text/css"
+		href="../styles/funcionarios.css" />
+	<link rel="icon" type="image/png" href="../resources/img/pageIcon.png" />
 </h:head>
 <h:body>
 	<h:form id="forms">
-	
+
 		<div id="menu_titulo">
 
-			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo" title="Ir para página inicial"
+			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo"
+				title="Ir para página inicial"
 				style="text-decoration: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 16px;">
 
 				<p:graphicImage url="../resources/img/home.png"
@@ -31,41 +33,82 @@
 		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
 			life="7000"
 			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
-			
-			<div class="corpo-geral">
-			
-				<div id="formulario">
-					<div class="input">
-						<p:outputLabel value="Nome"/>
-						<p:inputText value="#{gerenciaFuncionarios.funcionarios.nome}"/>
-					</div>
-					
-					<div class="botoes">
-						<p:commandButton value="Salvar 💾"
-						action="#{gerenciaFuncionarios.salvarFuncionario()}"  class="botao"
-						ajax="true"/>
-					</div>
+
+		<div class="corpo-geral">
+
+			<div id="formulario">
+				<div class="input">
+					<p:outputLabel value="Nome" />
+					<p:inputText value="#{gerenciaFuncionarios.funcionarios.nome}" />
 				</div>
-			
-				<div id="dataTableFuncionarios">
-					<p:dataTable value="#{gerenciaFuncionarios.findAllFuncionariosObjeto()}" var="objeto">
-						<p:column>
-							<center>
-								<f:facet name="header">Nome</f:facet>
-								<h:outputText value="#{objeto.nome}" />
-							</center>
-						</p:column>
-						
-						<p:column>
-							<center>
-								<f:facet name="header">Remover</f:facet>
-								<p:commandButton value="🗑️" action="#{gerenciaFuncionarios.remover(objeto)}" ajax="true"
-								styleClass="ui-button-danger"/>
-							</center>
-						</p:column>
-					</p:dataTable>
+
+				<div class="botoes">
+					<p:commandButton value="Salvar 💾"
+						action="#{gerenciaFuncionarios.salvarFuncionario()}" class="botao"
+						ajax="true" />
 				</div>
 			</div>
+
+			<div id="dataTableFuncionarios">
+				<p:dataTable
+					value="#{gerenciaFuncionarios.findAllFuncionariosObjeto()}"
+					var="objeto">
+					<p:column>
+						<center>
+							<f:facet name="header">Nome</f:facet>
+							<h:outputText value="#{objeto.nome}" />
+						</center>
+					</p:column>
+
+					<p:column>
+						<center>
+							<f:facet name="header">Remover</f:facet>
+							<p:commandButton value="🗑️"
+								action="#{gerenciaFuncionarios.remover(objeto)}" ajax="true"
+								styleClass="ui-button-danger" />
+						</center>
+					</p:column>
+
+					<p:column>
+						<center>
+							<f:facet name="header">Alterar Férias</f:facet>
+							<p:commandButton value="➕" ajax="true"
+								styleClass="ui-button-info" action="#{gerenciaFuncionarios.setFuncionarios(objeto)}"
+								oncomplete="PF('feriasControl').show()" />
+						</center>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+
+		<p:dialog widgetVar="feriasControl" id="feriasControl"
+			position="center" width="50vw" height="60vh" header="Alterar Férias"
+			resizable="false" draggable="false">
+
+			<div class="ferias-tudo">
+			
+				<div class="text">
+					<div class="ferias-inputs">
+						<h:outputText value="Data/ínicio Férias" />
+
+						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
+							value="#{gerenciaFuncionarios.funcionarios.feriasInicio}"
+							autocomplete="false" />
+					</div>
+
+					<div class="ferias-inputs">
+						<h:outputText value="Data/Fim Férias" />
+						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
+							value="#{gerenciaFuncionarios.funcionarios.feriasFim}"
+							autocomplete="false" />
+					</div>
+				</div>
+				
+				<div class="button-ferias">
+					<p:commandButton class="ui-button-info" value="Atualizar" action="#{gerenciaFuncionarios.mergeFuncionario()}"/>
+				</div>
+			</div>
+		</p:dialog>
 	</h:form>
 </h:body>
 </html>

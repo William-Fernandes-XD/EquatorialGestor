@@ -77,7 +77,15 @@ body {
 	background-color: green;
 }
 
+.fundo-laranja{
+	background-color: #D2691E;
+}
+
 .fundo-azul{
+	background-color: #4682B4;
+}
+
+.fundo-azul-claro{
 	background-color: #a6c9ec;
 }
 
