@@ -42,6 +42,13 @@ public class Funcionarios implements Serializable{
 	@OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Feedback> feedbacks;
 	
+	/**
+	 * Banco de horas
+	 */
+	
+	@OneToMany(mappedBy = "funcionario", orphanRemoval = true)
+	private List<BancosTurno> bancosTurnos;
+	
 	public Funcionarios() {
 
 	}

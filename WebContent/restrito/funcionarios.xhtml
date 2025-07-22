@@ -37,21 +37,16 @@
 		<div class="corpo-geral">
 
 			<div id="formulario">
-				<div class="input">
-					<p:outputLabel value="Nome" />
-					<p:inputText value="#{gerenciaFuncionarios.funcionarios.nome}" />
-				</div>
-
 				<div class="botoes">
-					<p:commandButton value="Salvar 💾"
-						action="#{gerenciaFuncionarios.salvarFuncionario()}" class="botao"
+					<p:commandButton value="Salvar um novo funcionário 💾"
+						class="botao" oncomplete="PF('salvaFuncionario').show()"
 						ajax="true" />
 				</div>
 			</div>
 
 			<div id="dataTableFuncionarios">
-				<p:dataTable
-					value="#{gerenciaFuncionarios.findAllFuncionariosObjeto()}"
+				<p:dataTable id="telaFuncionarios" widgetVar="telaFuncionarios"
+					value="#{gerenciaFuncionarios.funcionariosCarregadosTela}"
 					var="objeto">
 					<p:column>
 						<center>
@@ -63,9 +58,10 @@
 					<p:column>
 						<center>
 							<f:facet name="header">Remover</f:facet>
-							<p:commandButton value="🗑️"
-								action="#{gerenciaFuncionarios.remover(objeto)}" ajax="true"
-								styleClass="ui-button-danger" />
+							<p:commandButton value="🗑️" 
+								action="#{gerenciaFuncionarios.remover(objeto)}" process="@this" update=":forms:telaFuncionarios"
+								styleClass="ui-button-danger"
+								onclick="return confirm('Tem certeza que deseja excluir esse funcionário?')"/>
 						</center>
 					</p:column>
 
@@ -73,13 +69,88 @@
 						<center>
 							<f:facet name="header">Alterar Férias</f:facet>
 							<p:commandButton value="➕" ajax="true"
-								styleClass="ui-button-info" action="#{gerenciaFuncionarios.setFuncionarios(objeto)}"
-								oncomplete="PF('feriasControl').show()" />
+								styleClass="ui-button-info" update=":forms:feriasControl"
+								oncomplete="PF('feriasControl').show()" process="@this">
+									<f:setPropertyActionListener value="#{objeto}" target="#{bancosTurnoController.funcionario}" />
+								</p:commandButton>
+						</center>
+					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Banco de horas</f:facet>
+							<p:commandButton value="➕" ajax="true"
+								styleClass="ui-button-info" process="@this"
+								oncomplete="PF('bancoAdiciona').show()" update=":forms:bancoAdiciona">
+								<f:setPropertyActionListener value="#{objeto}" target="#{bancosTurnoController.funcionario}" />
+							</p:commandButton>
+								
+								<p:commandButton value="🔍" ajax="true" action="#{bancosTurnoController.carregarTodos}"
+								styleClass="ui-button-info" oncomplete="PF('bancoVisualiza').show()" update=":forms:tabelaBancos">
+									<f:setPropertyActionListener value="#{objeto}" target="#{bancosTurnoController.funcionario}" />
+								</p:commandButton>
 						</center>
 					</p:column>
 				</p:dataTable>
 			</div>
 		</div>
+		
+		<p:dialog widgetVar="bancoVisualiza" id="bancoVisualiza" position="center" width="70vw" height="70vh" header="Visualizar bancos"
+		resizable="false" draggable="false">
+			
+			<p:dataTable value="#{bancosTurnoController.bancosTurnos}" var="banco" widgetVar="tabelaBancos" id="tabelaBancos">
+				
+				<p:column>
+					<center>
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{banco.funcionario.nome}" />
+					</center>
+				</p:column>
+				
+				<p:column>
+					<center>
+						<f:facet name="header">Data/Banco</f:facet>
+						<h:outputText value="#{banco.dataBanco}">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</center>
+				</p:column>
+				
+				<p:column>
+					<center>
+						<f:facet name="header">Remover</f:facet>
+						<p:commandButton value="🗑️" styleClass="ui-button-danger"
+						action="#{bancosTurnoController.remover(banco)}"
+						ajax="true" update=":forms:tabelaBancos"/>
+					</center>
+				</p:column>
+			</p:dataTable>
+		</p:dialog>
+		
+		<p:dialog widgetVar="bancoAdiciona" id="bancoAdiciona" position="center" width="50vw" height="60vh" header="Adicionar Banco"
+		resizable="false" draggable="false">
+			
+			<div class="ferias-tudo">
+				
+				<div>
+					<h:outputText value="#{bancosTurnoController.funcionario.nome}" styleClass="nomeFuncionario"/>
+				</div>
+				
+				<div class="text">
+					<div class="ferias-inputs">
+						<h:outputText value="Data do banco de horas" />
+
+						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
+							value="#{bancosTurnoController.bancosTurno.dataBanco}"
+							autocomplete="false" appendTo="@(body)"/>
+					</div>
+				</div>
+				
+				<div class="button-ferias">
+					<p:commandButton class="ui-button-info" value="Atualizar" action="#{bancosTurnoController.salvar()}"/>
+				</div>
+			</div>
+		</p:dialog>
 
 		<p:dialog widgetVar="feriasControl" id="feriasControl"
 			position="center" width="50vw" height="60vh" header="Alterar Férias"
@@ -87,25 +158,107 @@
 
 			<div class="ferias-tudo">
 			
+				<div class="nomeFuncionario">
+					<h:outputText value="#{bancosTurnoController.funcionario.nome}" />					
+				</div>
+			
 				<div class="text">
+				
 					<div class="ferias-inputs">
 						<h:outputText value="Data/ínicio Férias" />
 
 						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
 							value="#{gerenciaFuncionarios.funcionarios.feriasInicio}"
-							autocomplete="false" />
+							autocomplete="false" appendTo="@form"/>
 					</div>
 
 					<div class="ferias-inputs">
 						<h:outputText value="Data/Fim Férias" />
 						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
 							value="#{gerenciaFuncionarios.funcionarios.feriasFim}"
-							autocomplete="false" />
+							autocomplete="false" appendTo="@form"/>
 					</div>
 				</div>
 				
 				<div class="button-ferias">
 					<p:commandButton class="ui-button-info" value="Atualizar" action="#{gerenciaFuncionarios.mergeFuncionario()}"/>
+				</div>
+			</div>
+		</p:dialog>
+		
+		<!-- Registro de funcionarios -->
+		<p:dialog widgetVar="salvaFuncionario" id="salvaFuncionario" position="center"
+		width="70vw" height="70vh" header="Salvamento de funcionário" draggable="false" resizable="false">
+			
+			<div>
+				
+				<div class="text2">
+					<div class="ferias-inputs">
+						<h:outputText value="Nome" />
+						<p:inputText value="#{gerenciaFuncionarios.funcionarios.nome}"/>
+					</div>
+					
+					<div class="ferias-inputs">
+						<h:outputText value="Tipo" />
+						
+						<p:autoComplete
+						value="#{gerenciaFuncionarios.funcionarios.tipo}"
+						completeMethod="#{gerenciaFuncionarios.retornaTipos}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="margin: 0" style="margin:0;" />
+					</div>
+					
+					<div class="ferias-inputs">
+						<h:outputText value="Atividade superintendência" />
+						
+						<p:autoComplete
+						value="#{gerenciaFuncionarios.funcionarios.atividadeSuperintendencia}"
+						completeMethod="#{gerenciaFuncionarios.retornaAtividadeSuperintendencia}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="margin: 0" style="margin:0;" >
+							<f:ajax event="itemSelect" update="secao escala"/>
+						</p:autoComplete>
+					</div>
+					
+					<div class="ferias-inputs">
+						<h:outputText value="Regional" />
+						
+						<p:autoComplete
+						value="#{gerenciaFuncionarios.funcionarios.regional}"
+						completeMethod="#{gerenciaFuncionarios.retornaRegionais}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="margin: 0" style="margin:0;" />
+					</div>
+					
+					<div class="ferias-inputs">
+						<h:outputText value="Seção" />
+						<p:autoComplete id="secao"
+						value="#{gerenciaFuncionarios.funcionarios.secao}"
+						completeMethod="#{gerenciaFuncionarios.retornaSecao}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="margin: 0" style="margin:0;" 
+						emptyMessage="Selecione a atividade primeiro"/>
+					</div>
+					
+					<div class="ferias-inputs">
+						<h:outputText value="Escala" id="escala"/>
+						<p:autoComplete
+						value="#{gerenciaFuncionarios.funcionarios.escala}"
+						completeMethod="#{gerenciaFuncionarios.retornaEscala}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;"
+						inputStyle="margin: 0" style="margin:0;"
+						emptyMessage="Selecione a atividade primeiro" />
+					</div>
+				</div>
+				
+				<div class="botoes" style="margin-top: 1em;">
+					<p:commandButton value="Salvar" styleClass="ui-button-info"
+					action="#{gerenciaFuncionarios.salvarFuncionario()}" update=":forms:telaFuncionarios" ajax="true"/>
 				</div>
 			</div>
 		</p:dialog>

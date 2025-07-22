@@ -23,6 +23,8 @@
  		<mapping class="com.gestorcoi.entities.Funcionarios"/>
  		<mapping class="com.gestorcoi.entities.RegistroAusencia"/>
  		<mapping class="com.gestorcoi.entities.Feedback"/>
+ 		<mapping class="com.gestorcoi.entities.BancosTurno"/>
+ 		<mapping class="com.gestorcoi.entities.configGeraEscala.GeradorEscalaEntity"/>
  		
  		<mapping class="com.gestor.entityCards.RedCard"/>
  		<mapping class="com.gestor.entityCards.YellowCard"/>

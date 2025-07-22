@@ -13,9 +13,14 @@ import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
+import com.gestorcoi.entities.BancosTurno;
 import com.gestorcoi.entities.Funcionarios;
+import com.gestorcoi.entities.configGeraEscala.GeradorEscalaEntity;
 import com.gestorcoi.excels.ExcelScanner;
+import com.gestorcoi.implementations.BancosTurnoImpl;
 import com.gestorcoi.implementations.FuncionarioImpl;
+import com.gestorcoi.implementations.GeradorEscalaEntityImpl;
 import com.gestorcoi.utils.MensagensJSF;
 
 @ManagedBean(name = "gestorTurnoFuncionarios")
@@ -23,10 +28,13 @@ import com.gestorcoi.utils.MensagensJSF;
 public class GestorTurnoFuncionariosController {
 
 	private FuncionarioImpl funcionarioImpl = new FuncionarioImpl();
+	
+	private GeradorEscalaEntityImpl geradorEscalaEntityImpl = new GeradorEscalaEntityImpl();
+	
+	private GeradorEscalaEntity geradorEscalaEntity = new GeradorEscalaEntity();
 
 	// Registro de escala
 
-	private String tipo;
 	private String folgaEmergencialDia;
 	private String folgaPtpDia;
 	private String folgaPtpDia2;
@@ -47,8 +55,10 @@ public class GestorTurnoFuncionariosController {
 	private List<LocalDate> dias;
 
 	private List<Funcionarios> funcionarios = new ArrayList<>();
-
+	
 	private Map<String, Map<LocalDate, String>> tabelaDados;
+	
+	private BancosTurnoImpl bancosTurnoImpl = new BancosTurnoImpl();
 	
 	public List<Funcionarios> carregarFuncionariosTabelaPrincipal() throws Exception {
 
@@ -63,6 +73,33 @@ public class GestorTurnoFuncionariosController {
 				);
 		
 		return funcionarios;
+	}
+	
+	public void salvarEscala() {
+		
+		if(datafinal != null && datainicio != null) {
+			
+			try {
+				
+				if (folgaEmergencialDia == null) folgaEmergencialDia = "0";
+			    if (folgaPtpDia == null) folgaPtpDia = "0";
+			    if (folgaPtpDia2 == null) folgaPtpDia2 = "0";
+			    if (comercialFolga == null) comercialFolga = "0";
+			    if (folgaAvaliacao == null) folgaAvaliacao = "0";
+			    if (ilhaRiscoFolga == null) ilhaRiscoFolga = "0";
+			    if (triagemFolga == null) triagemFolga = "0";
+			    if (impactoFolga == null) impactoFolga = "0";
+			    if (impactoFolga2 == null) impactoFolga2 = "0";
+			    if (impactoFolga3 == null) impactoFolga3 = "0";
+			    if (impactoFolga4 == null) impactoFolga4 = "0";
+			    if (impactoFolga5 == null) impactoFolga5 = "0";
+			    if (impactoFolga6 == null) impactoFolga6 = "0";
+			    
+				
+			}catch(Exception e) {
+				MensagensJSF.msgSeverityInfo("Não foi possível salvar a escala", "Um erro inesperado");
+			}
+		}
 	}
 
 	public void gerarEscala() {
@@ -94,6 +131,30 @@ public class GestorTurnoFuncionariosController {
 					Map<LocalDate, String> mapadias = new HashMap<>();
 					
 					int offset = 0;
+					
+					// Ferias
+					
+					LocalDate feriasInicio;
+					LocalDate feriasFim;
+					
+					try {
+						feriasInicio = new java.sql.Date(funcionario.getFeriasInicio().getTime()).toLocalDate();
+						feriasFim = new java.sql.Date(funcionario.getFeriasFim().getTime()).toLocalDate();
+					}catch(Exception e) {
+						feriasInicio = null;
+						feriasFim = null;
+					}
+					
+					// Bancos de horas
+					
+					List<BancosTurno> bancosTurnos;
+					
+					try {
+						bancosTurnos = bancosTurnoImpl.findAllById(funcionario.getId());
+					}catch(Exception e) {
+						bancosTurnos = new ArrayList<>();
+					}
+					
 					
 					/**
 					 * Pessoal da emergencial apenas
@@ -131,6 +192,20 @@ public class GestorTurnoFuncionariosController {
 							} else if ("21212121".equals(funcionario.getEscala())) {
 								valor = (ciclo >= 4) ? "X" : "21";
 							}
+							
+							if(!bancosTurnos.isEmpty()) {
+								for (BancosTurno bancoTurno : bancosTurnos) {
+									LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+									valor = dia.isEqual(bancoData) ? "B" : valor;
+								}
+							}
+							
+							if (
+								    feriasInicio != null && feriasFim != null &&
+								    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+								) {
+								    valor = "Férias";
+								}
 
 							mapadias.put(dia, valor);
 							index++;
@@ -168,6 +243,20 @@ public class GestorTurnoFuncionariosController {
 								
 								String valor = (ciclo >= 5) ? "X" : "PTP";
 								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -178,6 +267,20 @@ public class GestorTurnoFuncionariosController {
 								int ciclo = (index - offset + 6) % 6;
 								
 								String valor = (ciclo >= 4) ? "X" : "PTP";
+								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -205,6 +308,20 @@ public class GestorTurnoFuncionariosController {
 								
 								String valor = (ciclo >= 5) ? "X" : "6";
 								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -213,6 +330,20 @@ public class GestorTurnoFuncionariosController {
 								int ciclo = (index - offset + 7) % 7;
 								
 								String valor = (ciclo >= 5) ? "X" : "15";
+								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -223,6 +354,20 @@ public class GestorTurnoFuncionariosController {
 								int ciclo = (index - offset + 6) % 6;
 								
 								String valor = (ciclo >= 4) ? "X" : "15";
+								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -258,6 +403,20 @@ public class GestorTurnoFuncionariosController {
 								
 								String valor = (ciclo >= 4) ? "X" : "6";
 								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -268,6 +427,20 @@ public class GestorTurnoFuncionariosController {
 								int ciclo = (index - offset + 6) % 6;
 								
 								String valor = (ciclo >= 4) ? "X" : "15";
+								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -301,6 +474,20 @@ public class GestorTurnoFuncionariosController {
 								
 								String valor = (ciclo >= 4) ? "X" : "6";
 								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -313,6 +500,20 @@ public class GestorTurnoFuncionariosController {
 								int ciclo = (index - offset + 6) % 6;
 								
 								String valor = (ciclo >= 4) ? "X" : "15";
+								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -338,6 +539,20 @@ public class GestorTurnoFuncionariosController {
 								
 								String valor = (ciclo >= 5) ? "X" : "8";
 								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -350,6 +565,20 @@ public class GestorTurnoFuncionariosController {
 								int ciclo = (index - offset + 7) % 7;
 								
 								String valor = (ciclo >= 5) ? "X" : "6";
+								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -420,6 +649,20 @@ public class GestorTurnoFuncionariosController {
 							for (LocalDate dia : dias) {
 								int posicaoLista = (index - offset + totalDiasCiclo) % totalDiasCiclo;
 								String valor = sequenciaEscala.get(posicaoLista);
+								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
 
 								mapadias.put(dia, valor);
 								index++;
@@ -440,6 +683,20 @@ public class GestorTurnoFuncionariosController {
 								
 								String valor = (ciclo >= 4) ? "X" : "6";
 								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
+								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;
 							}
@@ -452,6 +709,20 @@ public class GestorTurnoFuncionariosController {
 								int ciclo = (indexEscalaFixa - offset + 6) % 6;
 								
 								String valor = (ciclo >= 4) ? "X" : "15";
+								
+								if(!bancosTurnos.isEmpty()) {
+									for (BancosTurno bancoTurno : bancosTurnos) {
+										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
+										valor = dia.isEqual(bancoData) ? "B" : valor;
+									}
+								}
+								
+								if (
+									    feriasInicio != null && feriasFim != null &&
+									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
+									) {
+									    valor = "Férias";
+									}
 								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;
@@ -500,6 +771,8 @@ public class GestorTurnoFuncionariosController {
 			case "A":
 				return "fundo-azul-claro";
 			case "T":
+				return "fundo-azul-claro";
+			case "B":
 				return "fundo-azul-claro";
 			default:
 				return "";
@@ -561,10 +834,6 @@ public class GestorTurnoFuncionariosController {
 
 	public void setDatainicio(Date datainicio) {
 		this.datainicio = datainicio;
-	}
-
-	public String getTipo() {
-		return tipo;
 	}
 
 	public List<LocalDate> getDias() {
@@ -652,9 +921,5 @@ public class GestorTurnoFuncionariosController {
 	
 	public void setFolgaPtpDia2(String folgaPtpDia2) {
 		this.folgaPtpDia2 = folgaPtpDia2;
-	}
-	
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
 	}
 }

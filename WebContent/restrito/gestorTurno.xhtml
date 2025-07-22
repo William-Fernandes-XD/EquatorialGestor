@@ -38,17 +38,6 @@
 
 			<div class="registroEscalas">
 
-				<div class="registroTipo">
-					<h:outputLabel value="Tipo" />
-					<p:autoComplete id="tipo" value="#{gestorTurnoFuncionarios.tipo}"
-						completeMethod="#{gestorTurnoFuncionarios.returnTipos()}"
-						dropdown="true" forceSelection="true"
-						placeholder="Nome funcionário"
-						panelStyle="max-height: 700px; overflow-y:auto;position:absolute"
-						inputStyle="width :70%; margin: 0" style="margin:0;"
-						inputStyleClass="inputs" />
-				</div>
-
 				<div class="text">
 
 					<h:outputLabel value="Data/ínicio" />
@@ -158,6 +147,11 @@
 				</div>
 
 				<div>
+					
+					<p:commandButton value="Salvar Escala" styleClass="ui-button-info"
+						action="#{gestorTurnoFuncionarios.salvarEscala()}" update="tabela"
+						ajax="true" />
+				
 					<p:commandButton value="Gerar escala" styleClass="ui-button-info"
 						action="#{gestorTurnoFuncionarios.gerarEscala()}" update="tabela"
 						ajax="true" />
