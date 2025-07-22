@@ -43,98 +43,98 @@
 					<h:outputLabel value="Data/ínicio" />
 
 					<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
-						autocomplete="false" value="#{gestorTurnoFuncionarios.datainicio}" />
+						autocomplete="false" value="#{gestorTurnoFuncionarios.geradorEscalaEntity.inicio}" />
 				</div>
 
 				<div class="text">
 
 					<h:outputLabel value="Emergencial Folga" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.folgaEmergencialDia}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.emergencialFolga}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Comercial Folga" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.comercialFolga}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.comercialFolga}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Ilha de Risco Folga" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.ilhaRiscoFolga}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.ilhaDeRiscoFolga}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Triagem Folga" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.triagemFolga}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.triagemFolga}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="PTP folga" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.folgaPtpDia}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.ptpFolga}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="PTP folga escala 4x4" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.folgaPtpDia2}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.ptpFolga4x4}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Avaliação Folga" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.folgaAvaliacao}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.avaliacaoFolga}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Impacto Folga" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.impactoFolga}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Impacto Folga 2" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.impactoFolga2}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga2}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Impacto Folga 3" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.impactoFolga3}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga3}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Impacto Folga 4" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.impactoFolga4}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga4}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Impacto Folga 5" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.impactoFolga5}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga5}"/>
 				</div>
 				
 				<div class="text">
 
 					<h:outputLabel value="Impacto Folga 6" />
 
-					<p:inputText value="#{gestorTurnoFuncionarios.impactoFolga6}"/>
+					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga6}"/>
 				</div>
 
 				<div class="text">
@@ -143,18 +143,22 @@
 
 					<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
 						autocomplete="false" inputStyle="inputs"
-						value="#{gestorTurnoFuncionarios.datafinal}" />
+						value="#{gestorTurnoFuncionarios.geradorEscalaEntity.fim}" />
 				</div>
 
 				<div>
 					
 					<p:commandButton value="Salvar Escala" styleClass="ui-button-info"
-						action="#{gestorTurnoFuncionarios.salvarEscala()}" update="tabela"
+						action="#{gestorTurnoFuncionarios.salvarEscala()}"
 						ajax="true" />
 				
 					<p:commandButton value="Gerar escala" styleClass="ui-button-info"
 						action="#{gestorTurnoFuncionarios.gerarEscala()}" update="tabela"
 						ajax="true" />
+						
+						<p:commandButton value="Visualizar escalas" styleClass="ui-button-info"
+						update="tabelaEscala" ajax="true" oncomplete="PF('escalasSalvas').show()"
+						action="#{gestorTurnoFuncionarios.carregarEscalasSalvas()}"/>
 				</div>
 			</div>
 
@@ -198,6 +202,55 @@
 				</p:columns>
 			</p:dataTable>
 		</div>
+		
+		<p:dialog id="escalasSalvas" widgetVar="escalasSalvas" position="center" width="90vw" height="90vh" 
+		header="Visualizar bancos" resizable="false" draggable="false">
+			
+			<p:dataTable widgetVar="tabelaEscala"
+				value="#{gestorTurnoFuncionarios.listaDeEscalasSalvas}"
+				var="escala" id="tabelaEscala" resizableColumns="true"
+				styleClass="tabela-larga" scrollable="true" scrollHeight="500">
+				
+				<p:column>
+					<center>
+						<f:facet name="header">Data/Ínicio</f:facet>
+						<h:outputText value="#{escala.inicio}">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</center>
+				</p:column>
+				
+				<p:column>
+					<center>
+						<f:facet name="header">Data/Fim</f:facet>
+						<h:outputText value="#{escala.fim}">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</center>
+				</p:column>
+				
+				<p:column>
+					<center>
+						<f:facet name="header">Visualização</f:facet>
+						<p:commandButton styleClass="ui-button-info" update=":formGestor"
+						value="Visualizar" ajax="true" action="#{gestorTurnoFuncionarios.gerarEscala()}"
+						oncomplete="PF('escalasSalvas').hide()">
+							<f:setPropertyActionListener value="#{escala}" target="#{gestorTurnoFuncionarios.geradorEscalaEntity}" />
+						</p:commandButton>
+					</center>
+				</p:column>
+				
+				<p:column>
+					<center>
+						<f:facet name="header">Remover</f:facet>
+						<p:commandButton styleClass="ui-button-danger" update=":formGestor:tabelaEscala"
+						value="Remover" ajax="true" action="#{gestorTurnoFuncionarios.removerEscala(escala)}"/>
+					</center>
+				</p:column>
+				
+			</p:dataTable>
+			
+		</p:dialog>
 
 		<ui:include src="/templates/painelDuvidas.xhtml" />
 

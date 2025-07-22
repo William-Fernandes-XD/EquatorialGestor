@@ -33,25 +33,6 @@ public class GestorTurnoFuncionariosController {
 	
 	private GeradorEscalaEntity geradorEscalaEntity = new GeradorEscalaEntity();
 
-	// Registro de escala
-
-	private String folgaEmergencialDia;
-	private String folgaPtpDia;
-	private String folgaPtpDia2;
-	private String comercialFolga;
-	private String folgaAvaliacao;
-	private String ilhaRiscoFolga;
-	private String triagemFolga;
-	private String impactoFolga;
-	private String impactoFolga2;
-	private String impactoFolga3;
-	private String impactoFolga4;
-	private String impactoFolga5;
-	private String impactoFolga6;
-
-	private Date datainicio;
-	private Date datafinal;
-
 	private List<LocalDate> dias;
 
 	private List<Funcionarios> funcionarios = new ArrayList<>();
@@ -59,6 +40,8 @@ public class GestorTurnoFuncionariosController {
 	private Map<String, Map<LocalDate, String>> tabelaDados;
 	
 	private BancosTurnoImpl bancosTurnoImpl = new BancosTurnoImpl();
+	
+	private List<GeradorEscalaEntity> listaDeEscalasSalvas = new ArrayList<>();
 	
 	public List<Funcionarios> carregarFuncionariosTabelaPrincipal() throws Exception {
 
@@ -75,36 +58,94 @@ public class GestorTurnoFuncionariosController {
 		return funcionarios;
 	}
 	
+	/**
+	 * Realiza o salvamento de escalas
+	 */
 	public void salvarEscala() {
 		
-		if(datafinal != null && datainicio != null) {
+		if(geradorEscalaEntity.getInicio() != null && geradorEscalaEntity.getFim() != null) {
 			
 			try {
 				
-				if (folgaEmergencialDia == null) folgaEmergencialDia = "0";
-			    if (folgaPtpDia == null) folgaPtpDia = "0";
-			    if (folgaPtpDia2 == null) folgaPtpDia2 = "0";
-			    if (comercialFolga == null) comercialFolga = "0";
-			    if (folgaAvaliacao == null) folgaAvaliacao = "0";
-			    if (ilhaRiscoFolga == null) ilhaRiscoFolga = "0";
-			    if (triagemFolga == null) triagemFolga = "0";
-			    if (impactoFolga == null) impactoFolga = "0";
-			    if (impactoFolga2 == null) impactoFolga2 = "0";
-			    if (impactoFolga3 == null) impactoFolga3 = "0";
-			    if (impactoFolga4 == null) impactoFolga4 = "0";
-			    if (impactoFolga5 == null) impactoFolga5 = "0";
-			    if (impactoFolga6 == null) impactoFolga6 = "0";
+				if (geradorEscalaEntity.getEmergencialFolga() == null) 
+				    geradorEscalaEntity.setEmergencialFolga("0");
+
+				if (geradorEscalaEntity.getPtpFolga() == null) 
+				    geradorEscalaEntity.setPtpFolga("0");
+
+				if (geradorEscalaEntity.getPtpFolga4x4() == null) 
+				    geradorEscalaEntity.setPtpFolga4x4("0");
+
+				if (geradorEscalaEntity.getComercialFolga() == null) 
+				    geradorEscalaEntity.setComercialFolga("0");
+
+				if (geradorEscalaEntity.getAvaliacaoFolga() == null) 
+				    geradorEscalaEntity.setAvaliacaoFolga("0");
+
+				if (geradorEscalaEntity.getIlhaDeRiscoFolga() == null) 
+				    geradorEscalaEntity.setIlhaDeRiscoFolga("0");
+
+				if (geradorEscalaEntity.getTriagemFolga() == null) 
+				    geradorEscalaEntity.setTriagemFolga("0");
+
+				if (geradorEscalaEntity.getImpactoFolga() == null) 
+				    geradorEscalaEntity.setImpactoFolga("0");
+
+				if (geradorEscalaEntity.getImpactoFolga2() == null) 
+				    geradorEscalaEntity.setImpactoFolga2("0");
+
+				if (geradorEscalaEntity.getImpactoFolga3() == null) 
+				    geradorEscalaEntity.setImpactoFolga3("0");
+
+				if (geradorEscalaEntity.getImpactoFolga4() == null) 
+				    geradorEscalaEntity.setImpactoFolga4("0");
+
+				if (geradorEscalaEntity.getImpactoFolga5() == null) 
+				    geradorEscalaEntity.setImpactoFolga5("0");
+
+				if (geradorEscalaEntity.getImpactoFolga6() == null) 
+				    geradorEscalaEntity.setImpactoFolga6("0");
 			    
+				geradorEscalaEntityImpl.merge(geradorEscalaEntity);
+				listaDeEscalasSalvas.add(geradorEscalaEntity);
+				
+				MensagensJSF.msgSeverityInfo("Nova escala salva com sucesso", "Salvo");
 				
 			}catch(Exception e) {
 				MensagensJSF.msgSeverityInfo("Não foi possível salvar a escala", "Um erro inesperado");
 			}
 		}
 	}
+	
+	public void removerEscala(GeradorEscalaEntity entity) {
+		
+		try{
+			geradorEscalaEntityImpl.remove(entity);
+			listaDeEscalasSalvas.remove(entity);
+			MensagensJSF.msgSeverityInfo("Removido", "Escala removida com sucesso");
+			
+		}catch(Exception e) {
+			MensagensJSF.msgSeverityInfo("Não foi possível remover a escala", "Um erro inesperado");
+		}
+	}
+	
+	public void carregarEscalasSalvas() {
+		
+		try {
+			
+			listaDeEscalasSalvas = geradorEscalaEntityImpl.findAll(GeradorEscalaEntity.class);
+			
+		}catch(Exception e) {
+			MensagensJSF.msgSeverityInfo("Não foi possível realizar a consulta de escalas", "Um erro inesperado");
+		}
+	}
 
+	/**
+	 * Gera a escala que aparece na tela
+	 */
 	public void gerarEscala() {
 
-		if (datainicio != null && datafinal != null) {
+		if (geradorEscalaEntity.getInicio() != null && geradorEscalaEntity.getFim() != null) {
 			
 			/**
 			 * 
@@ -113,8 +154,8 @@ public class GestorTurnoFuncionariosController {
 			
 			dias = new ArrayList<>();
 
-			LocalDate inicio = new java.sql.Date(datainicio.getTime()).toLocalDate();
-			LocalDate fim = new java.sql.Date(datafinal.getTime()).toLocalDate();
+			LocalDate inicio = new java.sql.Date(geradorEscalaEntity.getInicio().getTime()).toLocalDate();
+			LocalDate fim = new java.sql.Date(geradorEscalaEntity.getFim().getTime()).toLocalDate();
 
 			LocalDate atual = inicio;
 			long diferencaDias = ChronoUnit.DAYS.between(inicio, fim);
@@ -162,7 +203,7 @@ public class GestorTurnoFuncionariosController {
 					if(funcionario.getAtividadeSuperintendencia().equalsIgnoreCase("emergencial")) {
 						
 						try {
-							offset = Integer.parseInt(folgaEmergencialDia);
+							offset = Integer.parseInt(geradorEscalaEntity.getEmergencialFolga());
 						} catch (Exception e) {
 							offset = 0;
 						}
@@ -221,9 +262,9 @@ public class GestorTurnoFuncionariosController {
 						try{
 							
 							if(funcionario.getEscala().equalsIgnoreCase("4-PTP")) {
-								offset = Integer.parseInt(folgaPtpDia2);
+								offset = Integer.parseInt(geradorEscalaEntity.getPtpFolga4x4());
 							}else if(funcionario.getEscala().equalsIgnoreCase("5-PTP")){
-								offset = Integer.parseInt(folgaPtpDia);
+								offset = Integer.parseInt(geradorEscalaEntity.getPtpFolga());
 							}
 						}catch(Exception e) {
 							offset = 0;
@@ -291,7 +332,7 @@ public class GestorTurnoFuncionariosController {
 					if("Comercial".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())) {
 						
 						try {
-							offset = Integer.parseInt(comercialFolga);
+							offset = Integer.parseInt(geradorEscalaEntity.getComercialFolga());
 						}catch(Exception e) {
 							offset = 0;
 						}
@@ -378,7 +419,7 @@ public class GestorTurnoFuncionariosController {
 					if("Avaliação".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())){
 						
 						try {
-							offset = Integer.parseInt(folgaAvaliacao);
+							offset = Integer.parseInt(geradorEscalaEntity.getAvaliacaoFolga());
 						}catch(Exception e) {
 							offset = 0;
 						}
@@ -451,7 +492,7 @@ public class GestorTurnoFuncionariosController {
 					if("ilha de risco".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())){
 						
 						try {
-							offset = Integer.parseInt(ilhaRiscoFolga);
+							offset = Integer.parseInt(geradorEscalaEntity.getIlhaDeRiscoFolga());
 						}catch(Exception e) {
 							offset = 0;
 						}
@@ -524,7 +565,7 @@ public class GestorTurnoFuncionariosController {
 					if("triagem".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())){
 						
 						try {
-							offset = Integer.parseInt(triagemFolga);
+							offset = Integer.parseInt(geradorEscalaEntity.getTriagemFolga());
 						}catch(Exception e) {
 							offset = 0;
 						}
@@ -590,22 +631,22 @@ public class GestorTurnoFuncionariosController {
 							|| "manobra".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())) {
 
 						try {
-							offset = Integer.parseInt(impactoFolga);
+							offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga());
 							
 							if("1".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(impactoFolga);
+								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga());
 								
 							}else if("2".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(impactoFolga2);
+								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga2());
 								
 							}else if("3".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(impactoFolga3);
+								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga3());
 							}
 							else if("4".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(impactoFolga4);
+								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga4());
 								
 							}else if("5".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(impactoFolga5);
+								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga5());
 							}
 							
 							/**
@@ -613,11 +654,11 @@ public class GestorTurnoFuncionariosController {
 							 */
 							
 							else if("1".equals(funcionario.getSecao()) && !"4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(impactoFolga6);
+								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga6());
 							}else if("2".equals(funcionario.getSecao()) && !"4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(impactoFolga6) + 2;
+								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga6()) + 2;
 							}else if("3".equals(funcionario.getSecao()) && !"4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(impactoFolga6) + 4;
+								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga6()) + 4;
 							}
 						} catch (Exception e) {
 							offset = 0;
@@ -796,46 +837,6 @@ public class GestorTurnoFuncionariosController {
 		return tipos;
 	}
 	
-	public String getFolgaAvaliacao() {
-		return folgaAvaliacao;
-	}
-	
-	public void setFolgaAvaliacao(String folgaAvaliacao) {
-		this.folgaAvaliacao = folgaAvaliacao;
-	}
-
-	public Date getDatafinal() {
-		return datafinal;
-	}
-
-	public Date getDatainicio() {
-		return datainicio;
-	}
-	
-	public String getComercialFolga() {
-		return comercialFolga;
-	}
-	
-	public void setComercialFolga(String comercialFolga) {
-		this.comercialFolga = comercialFolga;
-	}
-
-	public String getFolgaEmergencialDia() {
-		return folgaEmergencialDia;
-	}
-
-	public void setFolgaEmergencialDia(String folgaEmergencialDia) {
-		this.folgaEmergencialDia = folgaEmergencialDia;
-	}
-
-	public void setDatafinal(Date datafinal) {
-		this.datafinal = datafinal;
-	}
-
-	public void setDatainicio(Date datainicio) {
-		this.datainicio = datainicio;
-	}
-
 	public List<LocalDate> getDias() {
 		return dias;
 	}
@@ -844,82 +845,19 @@ public class GestorTurnoFuncionariosController {
 		this.dias = dias;
 	}
 	
-	public String getIlhaRiscoFolga() {
-		return ilhaRiscoFolga;
+	public GeradorEscalaEntity getGeradorEscalaEntity() {
+		return geradorEscalaEntity;
 	}
 	
-	public void setIlhaRiscoFolga(String ilhaRiscoFolga) {
-		this.ilhaRiscoFolga = ilhaRiscoFolga;
+	public void setGeradorEscalaEntity(GeradorEscalaEntity geradorEscalaEntity) {
+		this.geradorEscalaEntity = geradorEscalaEntity;
 	}
 	
-	public String getFolgaPtpDia() {
-		return folgaPtpDia;
-	}
-	public void setFolgaPtpDia(String folgaPtpDia) {
-		this.folgaPtpDia = folgaPtpDia;
-	}
-
-	public String getTriagemFolga() {
-		return triagemFolga;
+	public List<GeradorEscalaEntity> getListaDeEscalasSalvas() {
+		return listaDeEscalasSalvas;
 	}
 	
-	public void setTriagemFolga(String triagemFolga) {
-		this.triagemFolga = triagemFolga;
-	}
-	
-	public String getImpactoFolga() {
-		return impactoFolga;
-	}
-	
-	public String getImpactoFolga2() {
-		return impactoFolga2;
-	}
-	
-	public void setImpactoFolga2(String impactoFolga2) {
-		this.impactoFolga2 = impactoFolga2;
-	}
-	
-	public String getImpactoFolga3() {
-		return impactoFolga3;
-	}
-	
-	public void setImpactoFolga3(String impactoFolga3) {
-		this.impactoFolga3 = impactoFolga3;
-	}
-	
-	public String getImpactoFolga4() {
-		return impactoFolga4;
-	}
-	
-	public void setImpactoFolga4(String impactoFolga4) {
-		this.impactoFolga4 = impactoFolga4;
-	}
-	
-	public String getImpactoFolga5() {
-		return impactoFolga5;
-	}
-	
-	public void setImpactoFolga5(String impactoFolga5) {
-		this.impactoFolga5 = impactoFolga5;
-	}
-	
-	public void setImpactoFolga(String impactoFolga) {
-		this.impactoFolga = impactoFolga;
-	}
-	
-	public String getImpactoFolga6() {
-		return impactoFolga6;
-	}
-	
-	public void setImpactoFolga6(String impactoFolga6) {
-		this.impactoFolga6 = impactoFolga6;
-	}
-	
-	public String getFolgaPtpDia2() {
-		return folgaPtpDia2;
-	}
-	
-	public void setFolgaPtpDia2(String folgaPtpDia2) {
-		this.folgaPtpDia2 = folgaPtpDia2;
+	public void setListaDeEscalasSalvas(List<GeradorEscalaEntity> listaDeEscalasSalvas) {
+		this.listaDeEscalasSalvas = listaDeEscalasSalvas;
 	}
 }
