@@ -29,6 +29,9 @@ public class Funcionarios implements Serializable{
 	private Date feriasInicio;
 	private Date feriasFim;
 	
+	private Date licencaInicio;
+	private Date licencaFim;
+	
 	// Seções e escala de trabalho
 	
 	private String escala;
@@ -140,6 +143,22 @@ public class Funcionarios implements Serializable{
 		this.feriasInicio = feriasInicio;
 	}
 
+	public Date getLicencaFim() {
+		return licencaFim;
+	}
+	
+	public Date getLicencaInicio() {
+		return licencaInicio;
+	}
+	
+	public void setLicencaFim(Date licencaFim) {
+		this.licencaFim = licencaFim;
+	}
+	
+	public void setLicencaInicio(Date licencaInicio) {
+		this.licencaInicio = licencaInicio;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -147,7 +166,7 @@ public class Funcionarios implements Serializable{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -9,11 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import com.gestorcoi.entities.Feedback;
 import com.gestorcoi.entities.Funcionarios;
-import com.gestorcoi.entities.RegistroAusencia;
 import com.gestorcoi.implementations.FuncionarioImpl;
-import com.gestorcoi.implementations.SupervisorImpl;
 import com.gestorcoi.utils.MensagensJSF;
 
 @ManagedBean(name = "gerenciaFuncionarios")
@@ -23,8 +20,6 @@ public class GerenciaFuncionarioController {
 	private FuncionarioImpl funcionarioImpl = new FuncionarioImpl();
 	
 	private Funcionarios funcionarios;
-	
-	private SupervisorImpl supervisorImpl = new SupervisorImpl();
 	
 	private List<Funcionarios> funcionariosCarregadosTela = new ArrayList<>();
 	
@@ -66,6 +61,35 @@ public class GerenciaFuncionarioController {
 				
 				funcionarios.setFeriasInicio(feriasInicio);
 				funcionarios.setFeriasFim(feriasFim);
+				
+				funcionarios = funcionarioImpl.merge2(funcionarios);
+				MensagensJSF.msgSeverityInfo("Usuário " + funcionarios.getNome() + ", atualizado com sucesso", "Atualizado");
+			}else {
+				MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			}
+			
+		}catch(Exception e) {
+			MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Usado para alterar as licenças de funcionário
+	 */
+	public void mergeFuncionario2() {
+		
+		try {
+			
+			if(funcionarios.getId() != null) {
+				
+				Date licencaInicio = funcionarios.getLicencaInicio();
+				Date licencaFim = funcionarios.getLicencaFim();
+				
+				funcionarios = funcionarioImpl.findById(funcionarios.getId());
+				
+				funcionarios.setLicencaInicio(licencaInicio);
+				funcionarios.setLicencaFim(licencaFim);
 				
 				funcionarios = funcionarioImpl.merge2(funcionarios);
 				MensagensJSF.msgSeverityInfo("Usuário " + funcionarios.getNome() + ", atualizado com sucesso", "Atualizado");
@@ -184,6 +208,9 @@ public class GerenciaFuncionarioController {
 		retornaRegionais.add("Avaliação");
 		retornaRegionais.add("Impacto");
 		retornaRegionais.add("Manobra");
+		retornaRegionais.add("S/SO");
+		retornaRegionais.add("N / NE");
+		retornaRegionais.add("Ouvidoria");
 		
 		return retornaRegionais.stream().filter(s -> s.toUpperCase().contains(query.toUpperCase())).collect(Collectors.toList());
 	}

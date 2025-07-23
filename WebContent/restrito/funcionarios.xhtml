@@ -71,7 +71,18 @@
 							<p:commandButton value="➕" ajax="true"
 								styleClass="ui-button-info" update=":forms:feriasControl"
 								oncomplete="PF('feriasControl').show()" process="@this">
-									<f:setPropertyActionListener value="#{objeto}" target="#{bancosTurnoController.funcionario}" />
+									<f:setPropertyActionListener value="#{objeto}" target="#{gerenciaFuncionarios.funcionarios}" />
+								</p:commandButton>
+						</center>
+					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Alterar Licença</f:facet>
+							<p:commandButton value="➕" ajax="true"
+								styleClass="ui-button-info" update=":forms:licencaControl"
+								oncomplete="PF('licencaControl').show()" process="@this">
+									<f:setPropertyActionListener value="#{objeto}" target="#{gerenciaFuncionarios.funcionarios}" />
 								</p:commandButton>
 						</center>
 					</p:column>
@@ -159,7 +170,7 @@
 			<div class="ferias-tudo">
 			
 				<div class="nomeFuncionario">
-					<h:outputText value="#{bancosTurnoController.funcionario.nome}" />					
+					<h:outputText value="#{gerenciaFuncionarios.funcionarios.nome}" />					
 				</div>
 			
 				<div class="text">
@@ -182,6 +193,40 @@
 				
 				<div class="button-ferias">
 					<p:commandButton class="ui-button-info" value="Atualizar" action="#{gerenciaFuncionarios.mergeFuncionario()}"/>
+				</div>
+			</div>
+		</p:dialog>
+		
+		<p:dialog widgetVar="licencaControl" id="licencaControl"
+			position="center" width="50vw" height="60vh" header="Alterar Licença"
+			resizable="false" draggable="false">
+
+			<div class="ferias-tudo">
+			
+				<div class="nomeFuncionario">
+					<h:outputText value="#{gerenciaFuncionarios.funcionarios.nome}" />					
+				</div>
+			
+				<div class="text">
+				
+					<div class="ferias-inputs">
+						<h:outputText value="Data/ínicio Licença" />
+
+						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
+							value="#{gerenciaFuncionarios.funcionarios.licencaInicio}"
+							autocomplete="false" appendTo="@form"/>
+					</div>
+
+					<div class="ferias-inputs">
+						<h:outputText value="Data/Fim Licença" />
+						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
+							value="#{gerenciaFuncionarios.funcionarios.licencaFim}"
+							autocomplete="false" appendTo="@form"/>
+					</div>
+				</div>
+				
+				<div class="button-ferias">
+					<p:commandButton class="ui-button-info" value="Atualizar" action="#{gerenciaFuncionarios.mergeFuncionario2()}"/>
 				</div>
 			</div>
 		</p:dialog>

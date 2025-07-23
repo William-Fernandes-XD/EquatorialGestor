@@ -39,6 +39,10 @@ public class ExcelScanner {
 			
 			for(Row row : sheet) {
 				
+				if(row == null || row.getCell(0) == null || row.getCell(0).getCellType() == Cell.CELL_TYPE_BLANK) {
+					continue;
+				}
+				
 				Map<LocalDate, String> mapaDiasTrabalho = new HashMap<>();
 				LocalDate atual = inicio;
 				
@@ -59,16 +63,16 @@ public class ExcelScanner {
 					}
 				}
 				
-				mapaDados.put(row.getCell(0).getStringCellValue(), mapaDiasTrabalho);
-				
+				if(!mapaDiasTrabalho.isEmpty()) {
+					mapaDados.put(row.getCell(0).getStringCellValue(), mapaDiasTrabalho);
+				}
 			}
 			
 			return mapaDados;
 			
 		}catch(Exception e) {
-			MensagensJSF.msgSeverityError("Não há dados de supervisores para ler, arquivo inválido");
 			e.printStackTrace();
-			return mapaDados = new HashMap<>();
+			return mapaDados = new HashMap<String, Map<LocalDate,String>>();
 		}
 	}
 

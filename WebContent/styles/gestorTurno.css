@@ -29,10 +29,27 @@ body {
 	z-index: 1000;
 }
 .tudo{
-	
 	padding-top: 8em;
 	width: 80vw;
 	margin: auto;
+	display: felx;
+	flex-direction:row;
+}
+
+.filtroDiv{
+	
+	display: flex;
+	flex-direction: row;
+	gap: 40px;
+	margin-top: 2em;
+}
+
+.botoesdiv{
+	
+	display :flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
 }
 
 .registroEscalas{
@@ -75,6 +92,12 @@ body {
 
 .fundo-verde{
 	background-color: green;
+}
+
+.fundo-cinza{
+	background-color: #d9d9d9;
+	text-align: center;
+	overflow: hidden;
 }
 
 .fundo-laranja{

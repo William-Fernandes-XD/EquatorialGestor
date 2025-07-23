@@ -1,15 +1,18 @@
 package com.gestorcoi.controllers;
 
+import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -25,8 +28,16 @@ import com.gestorcoi.utils.MensagensJSF;
 
 @ManagedBean(name = "gestorTurnoFuncionarios")
 @ViewScoped
-public class GestorTurnoFuncionariosController {
+public class GestorTurnoFuncionariosController implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
+	// Filtro da tabela que aparece na tela (pode ser nulo, e não funciona se nao tiver uma planilha feita)
+	
+	private String filtro = "";
+	
+	// set ferias
+	
 	private FuncionarioImpl funcionarioImpl = new FuncionarioImpl();
 	
 	private GeradorEscalaEntityImpl geradorEscalaEntityImpl = new GeradorEscalaEntityImpl();
@@ -36,6 +47,7 @@ public class GestorTurnoFuncionariosController {
 	private List<LocalDate> dias;
 
 	private List<Funcionarios> funcionarios = new ArrayList<>();
+	private List<Funcionarios> funcionariosFiltrados = new ArrayList<>();
 	
 	private Map<String, Map<LocalDate, String>> tabelaDados;
 	
@@ -43,7 +55,7 @@ public class GestorTurnoFuncionariosController {
 	
 	private List<GeradorEscalaEntity> listaDeEscalasSalvas = new ArrayList<>();
 	
-	public List<Funcionarios> carregarFuncionariosTabelaPrincipal() throws Exception {
+	public void carregarFuncionariosTabelaPrincipal() throws Exception {
 
 		funcionarios = funcionarioImpl.findAll(Funcionarios.class);
 		
@@ -55,7 +67,11 @@ public class GestorTurnoFuncionariosController {
 				.thenComparing(Funcionarios::getNome, Comparator.nullsLast(String::compareToIgnoreCase))
 				);
 		
-		return funcionarios;
+		funcionariosFiltrados = funcionarios;
+	}
+	
+	public GestorTurnoFuncionariosController() throws Exception{
+		carregarFuncionariosTabelaPrincipal();
 	}
 	
 	/**
@@ -66,6 +82,13 @@ public class GestorTurnoFuncionariosController {
 		if(geradorEscalaEntity.getInicio() != null && geradorEscalaEntity.getFim() != null) {
 			
 			try {
+				
+				LocalDate inicioDetudo = geradorEscalaEntity.getInicio().toInstant()
+						.atZone(ZoneId.systemDefault()).toLocalDate();
+					
+				LocalDate dataFimDeTudo = inicioDetudo.plusDays(35);
+					
+					geradorEscalaEntity.setFim(Date.from(dataFimDeTudo.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 				
 				if (geradorEscalaEntity.getEmergencialFolga() == null) 
 				    geradorEscalaEntity.setEmergencialFolga("0");
@@ -122,7 +145,7 @@ public class GestorTurnoFuncionariosController {
 		try{
 			geradorEscalaEntityImpl.remove(entity);
 			listaDeEscalasSalvas.remove(entity);
-			MensagensJSF.msgSeverityInfo("Removido", "Escala removida com sucesso");
+			MensagensJSF.msgSeverityInfo("Escala removida com sucesso", "Removido");
 			
 		}catch(Exception e) {
 			MensagensJSF.msgSeverityInfo("Não foi possível remover a escala", "Um erro inesperado");
@@ -139,13 +162,26 @@ public class GestorTurnoFuncionariosController {
 			MensagensJSF.msgSeverityInfo("Não foi possível realizar a consulta de escalas", "Um erro inesperado");
 		}
 	}
+	
+	public void gerarEscalaFiltrada(){
+		
+		if(filtro != null && !filtro.trim().isEmpty()) {
+			
+			funcionariosFiltrados =  funcionarios.stream().filter(s -> s.getAtividadeSuperintendencia().equalsIgnoreCase(filtro)).collect(Collectors.toList());
+			
+			gerarEscala();
+		}else {
+			funcionariosFiltrados = funcionarios;
+			gerarEscala();
+		}
+	}
 
 	/**
 	 * Gera a escala que aparece na tela
 	 */
 	public void gerarEscala() {
 
-		if (geradorEscalaEntity.getInicio() != null && geradorEscalaEntity.getFim() != null) {
+		if (geradorEscalaEntity.getInicio() != null) {
 			
 			/**
 			 * 
@@ -153,6 +189,17 @@ public class GestorTurnoFuncionariosController {
 			 */
 			
 			dias = new ArrayList<>();
+			
+			/**
+			 * Setamento de afastamento de 35 dias
+			 */
+			LocalDate inicioDetudo = geradorEscalaEntity.getInicio().toInstant()
+					.atZone(ZoneId.systemDefault()).toLocalDate();
+				
+			LocalDate dataFimDeTudo = inicioDetudo.plusDays(35);
+				
+			geradorEscalaEntity.setFim(Date.from(dataFimDeTudo.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	
 
 			LocalDate inicio = new java.sql.Date(geradorEscalaEntity.getInicio().getTime()).toLocalDate();
 			LocalDate fim = new java.sql.Date(geradorEscalaEntity.getFim().getTime()).toLocalDate();
@@ -168,7 +215,7 @@ public class GestorTurnoFuncionariosController {
 
 				tabelaDados = new HashMap<String, Map<LocalDate, String>>();
 
-				for (Funcionarios funcionario : funcionarios) {
+				for (Funcionarios funcionario : funcionariosFiltrados) {
 					Map<LocalDate, String> mapadias = new HashMap<>();
 					
 					int offset = 0;
@@ -186,6 +233,19 @@ public class GestorTurnoFuncionariosController {
 						feriasFim = null;
 					}
 					
+					// licença
+					
+					LocalDate licencaInicio;
+					LocalDate licencaFim;
+					
+					try {
+						licencaInicio = new java.sql.Date(funcionario.getLicencaInicio().getTime()).toLocalDate();
+						licencaFim = new java.sql.Date(funcionario.getLicencaFim().getTime()).toLocalDate();
+					}catch(Exception e) {
+						licencaInicio = null;
+						licencaFim = null;
+					}
+					
 					// Bancos de horas
 					
 					List<BancosTurno> bancosTurnos;
@@ -195,7 +255,6 @@ public class GestorTurnoFuncionariosController {
 					}catch(Exception e) {
 						bancosTurnos = new ArrayList<>();
 					}
-					
 					
 					/**
 					 * Pessoal da emergencial apenas
@@ -246,6 +305,13 @@ public class GestorTurnoFuncionariosController {
 								    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
 								) {
 								    valor = "Férias";
+								}
+							
+							if (
+								    licencaInicio != null && licencaFim != null &&
+								    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+								) {
+								    valor = "Licença";
 								}
 
 							mapadias.put(dia, valor);
@@ -298,6 +364,13 @@ public class GestorTurnoFuncionariosController {
 									    valor = "Férias";
 									}
 								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -321,6 +394,13 @@ public class GestorTurnoFuncionariosController {
 									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
 									) {
 									    valor = "Férias";
+									}
+								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
 									}
 								
 								mapadias.put(dia, valor);
@@ -363,6 +443,13 @@ public class GestorTurnoFuncionariosController {
 									    valor = "Férias";
 									}
 								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -384,6 +471,13 @@ public class GestorTurnoFuncionariosController {
 									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
 									) {
 									    valor = "Férias";
+									}
+								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
 									}
 								
 								mapadias.put(dia, valor);
@@ -408,6 +502,13 @@ public class GestorTurnoFuncionariosController {
 									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
 									) {
 									    valor = "Férias";
+									}
+								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
 									}
 								
 								mapadias.put(dia, valor);
@@ -458,6 +559,13 @@ public class GestorTurnoFuncionariosController {
 									    valor = "Férias";
 									}
 								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -481,6 +589,13 @@ public class GestorTurnoFuncionariosController {
 									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
 									) {
 									    valor = "Férias";
+									}
+								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
 									}
 								
 								mapadias.put(dia, valor);
@@ -529,6 +644,13 @@ public class GestorTurnoFuncionariosController {
 									    valor = "Férias";
 									}
 								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -554,6 +676,13 @@ public class GestorTurnoFuncionariosController {
 									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
 									) {
 									    valor = "Férias";
+									}
+								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
 									}
 								
 								mapadias.put(dia, valor);
@@ -594,6 +723,13 @@ public class GestorTurnoFuncionariosController {
 									    valor = "Férias";
 									}
 								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
+									}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -619,6 +755,13 @@ public class GestorTurnoFuncionariosController {
 									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
 									) {
 									    valor = "Férias";
+									}
+								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
 									}
 								
 								mapadias.put(dia, valor);
@@ -704,6 +847,13 @@ public class GestorTurnoFuncionariosController {
 									) {
 									    valor = "Férias";
 									}
+								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
+									}
 
 								mapadias.put(dia, valor);
 								index++;
@@ -738,6 +888,13 @@ public class GestorTurnoFuncionariosController {
 									    valor = "Férias";
 									}
 								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
+									}
+								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;
 							}
@@ -765,6 +922,14 @@ public class GestorTurnoFuncionariosController {
 									    valor = "Férias";
 									}
 								
+								if (
+									    licencaInicio != null && licencaFim != null &&
+									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
+									) {
+									    valor = "Licença";
+									}
+								
+								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;
 							}
@@ -777,11 +942,18 @@ public class GestorTurnoFuncionariosController {
 						
 						if(supervisoresDados == null || supervisoresDados.isEmpty()) {
 							supervisoresDados = ExcelScanner.carregarSupervisoresDadosTurno(inicio);
+							
+							if(supervisoresDados != null && !supervisoresDados.isEmpty()) {
+								for (LocalDate dia : dias) {
+									mapadias.put(dia, supervisoresDados.get(funcionario.getNome()).get(dia));
+								}
+							}else {
+								for (LocalDate dia : dias) {
+									mapadias.put(dia, "-");
+								}
+							}
 						}
 						
-						for (LocalDate dia : dias) {
-							mapadias.put(dia, supervisoresDados.get(funcionario.getNome()).get(dia));
-						}
 					}
 					
 					tabelaDados.put(funcionario.getNome(), mapadias);
@@ -815,6 +987,8 @@ public class GestorTurnoFuncionariosController {
 				return "fundo-azul-claro";
 			case "B":
 				return "fundo-azul-claro";
+			case "LICENÇA":
+				return "fundo-cinza";
 			default:
 				return "";
 		}
@@ -828,7 +1002,29 @@ public class GestorTurnoFuncionariosController {
 	public String getValor(String nome, LocalDate dia) {
 		return tabelaDados.get(nome).get(dia);
 	}
+	
+	/**
+	 * Autocomplete
+	 * 
+	 */
 
+	public List<String> filtrosAtividadesAutoComplete(String query){
+		
+		List<String> retorno = new ArrayList<>();
+		
+		retorno.add("Emergencial");
+		retorno.add("Comercial");
+		retorno.add("Supervisão");
+		retorno.add("Impacto");
+		retorno.add("Manobra");
+		retorno.add("Avaliação");
+		retorno.add("Ilha de Risco");
+		retorno.add("PTP");
+		retorno.add("TRIAGEM");
+		
+		return retorno.stream().filter(s -> s.toUpperCase().contains(query.toUpperCase())).collect(Collectors.toList());
+	}
+	
 	public List<String> returnTipos() {
 
 		List<String> tipos = new ArrayList<>();
@@ -849,12 +1045,28 @@ public class GestorTurnoFuncionariosController {
 		return geradorEscalaEntity;
 	}
 	
+	public String getFiltro() {
+		return filtro;
+	}
+	
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
+	}
+	
 	public void setGeradorEscalaEntity(GeradorEscalaEntity geradorEscalaEntity) {
 		this.geradorEscalaEntity = geradorEscalaEntity;
 	}
 	
 	public List<GeradorEscalaEntity> getListaDeEscalasSalvas() {
 		return listaDeEscalasSalvas;
+	}
+	
+	public List<Funcionarios> getFuncionariosFiltrados() {
+		return funcionariosFiltrados;
+	}
+	
+	public void setFuncionariosFiltrados(List<Funcionarios> funcionariosFiltrados) {
+		this.funcionariosFiltrados = funcionariosFiltrados;
 	}
 	
 	public void setListaDeEscalasSalvas(List<GeradorEscalaEntity> listaDeEscalasSalvas) {

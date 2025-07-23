@@ -30,6 +30,12 @@ public class UserVerification {
 		return auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
 	}
 	
+	public boolean isRegistradora(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("REGISTRADORA"));
+	}
+	
 	@PostConstruct
 	private void carregarSupervisorLogado() throws Exception{
 		

@@ -34,11 +34,13 @@
 			<h1 id="logo">Gestoria de Turnos</h1>
 		</div>
 
+	
 		<div class="tudo">
 
 			<div class="registroEscalas">
-
-				<div class="text">
+			
+				<h:panelGroup rendered="#{userVerification.registradora}">
+					<div class="text">
 
 					<h:outputLabel value="Data/ínicio" />
 
@@ -137,37 +139,52 @@
 					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga6}"/>
 				</div>
 
-				<div class="text">
+				</h:panelGroup>
 
-					<h:outputLabel value="Data/final" />
-
-					<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
-						autocomplete="false" inputStyle="inputs"
-						value="#{gestorTurnoFuncionarios.geradorEscalaEntity.fim}" />
-				</div>
 
 				<div>
 					
-					<p:commandButton value="Salvar Escala" styleClass="ui-button-info"
-						action="#{gestorTurnoFuncionarios.salvarEscala()}"
-						ajax="true" />
+					<h:panelGroup rendered="#{userVerification.registradora}">
+					
+						<p:commandButton value="Salvar Escala" styleClass="ui-button-info"
+							action="#{gestorTurnoFuncionarios.salvarEscala()}"
+							ajax="true" />
 				
-					<p:commandButton value="Gerar escala" styleClass="ui-button-info"
-						action="#{gestorTurnoFuncionarios.gerarEscala()}" update="tabela"
-						ajax="true" />
+						<p:commandButton value="Gerar escala" styleClass="ui-button-info"
+							action="#{gestorTurnoFuncionarios.gerarEscala()}" update="tabela" process="@form"
+							ajax="true" />
 						
-						<p:commandButton value="Visualizar escalas" styleClass="ui-button-info"
+					</h:panelGroup>
+						
+					<p:commandButton value="Visualizar escalas" styleClass="ui-button-info"
 						update="tabelaEscala" ajax="true" oncomplete="PF('escalasSalvas').show()"
 						action="#{gestorTurnoFuncionarios.carregarEscalasSalvas()}"/>
 				</div>
 			</div>
 
+			<div class="filtroDiv">
+				<div class="text">
+					<h:outputText value="Filtro por atividade" />
+					
+					<p:autoComplete
+						value="#{gestorTurnoFuncionarios.filtro}"
+						completeMethod="#{gestorTurnoFuncionarios.filtrosAtividadesAutoComplete}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="margin: 0" style="margin:0;" />
+				</div>				
+				
+				<div class="botoesdiv">
+					<p:commandButton value="Filtrar" styleClass="ui-button-info" process="@form"
+					action="#{gestorTurnoFuncionarios.gerarEscalaFiltrada()}" update="tabela" ajax="true" />
+				</div>
+			</div>
 		</div>
 
 		<div style="overflow: auto; width: 100%; height: 75vh">
 
 			<p:dataTable
-				value="#{gestorTurnoFuncionarios.carregarFuncionariosTabelaPrincipal()}"
+				value="#{gestorTurnoFuncionarios.funcionariosFiltrados}"
 				var="funcionarios" id="tabela" resizableColumns="true"
 				styleClass="tabela-larga" scrollable="true" scrollHeight="690">
 
