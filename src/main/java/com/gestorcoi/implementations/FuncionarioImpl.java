@@ -109,4 +109,15 @@ public class FuncionarioImpl implements AbstractMethods<Funcionarios>, Serializa
 		return null;
 	}
 
+	public Long count() {
+		
+		validateSessionFactory();
+		
+		StringBuilder query = new StringBuilder();
+		
+		query.append("Select count(entity) from ")
+		.append(Funcionarios.class.getSimpleName()).append(" entity");
+		
+		return (Long) sessionFactory.getCurrentSession().createQuery(query.toString()).uniqueResult();
+	}
 }

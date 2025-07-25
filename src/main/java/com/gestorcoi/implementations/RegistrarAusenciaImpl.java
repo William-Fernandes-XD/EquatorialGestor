@@ -30,6 +30,20 @@ public class RegistrarAusenciaImpl implements AbstractMethods<RegistroAusencia>,
 		}
 	}
 	
+	public Long countAusencias() {
+		
+		validateSessionFactory();
+		
+		StringBuilder query = new StringBuilder();
+		
+		query.append("SELECT count(entity) from ").append(RegistroAusencia.class.getSimpleName())
+		.append(" entity");
+		
+		Long count = (Long) sessionFactory.getCurrentSession().createQuery(query.toString()).uniqueResult();
+		
+		return count;
+	}
+	
 	private void executeFlush() {
 		sessionFactory.getCurrentSession().flush();
 	}
@@ -105,7 +119,7 @@ public class RegistrarAusenciaImpl implements AbstractMethods<RegistroAusencia>,
 		.append(" entity where entity.data_ausencia >= :datalimite");
 		
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -10);
+		cal.add(Calendar.DAY_OF_YEAR, -45);
 		
 		List<RegistroAusencia> ausencias = sessionFactory.getCurrentSession().createQuery(query.toString())
 				.setParameter("datalimite", cal.getTime()).setMaxResults(10).list();

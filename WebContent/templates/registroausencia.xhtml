@@ -12,8 +12,8 @@
 		<div id="corpo-dialog">
 
 			<div id="dataTableAusencia">
-				<p:dataTable var="objeto"
-					value="#{ausenciaController.listAllAusencia()}"
+				<p:dataTable var="objeto" id="tabelaAusenciasGerais"
+					value="#{ausenciaController.listaAusenciasGerais}"
 					emptyMessage="Não existem ausências"
 					style="background-color: white; border-radius: 10px; padding: 1em;overflow: auto; max-height: 660px;">
 					<p:column>
@@ -51,8 +51,8 @@
 						<center>
 							<f:facet name="header">Deletar</f:facet>
 							<p:commandButton value="🗑️"
-								action="#{ausenciaController.removerAusencia(objeto)}"
-								update=":formGestor" oncomplete="PF('registroAusencia').show()"
+								action="#{ausenciaController.removerAusenciaOptimusPrime(objeto)}"
+								update=":formGestor:tabelaAusenciasGerais" oncomplete="PF('registroAusencia').show()"
 								styleClass="ui-button-danger" />
 						</center>
 					</p:column>
@@ -100,7 +100,7 @@
 
 					<div class="botoes" style="margin-top: 1em;">
 
-						<p:commandButton value="Salvar 💾" update=":formGestor"
+						<p:commandButton value="Salvar 💾" update=":formGestor:tabelaAusenciasGerais"
 							class="botao" action="#{ausenciaController.salvarAusencia()}"
 							oncomplete="PF('registroAusencia').show()" />
 

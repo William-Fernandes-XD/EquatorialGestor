@@ -292,6 +292,15 @@ body {
   margin-top: 0.5rem;
 }
 
+/* Adicionar labels para as ferramentas */
+.menu-acoes a[href="registrosAusencias.jsf"]::after {
+  content: "Registro ausências";
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+  margin-top: 0.5rem;
+}
+
 .menu-acoes a[href="criarConta.jsf"]::after {
   content: "Criar Conta";
   font-size: 1.1rem;

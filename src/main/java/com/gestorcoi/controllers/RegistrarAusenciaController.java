@@ -1,5 +1,6 @@
 package com.gestorcoi.controllers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,7 +21,9 @@ import com.gestorcoi.utils.MensagensJSF;
 
 @ManagedBean(name = "ausenciaController")
 @ViewScoped
-public class RegistrarAusenciaController {
+public class RegistrarAusenciaController implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private Funcionarios funcionarios;
 	private RegistroAusencia ausencia;
@@ -30,6 +33,8 @@ public class RegistrarAusenciaController {
 	
 	private List<Funcionarios> listaFuncionariosAusencia = new ArrayList<>();
 	private List<RegistroAusencia> listaAusenciasFuncionario = new ArrayList<>();
+	
+	private List<RegistroAusencia> listaAusenciasGerais = new ArrayList<>();
 	
 	private List<String> funcionariosNomesAutoComplete = new ArrayList<>();
 	
@@ -44,6 +49,27 @@ public class RegistrarAusenciaController {
 			if(funcionarios.getAusencias() == null || funcionarios.getAusencias().isEmpty()) {
 				funcionarios.setAusencias(new ArrayList<RegistroAusencia>());
 			}
+		}
+	}
+	
+	public RegistrarAusenciaController(){
+		
+		try {
+			
+			if(funcionarios == null) {
+				funcionarios = new Funcionarios();
+				ausencia = new RegistroAusencia();
+				ausencia.setFuncionarios(new Funcionarios());
+				
+				if(funcionarios.getAusencias() == null || funcionarios.getAusencias().isEmpty()) {
+					funcionarios.setAusencias(new ArrayList<RegistroAusencia>());
+				}
+			}
+			
+			listAllAusencia();
+		} catch (Exception e) {
+			MensagensJSF.msgSeverityInfo("Não foi possível carregar a tabela de dados", "Um erro inesperado");
+			e.printStackTrace();
 		}
 	}
 	
@@ -74,7 +100,7 @@ public class RegistrarAusenciaController {
 
 	    return nomesFiltrados.stream().filter(name -> name.toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList());
 	}
-		
+	
 	public void limpar() {
 		funcionarios = new Funcionarios();
 		ausencia = new RegistroAusencia();
@@ -82,49 +108,93 @@ public class RegistrarAusenciaController {
 		funcionarios.setAusencias(new ArrayList<RegistroAusencia>());
 	}
 	
-	public void removerAusencia(RegistroAusencia ausencia) throws Exception{
-		
-		if(ausencia.getId() != null) {
-			
-			funcionarios = funcionarioImpl.findByName(ausencia.getFuncionarios().getNome());
-			funcionarios.getAusencias().remove(ausencia);
-			
-			funcionarioImpl.merge2(funcionarios);
-			
-			MensagensJSF.msgSeverityInfo("Ausência removida com sucesso!", "Removido");
-		}else {
-			MensagensJSF.msgSeverityError("Não foi possível identificar essa ausência");
-		}
-	}
-	
 	public void salvarAusencia() throws Exception{
 		
-		if(funcionarios.getNome() != null || !funcionarios.getNome().trim().equals("")) {
+		try {
 			
-			funcionarios = (Funcionarios) funcionarioImpl.findByName(ausencia.getFuncionarios().getNome());
+				if(ausencia.getFuncionarios().getNome() != null && !ausencia.getFuncionarios().getNome().trim().equals("")) {
 			
-			if(funcionarios.getId() != null) {
+					funcionarios = (Funcionarios) funcionarioImpl.findByName(ausencia.getFuncionarios().getNome());
 				
-				funcionarios.getAusencias().add(ausencia);
-				ausencia.setFuncionarios(funcionarios);
-				
-				ausencia = ausenciaImpl.merge2(ausencia);
-				
-				funcionarios.getAusencias().remove(ausencia);
-				
-				funcionarioImpl.merge2(funcionarios);
-				
-				MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome(), "Salvo");
-				
-				limpar();
-		}
+					if(funcionarios.getId() != null) {
+					
+						funcionarios.getAusencias().add(ausencia);
+						ausencia.setFuncionarios(funcionarios);
+					
+						ausencia = ausenciaImpl.merge2(ausencia);
+					
+						funcionarios.getAusencias().remove(ausencia);
+					
+						funcionarioImpl.merge2(funcionarios);
+					
+						listaAusenciasGerais.add(ausencia);
+					
+						MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome(), "Salvo");
+					
+						limpar();
+					}else {
+						MensagensJSF.msgSeverityError("Funcionário não encontrado");
+					}
+				}else {
+					MensagensJSF.msgSeverityError("Funcionário não encontrado");
+				}
+			}catch(Exception e) {
+				MensagensJSF.msgSeverityInfo("Não foi possível salvar nova ausência", "Um erro inesperado");
+				e.printStackTrace();
+			}
+	}
+	
+	public void salvarAusenciaComFuncionario() throws Exception{
 		
-		}else {
-			MensagensJSF.msgSeverityError("Funcionário não encontrado");
+		try {
+			
+				if(funcionarios.getNome() != null && !funcionarios.getNome().trim().equals("")) {
+			
+					funcionarios = (Funcionarios) funcionarioImpl.findByName(funcionarios.getNome());
+				
+					if(funcionarios.getId() != null) {
+					
+						funcionarios.getAusencias().add(ausencia);
+						ausencia.setFuncionarios(funcionarios);
+					
+						ausencia = ausenciaImpl.merge2(ausencia);
+					
+						funcionarios.getAusencias().remove(ausencia);
+					
+						funcionarioImpl.merge2(funcionarios);
+					
+						listaAusenciasGerais.add(ausencia);
+					
+						MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome(), "Salvo");
+					
+						limpar();
+					}else {
+						MensagensJSF.msgSeverityError("Funcionário não encontrado");
+					}
+				}else {
+					MensagensJSF.msgSeverityError("Funcionário não encontrado");
+				}
+			}catch(Exception e) {
+				MensagensJSF.msgSeverityInfo("Não foi possível salvar nova ausência", "Um erro inesperado");
+				e.printStackTrace();
+			}
+	}
+	
+	public void removerAusenciaOptimusPrime(RegistroAusencia ausencia) {
+		
+		try {
+			
+			ausenciaImpl.remove(ausencia);
+			listaAusenciasGerais.remove(ausencia);
+			MensagensJSF.msgSeverityInfo("Registro removido com sucesso", "Removido");
+			
+		}catch(Exception e) {
+			MensagensJSF.msgSeverityInfo("Impossível apagar os dados", "Um erro inesperado");
+			e.printStackTrace();
 		}
 	}
 	
-	public List<RegistroAusencia> listAllAusencia() throws Exception{
+	public void listAllAusencia() throws Exception{
 		
 		List<RegistroAusencia> ausencias = ausenciaImpl.findAll(RegistroAusencia.class);
 		
@@ -136,7 +206,7 @@ public class RegistrarAusenciaController {
 			}
 		});;
 		
-		return ausencias;
+		listaAusenciasGerais = ausencias;
 	}
 	
 	public void carregarAusenciasFuncionarioByObject(Funcionarios funcionario) throws Exception {
@@ -152,6 +222,14 @@ public class RegistrarAusenciaController {
 			List<RegistroAusencia> ausenciasRegistradas = ausenciaImpl.findAllByNameFuncionario(name);
 			listaAusenciasFuncionario = ausenciasRegistradas;
 		}
+	}
+	
+	public Long contadorDeAusencias() {
+		return ausenciaImpl.countAusencias();
+	}
+	
+	public Long contadorDeFuncionarios() {
+		return funcionarioImpl.count();
 	}
 	
 	public void carregarFuncionariosAusencias() throws Exception{
@@ -186,6 +264,14 @@ public class RegistrarAusenciaController {
 	
 	public List<RegistroAusencia> getListaAusenciasFuncionario() {
 		return listaAusenciasFuncionario;
+	}
+	
+	public List<RegistroAusencia> getListaAusenciasGerais() {
+		return listaAusenciasGerais;
+	}
+	
+	public void setListaAusenciasGerais(List<RegistroAusencia> listaAusenciasGerais) {
+		this.listaAusenciasGerais = listaAusenciasGerais;
 	}
 	
 	public void setListaAusenciasFuncionario(List<RegistroAusencia> listaAusenciasFuncionario) {

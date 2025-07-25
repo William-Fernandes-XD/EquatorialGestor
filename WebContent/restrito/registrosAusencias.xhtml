@@ -1,0 +1,222 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>Registros de Ausências</title>
+	<link rel="stylesheet" type="text/css" href="../styles/registroAusencias.css" />
+	<link rel="icon" type="image/png" href="../resources/img/pageIcon.png"/> 
+</h:head>
+<h:body>
+<h:form id="formAusencia">
+
+		<div id="menu_titulo">
+
+			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo" title="Ir para página inicial"
+				style="text-decoration: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 16px;">
+
+				<p:graphicImage url="../resources/img/home.png"
+					style="max-width: 40px; max-height: 40px;" /> <span
+				style="color: white; font-size: 1.2em;"> Equatorial Energia </span>
+			</a>
+
+			<h1 id="logo">Registro Ausências</h1>
+		</div>
+
+		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
+			life="7000"
+			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
+			
+			<div class="corpo-geral">
+			
+					<div class="menu-view-container">
+						<div class="menu-view1">
+							<h2>Total Ausências</h2>	
+							
+							<h2><h:outputText value="#{ausenciaController.contadorDeAusencias()}" /></h2>		
+							
+							<p>Registradas no sistema</p>		
+						</div>
+						
+						<div class="menu-view2">
+							<h2>Funcionário</h2>
+							<h2><h:outputText value="#{ausenciaController.contadorDeFuncionarios()}" /></h2>	
+							<p>Cadastrados</p>
+						</div>
+						
+						<div class="menu-view3">
+							<h2>Ações Rápidas</h2>
+							
+							<div class="menu-view3-botoes">
+								<p:commandButton value="💾 Registrar Ausência" styleClass="ui-button-info" oncomplete="PF('registraAusencia').show()"/>
+								<p:commandButton value="🔍 Consultar" styleClass="ui-button-info" oncomplete="PF('consultaFuncionario').show()"/>
+							</div>
+						</div>
+					</div>	
+				
+					<p:dataTable widgetVar="tabelaDados" id="tabelaDados" styleClass="tabelaDados"
+					value="#{ausenciaController.listaAusenciasGerais}" var="ausencia"
+					scrollHeight="700" scrollable="true">
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Colaborador</f:facet>
+								<h:outputText value="#{ausencia.funcionarios.nome}" />
+							</center>
+						</p:column>
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Data da ausência</f:facet>
+								<h:outputText value="#{ausencia.data_ausencia}">
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</center>
+						</p:column>
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Justificativa</f:facet>
+								<h:outputText value="#{ausencia.justificativa}" />
+							</center>
+						</p:column>
+						
+						<p:column>
+							<center>
+								<f:facet name="header">Remover</f:facet>
+								<p:commandButton value="🗑️" styleClass="ui-button-danger"
+								update="tabelaDados"
+								action="#{ausenciaController.removerAusenciaOptimusPrime(ausencia)}"/>
+							</center>
+						</p:column>
+					</p:dataTable>
+			</div>
+			
+			<p:dialog widgetVar="registraAusencia" id="registraAusencia"
+			resizable="false" draggable="false" header="Registrar Ausência"
+			width="70vw" height="70vh" position="center">
+				
+				<div class="menu-input-button">
+					<div class="menu-inputs-container">
+						<div class="menu-inputs">
+							<h:outputText value="Nome do Funcionário" />
+							
+							<p:autoComplete id="nomeFuncionario"
+    						value="#{ausenciaController.funcionarios.nome}" 
+    						completeMethod="#{ausenciaController.buscarFuncionarios}" 
+						    dropdown="true" forceSelection="true"
+						    placeholder="Nome funcionário"
+						    panelStyle="max-height: 400px; overflow-y:auto;"
+						    inputStyleClass="inputs" inputStyle="width: 80%;" />
+						</div>
+						
+						<div class="menu-inputs">
+							<h:outputText value="Data da Ausência" />
+							
+							<p:calendar placeholder="Data Ausência" pattern="dd/MM/yyyy" id="dataAusencia" widgetVar="dataAusencia"
+							value="#{ausenciaController.ausencia.data_ausencia}"
+							autocomplete="false" inputStyle="width: 90%" inputStyleClass="inputs"/>
+						</div>
+						
+						<div class="menu-inputs">
+							<p:outputLabel value="Turno"/>
+							<p:inputText placeholder="Turno de trabalho" id="turno" widgetVar="turno"
+							value="#{ausenciaController.ausencia.turno}" style="width: 90%"
+							autocomplete="false" styleClass="inputs"/>
+						</div>
+						
+						<div class="menu-inputs">
+							<p:outputLabel value="Justificativa" />
+							<p:inputText placeholder="Justificativa" id="justificativa" widgetVar="justificativa"
+							value="#{ausenciaController.ausencia.justificativa}"
+							style="width: 90%" autocomplete="false" styleClass="inputs"/>
+						</div>
+					</div>	
+					
+					<div>
+						<p:commandButton value="Salvar 💾" styleClass="ui-button-info"
+						update=":formAusencia:tabelaDados" ajax="true" 
+						action="#{ausenciaController.salvarAusenciaComFuncionario()}"/>
+						
+						<p:commandButton value="Limpar" styleClass="ui-button-danger"
+						action="#{ausenciaController.limpar()}" update=":formAusencia:registraAusencia" 
+						ajax="true" oncomplete="PF('registraAusencia').show()"/>
+					</div>				
+				</div>
+			</p:dialog>
+			
+			<p:dialog widgetVar="consultaFuncionario" id="consultaFuncionario"
+			width="70vw" height="70vh" draggable="false" resizable="false"
+			header="Consulta por funcionário" position="center">
+				
+				<div class="menu-consulta-container">
+					<div class="menu-consulta-inputs-container">
+						<div class="menu-consulta-inputs">
+							<h:outputText value="Nome: " />
+							
+							<p:autoComplete id="nomeFuncionarioConsulta"
+							value="#{ausenciaController.ausencia.funcionarios.nome}"
+							completeMethod="#{ausenciaController.buscarFuncionarios}"
+							dropdown="true" forceSelection="true"
+							placeholder="Nome funcionário"
+							panelStyle="max-height: 400px; overflow-y:auto;" inputStyleClass="inputs"
+							inputStyle="width: 80%;" />
+						</div>
+						
+						<div class="menu-consulta-botoes">
+							<p:commandButton value="🔍 Consultar" styleClass="ui-button-info"
+							action="#{ausenciaController.carregarAusenciasFuncionarioByName(ausenciaController.ausencia.funcionarios.nome)}"
+							oncomplete="PF('funcionarioConsultado').show()" update=":formAusencia:funcionarioConsultado"/>
+						</div>
+					</div>
+				</div>
+			</p:dialog>
+			
+			<p:dialog widgetVar="funcionarioConsultado" id="funcionarioConsultado"
+			header="Ausências consultadas" width="60vw" height="60vh"
+			resizable="false" draggable="false" position="center">
+			
+				<p:dataTable widgetVar="tabelaDadosConsultada" id="tabelaDadosConsultada"
+				value="#{ausenciaController.listaAusenciasFuncionario}" var="ausencia">
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Nome</f:facet>
+							<h:outputText value="#{ausencia.funcionarios.nome}" />
+						</center>
+					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Data</f:facet>
+							<h:outputText value="#{ausencia.data_ausencia}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</center>
+					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Justificativa</f:facet>
+							<h:outputText value="#{ausencia.justificativa}" />
+						</center>
+					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Remover</f:facet>
+							<p:commandButton value="🗑️" styleClass="ui-button-danger" action="#{ausenciaController.removerAusenciaOptimusPrime(ausencia)}"
+							update=":formAusencia:funcionarioConsultado" ajax="true"/>
+						</center>
+					</p:column>
+				</p:dataTable>
+			</p:dialog>		
+			</h:form>
+	</h:body>
+</html>

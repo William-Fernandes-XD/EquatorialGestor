@@ -220,11 +220,7 @@ public class GestorTurnoController {
 					valorCelula = String.valueOf((int)cell.getNumericCellValue());
 				}else {
 					valorCelula = "";
-					System.out.println("Entrou aqui");
 				}
-				
-				System.out.println("valor Celula: " + valorCelula.toString());
-				System.out.println("Item selecionado" + itemSelecionado.toString());
 				
 				if(valorCelula.equals(itemSelecionado.toString().split("\\.")[0])){
 					Cell cellPontoDefeito = row.getCell(1);
