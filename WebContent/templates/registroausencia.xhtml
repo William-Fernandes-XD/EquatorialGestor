@@ -104,8 +104,8 @@
 							class="botao" action="#{ausenciaController.salvarAusencia()}"
 							oncomplete="PF('registroAusencia').show()" />
 
-						<p:commandButton value="Consultar 🔍" update=":formGestor"
-							class="botao"
+						<p:commandButton value="Consultar 🔍" update=":formGestor:funcionariosDialog"
+							class="botao" oncomplete="PF('registroAusencia').show(); PF('funcionariosDialog').show();"
 							action="#{ausenciaController.carregarFuncionariosAusencias()}" />
 
 						<p:commandButton value="Limpar 🧹" update=":formGestor"
@@ -120,7 +120,11 @@
 
 	<p:dialog id="funcionariosDialog" widgetVar="funcionariosDialog"
 		header="Funcionários" position="center" height="80vh" width="80vw"
-		draggable="false" resizable="false">
+		draggable="false" resizable="false" modal="true" rendered="true">
+		
+		<div id="react-table">
+		
+		</div>
 
 		<div class="input-label"
 			style="display: flex; flex-direction: column; gap: 40px; margin-top: 1em; align-items: center;
@@ -141,7 +145,7 @@
 				oncomplete="PF('registroAusencia').show(), PF('funcionariosDialog').show(), PF('ausenciasFuncionario').show()"
 				styleClass="ui-button-info" />
 		</div>
-
+		
 		<p:dataTable value="#{ausenciaController.listaFuncionariosAusencia}"
 			var="funcionario" style="overflow: auto; max-height: 500px;">
 
@@ -200,3 +204,4 @@
 		</p:dataTable>
 	</p:dialog>
 </ui:composition>
+

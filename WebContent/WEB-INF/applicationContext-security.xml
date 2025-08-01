@@ -17,13 +17,22 @@
 		   	   
 		   	   <intercept-url pattern="/resources/components/**" access="isAuthenticated() and hasAnyRole('USER')"/>
 		   	   
-		   	   <intercept-url pattern="/resources/**" access="isAuthenticated() and hasAnyRole('ADMIN')"/>
+		   	   <intercept-url pattern="/resources/**" access="isAuthenticated()"/>
 		   	   
 		   	   <intercept-url pattern="/error/**" access="isAuthenticated() or isAnonymous() or !isAuthenticated()"/>
 		   	   
 		   	   <intercept-url pattern="/templates/**" access="isAuthenticated() and hasAnyRole('USER')"/>
 		   	   
-		   	   <intercept-url pattern="/restrito/**" access="isAuthenticated() and hasAnyRole('ADMIN')"/>
+		   	   <intercept-url pattern="/restrito/criarConta.jsf" access="isAuthenticated() and hasAnyRole('ADMIN')"/>
+		   	   <intercept-url pattern="/restrito/supervisor.jsf" access="isAuthenticated() and hasAnyRole('SUPERVISOR', 'ADMIN')"/>
+		   	   <intercept-url pattern="/restrito/criarConta.jsf" access="isAuthenticated() and hasAnyRole('ADMIN')"/>
+		   	   <intercept-url pattern="/restrito/feedback.jsf" access="isAuthenticated() and hasAnyRole('ADMIN', 'SUPERVISOR')"/>
+		   	   <intercept-url pattern="/restrito/funcionarios.jsf" access="isAuthenticated() and hasAnyRole('ADMIN', 'SUPERVISOR', 'REGISTRADORA')"/>
+		   	   <intercept-url pattern="/restrito/geradorTexto.jsf" access="isAuthenticated()"/>
+		   	   <intercept-url pattern="/restrito/gerencia-cards.jsf" access="isAuthenticated() and hasAnyRole('ADMIN', 'SUPERVISOR', 'AVALIADOR')"/>
+		   	   <intercept-url pattern="/restrito/gestorTurno.jsf" access="isAuthenticated() and hasAnyRole('ADMIN', 'SUPERVISOR', 'REGISTRADORA')"/>
+		   	   <intercept-url pattern="/restrito/home.jsf" access="isAuthenticated()"/>
+		   	   <intercept-url pattern="/restrito/registrosAusencias.jsf" access="isAuthenticated() and hasAnyRole('ADMIN', 'SUPERVISOR', 'REGISTRADORA')"/>
 		   	   
 		   	   <intercept-url pattern="/publico/**" access="permitAll"/>
 		   	   

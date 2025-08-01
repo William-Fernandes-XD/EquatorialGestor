@@ -36,6 +36,8 @@ public class GestorTurnoFuncionariosController implements Serializable{
 	
 	private String filtro = "";
 	
+	private String filtroGrupo = "";
+	
 	// set ferias
 	
 	private FuncionarioImpl funcionarioImpl = new FuncionarioImpl();
@@ -165,15 +167,23 @@ public class GestorTurnoFuncionariosController implements Serializable{
 	
 	public void gerarEscalaFiltrada(){
 		
-		if(filtro != null && !filtro.trim().isEmpty()) {
+		funcionariosFiltrados = funcionarios;
+		
+		try {
 			
-			funcionariosFiltrados =  funcionarios.stream().filter(s -> s.getAtividadeSuperintendencia().equalsIgnoreCase(filtro)).collect(Collectors.toList());
+			if(filtro != null && !filtro.trim().isEmpty()) {
+				funcionariosFiltrados =  funcionariosFiltrados.stream().filter(s -> s.getAtividadeSuperintendencia().equalsIgnoreCase(filtro)).collect(Collectors.toList());
+			}
 			
-			gerarEscala();
-		}else {
-			funcionariosFiltrados = funcionarios;
-			gerarEscala();
+			if(filtroGrupo != null && !filtroGrupo.trim().isEmpty()){
+				funcionariosFiltrados = funcionariosFiltrados.stream().filter(s -> s.getSecao().equalsIgnoreCase(filtroGrupo)).collect(Collectors.toList());
+			}
+		}catch(Exception e) {
+			
+			MensagensJSF.msgSeverityInfo("Não foi possível realizar o filtro", "Um erro inesperado");
 		}
+		
+		gerarEscala();
 	}
 
 	/**
@@ -256,6 +266,22 @@ public class GestorTurnoFuncionariosController implements Serializable{
 						bancosTurnos = new ArrayList<>();
 					}
 					
+					// Troca de Turno
+					
+					LocalDate trocaTurnoDate;
+					String trocaTurno;
+					
+					try {
+						
+						trocaTurnoDate = new java.sql.Date(funcionario.getTrocaTurnoData().getTime()).toLocalDate();
+						trocaTurno = funcionario.getTrocaTurno();
+						
+					}catch(Exception e) {
+						
+						trocaTurnoDate = null;
+						trocaTurno = "";
+					}
+					
 					/**
 					 * Pessoal da emergencial apenas
 					 */
@@ -313,6 +339,27 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								) {
 								    valor = "Licença";
 								}
+							
+							/**
+							 * Troca de turno do funcionário, caso ele queira trocar algum dia
+							 */
+							if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+								if(trocaTurno.trim() != "") {
+									if("6666".equals(funcionario.getEscala())) {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-15";
+										if("3".equals(trocaTurno)) valor = "T-21";
+									}else if("15151515".equals(funcionario.getEscala())) {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-15";
+										if("3".equals(trocaTurno)) valor = "T-21";
+									}else if("21212121".equals(funcionario.getEscala())) {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-15";
+										if("3".equals(trocaTurno)) valor = "T-21";
+									}
+								}
+							}
 
 							mapadias.put(dia, valor);
 							index++;
@@ -371,6 +418,15 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										valor = "T-PTP";
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -403,11 +459,25 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										valor = "T-PTP";
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
 						}
 					}
+						
+						/**
+						 * 
+						 * Comercial
+						 */
 					
 					if("Comercial".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())) {
 						
@@ -450,6 +520,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("66666".equals(funcionario.getEscala())) {
+											if("1".equals(trocaTurno)) valor = "T-6";
+											if("2".equals(trocaTurno)) valor = "T-15";
+										}
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -479,6 +561,16 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-15";
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -510,6 +602,16 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-15";
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -566,6 +668,16 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-15";
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -597,6 +709,16 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-15";
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -651,6 +773,16 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-15";
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -684,6 +816,16 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-15";
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -730,6 +872,16 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-8";
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -763,6 +915,16 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-6";
+										if("2".equals(trocaTurno)) valor = "T-8";
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -854,6 +1016,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-1";
+										if("2".equals(trocaTurno)) valor = "T-2";
+										if("3".equals(trocaTurno)) valor = "T-3";
+										if("4".equals(trocaTurno)) valor = "T-4";
+									}
+								}
 
 								mapadias.put(dia, valor);
 								index++;
@@ -895,6 +1069,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-1";
+										if("2".equals(trocaTurno)) valor = "T-2";
+										if("3".equals(trocaTurno)) valor = "T-3";
+										if("4".equals(trocaTurno)) valor = "T-4";
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;
 							}
@@ -929,6 +1115,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = "T-1";
+										if("2".equals(trocaTurno)) valor = "T-2";
+										if("3".equals(trocaTurno)) valor = "T-3";
+										if("4".equals(trocaTurno)) valor = "T-4";
+									}
+								}
+								
 								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;
@@ -962,12 +1160,19 @@ public class GestorTurnoFuncionariosController implements Serializable{
 				MensagensJSF.msgSeverityInfo("O limite máximo entre as datas não pode ser diferente de 35 dias",
 						"Operação não realizada");
 			}
-		}
+		}	
 	}
 	
 	public String getClasseCelula(String nome, LocalDate dia) {
 		
 		String valor = getValor(nome, dia);
+		
+		if (valor != null && valor.contains("-")) {
+		    String[] corte = valor.trim().split("-");
+		    if (corte.length > 0 && corte[0].trim().equals("T")) {
+		        return "fundo-amarelo";
+		    }
+		}
 		
 		switch(valor != null ? valor.toUpperCase() : "") {
 		
@@ -1025,6 +1230,19 @@ public class GestorTurnoFuncionariosController implements Serializable{
 		return retorno.stream().filter(s -> s.toUpperCase().contains(query.toUpperCase())).collect(Collectors.toList());
 	}
 	
+	public List<String> filtrosGrupoAutoComplete(){
+		
+		List<String> retorno = new ArrayList<>();
+		
+		retorno.add("1");
+		retorno.add("2");
+		retorno.add("3");
+		retorno.add("4");
+		retorno.add("5");
+		
+		return retorno;
+	}
+	
 	public List<String> returnTipos() {
 
 		List<String> tipos = new ArrayList<>();
@@ -1067,6 +1285,14 @@ public class GestorTurnoFuncionariosController implements Serializable{
 	
 	public void setFuncionariosFiltrados(List<Funcionarios> funcionariosFiltrados) {
 		this.funcionariosFiltrados = funcionariosFiltrados;
+	}
+	
+	public String getFiltroGrupo() {
+		return filtroGrupo;
+	}
+	
+	public void setFiltroGrupo(String filtroTurno) {
+		this.filtroGrupo = filtroTurno;
 	}
 	
 	public void setListaDeEscalasSalvas(List<GeradorEscalaEntity> listaDeEscalasSalvas) {

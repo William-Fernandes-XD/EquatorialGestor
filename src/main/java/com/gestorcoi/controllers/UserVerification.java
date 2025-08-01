@@ -30,6 +30,65 @@ public class UserVerification {
 		return auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
 	}
 	
+	public boolean linkFuncionarios(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth != null && auth.getAuthorities().stream().anyMatch(authority -> 
+		
+		authority.getAuthority().equals("ADMIN") 
+		|| authority.getAuthority().equals("SUPERVISOR")
+		|| authority.getAuthority().equals("REGISTRADORA"));
+	}
+	
+	public boolean linkSupervisorTurno(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth != null && auth.getAuthorities().stream().anyMatch(authority -> 
+		
+		authority.getAuthority().equals("ADMIN") 
+		|| authority.getAuthority().equals("SUPERVISOR"));
+	}
+	
+	public boolean linkFeedbacks(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth != null && auth.getAuthorities().stream().anyMatch(authority -> 
+		
+		authority.getAuthority().equals("ADMIN") 
+		|| authority.getAuthority().equals("SUPERVISOR")
+		|| authority.getAuthority().equals("Avaliador"));
+	}
+	
+	public boolean linkCards(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth != null && auth.getAuthorities().stream().anyMatch(authority -> 
+		
+		authority.getAuthority().equals("ADMIN") 
+		|| authority.getAuthority().equals("SUPERVISOR")
+		|| authority.getAuthority().equals("AVALIADOR"));
+	}
+	
+	public boolean linkGestorTurnoColaboradores(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth != null && auth.getAuthorities().stream().anyMatch(authority -> 
+		
+		authority.getAuthority().equals("ADMIN") 
+		|| authority.getAuthority().equals("SUPERVISOR")
+		|| authority.getAuthority().equals("REGISTRADORA"));
+	}
+	
+	public boolean linkRegistroAusencias(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth != null && auth.getAuthorities().stream().anyMatch(authority -> 
+		
+		authority.getAuthority().equals("ADMIN") 
+		|| authority.getAuthority().equals("SUPERVISOR")
+		|| authority.getAuthority().equals("REGISTRADORA"));
+	}
+	
 	public boolean isRegistradora(){
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -29,6 +29,9 @@ public class Funcionarios implements Serializable{
 	private Date feriasInicio;
 	private Date feriasFim;
 	
+	private Date trocaTurnoData;
+	private String trocaTurno;
+	
 	private Date licencaInicio;
 	private Date licencaFim;
 	
@@ -153,6 +156,22 @@ public class Funcionarios implements Serializable{
 	
 	public void setLicencaFim(Date licencaFim) {
 		this.licencaFim = licencaFim;
+	}
+	
+	public String getTrocaTurno() {
+		return trocaTurno;
+	}
+	
+	public Date getTrocaTurnoData() {
+		return trocaTurnoData;
+	}
+	
+	public void setTrocaTurno(String trocaTurno) {
+		this.trocaTurno = trocaTurno;
+	}
+	
+	public void setTrocaTurnoData(Date trocaTurnoData) {
+		this.trocaTurnoData = trocaTurnoData;
 	}
 	
 	public void setLicencaInicio(Date licencaInicio) {

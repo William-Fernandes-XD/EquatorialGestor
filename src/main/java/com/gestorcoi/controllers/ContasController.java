@@ -124,6 +124,7 @@ public class ContasController {
 		roles.add("SUPERVISOR");
 		roles.add("AVALIADOR");
 		roles.add("REGISTRADORA");
+		roles.add("OPERADOR");
 		
 		return roles;
 	}

@@ -20,7 +20,7 @@
   
   <mvc:resources location="/resources/img" mapping="/resources/**" cache-period="5000"/>
   
-  <context:component-scan base-package="com.gestorcoi.controller"/>
+  <context:component-scan base-package="com.gestorcoi.controllers.testes"/>
   <context:component-scan base-package="com.gestorcoi.interfaces"/>
   <context:component-scan base-package="com.gestorcoi.implementations"/>
   <context:component-scan base-package="com.gestorcoi.utils"/>

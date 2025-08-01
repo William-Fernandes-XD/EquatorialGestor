@@ -500,6 +500,23 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
+/* Melhorias no calendário */
+.ui-datepicker {
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #4299e1 !important;
+}
+
+/* Força o calendário a aparecer por cima */
+.ui-datepicker {
+    z-index: 9999 !important;
+}
+
+.ui-datepicker-header {
+    background: #4299e1 !important;
+    color: #ffffff !important;
+}
+
 .ui-datatable-data td {
     border-bottom: 1px solid #e2e8f0 !important;
     font-weight: 500 !important;

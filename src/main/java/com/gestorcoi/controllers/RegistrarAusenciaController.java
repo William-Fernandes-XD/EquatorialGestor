@@ -235,7 +235,6 @@ public class RegistrarAusenciaController implements Serializable{
 	public void carregarFuncionariosAusencias() throws Exception{
 		
 		listaFuncionariosAusencia = funcionarioImpl.findAll(Funcionarios.class);
-		PrimeFaces.current().executeScript("PF('registroAusencia').show(); PF('funcionariosDialog').show();");
 	}
 	
 	public RegistroAusencia getAusencia() {

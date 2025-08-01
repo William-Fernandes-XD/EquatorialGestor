@@ -48,7 +48,7 @@
 				<p:dataTable id="telaFuncionarios" widgetVar="telaFuncionarios"
 					value="#{gerenciaFuncionarios.funcionariosCarregadosTela}"
 					var="objeto">
-					<p:column>
+					<p:column width="400">
 						<center>
 							<f:facet name="header">Nome</f:facet>
 							<h:outputText value="#{objeto.nome}" />
@@ -102,9 +102,57 @@
 								</p:commandButton>
 						</center>
 					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Trocar Turno</f:facet>
+							<p:commandButton value="➕" ajax="true"
+								styleClass="ui-button-info" update=":forms:trocaTurnoControl"
+								oncomplete="PF('trocaTurnoControl').show()" process="@this">
+									<f:setPropertyActionListener value="#{objeto}" target="#{gerenciaFuncionarios.funcionarios}" />
+								</p:commandButton>
+						</center>
+					</p:column>
 				</p:dataTable>
 			</div>
 		</div>
+		
+		<p:dialog widgetVar="trocaTurnoControl" id="trocaTurnoControl"
+			position="center" width="50vw" height="60vh" header="Troca de Turno"
+			resizable="false" draggable="false">
+
+			<div class="ferias-tudo">
+			
+				<div class="nomeFuncionario">
+					<h:outputText value="#{gerenciaFuncionarios.funcionarios.nome}" />					
+				</div>
+			
+				<div class="text">
+				
+					<div class="ferias-inputs">
+						<h:outputText value="Data da Troca" />
+
+						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
+							value="#{gerenciaFuncionarios.funcionarios.trocaTurnoData}"
+							autocomplete="false" appendTo="@form"/>
+					</div>
+
+					<div class="ferias-inputs">
+						<h:outputText value="Qual o turno?" />
+						<p:autoComplete
+						value="#{gerenciaFuncionarios.funcionarios.trocaTurno}"
+						completeMethod="#{gerenciaFuncionarios.retornaTurnos()}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="margin: 0" style="margin:0;" />
+					</div>
+				</div>
+				
+				<div class="button-ferias">
+					<p:commandButton class="ui-button-info" value="Atualizar" action="#{gerenciaFuncionarios.mergeFuncionarioTrocaTurno()}"/>
+				</div>
+			</div>
+		</p:dialog>
 		
 		<p:dialog widgetVar="bancoVisualiza" id="bancoVisualiza" position="center" width="70vw" height="70vh" header="Visualizar bancos"
 		resizable="false" draggable="false">
@@ -162,6 +210,8 @@
 				</div>
 			</div>
 		</p:dialog>
+		
+		
 
 		<p:dialog widgetVar="feriasControl" id="feriasControl"
 			position="center" width="50vw" height="60vh" header="Alterar Férias"
@@ -279,7 +329,7 @@
 					</div>
 					
 					<div class="ferias-inputs">
-						<h:outputText value="Seção" />
+						<h:outputText value="Grupo" />
 						<p:autoComplete id="secao"
 						value="#{gerenciaFuncionarios.funcionarios.secao}"
 						completeMethod="#{gerenciaFuncionarios.retornaSecao}"

@@ -172,7 +172,18 @@
 						dropdown="true" forceSelection="true"
 						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
 						inputStyle="margin: 0" style="margin:0;" />
-				</div>				
+				</div>		
+				
+				<div class="text">
+					<h:outputText value="Filtro por Grupo" />
+					
+					<p:autoComplete
+						value="#{gestorTurnoFuncionarios.filtroGrupo}"
+						completeMethod="#{gestorTurnoFuncionarios.filtrosGrupoAutoComplete()}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="margin: 0" style="margin:0;" />
+				</div>		
 				
 				<div class="botoesdiv">
 					<p:commandButton value="Filtrar" styleClass="ui-button-info" process="@form"
@@ -201,6 +212,11 @@
 				<p:column width="200px">
 						<f:facet name="header">Regional</f:facet>
 						<h:outputText value="#{funcionarios.regional}" />
+				</p:column>
+				
+				<p:column width="100px">
+						<f:facet name="header">Grupo</f:facet>
+						<h:outputText value="#{funcionarios.secao}" />
 				</p:column>
 
 				<p:columns value="#{gestorTurnoFuncionarios.dias}" var="dia"

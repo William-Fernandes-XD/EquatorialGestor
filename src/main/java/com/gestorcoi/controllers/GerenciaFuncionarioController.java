@@ -103,6 +103,35 @@ public class GerenciaFuncionarioController {
 		}
 	}
 	
+	/**
+	 * Usado para alterar as licenças de funcionário
+	 */
+	public void mergeFuncionarioTrocaTurno() {
+		
+		try {
+			
+			if(funcionarios.getId() != null) {
+				
+				Date trocaTurnoData = funcionarios.getTrocaTurnoData();
+				String trocaTurno = funcionarios.getTrocaTurno();
+				
+				funcionarios = funcionarioImpl.findById(funcionarios.getId());
+				
+				funcionarios.setTrocaTurnoData(trocaTurnoData);
+				funcionarios.setTrocaTurno(trocaTurno);
+				
+				funcionarios = funcionarioImpl.merge2(funcionarios);
+				MensagensJSF.msgSeverityInfo("Usuário " + funcionarios.getNome() + ", atualizado com sucesso", "Atualizado");
+			}else {
+				MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			}
+			
+		}catch(Exception e) {
+			MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			e.printStackTrace();
+		}
+	}
+	
 	public void salvarFuncionario() throws Exception{
 		
 		try {
@@ -290,5 +319,17 @@ public class GerenciaFuncionarioController {
 		}
 		
 		return retornaEscala.stream().filter(s -> s.toUpperCase().contains(query.toUpperCase())).collect(Collectors.toList());
+	}
+	
+	public List<String> retornaTurnos(){
+		
+		List<String> retorno = new ArrayList<>();
+		
+		retorno.add("1");
+		retorno.add("2");
+		retorno.add("3");
+		retorno.add("4");
+		
+		return retorno;
 	}
 }

@@ -11,6 +11,10 @@
 	<title>Gestor de Turno</title>
 	<link rel="stylesheet" type="text/css" href="../styles/supervisor.css" />
 	<link rel="icon" type="image/png" href="../resources/img/pageIcon.png"/> 
+	
+	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin="anonymous"/>
+	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin="anonymous"/>
+	<script src="https://unpkg.com/@babel/standalone/babel.min.js"/>	
 </h:head>
 <h:body>
 
@@ -66,8 +70,13 @@
 
 				<div class="text">
 					<p:outputLabel value="Turno" />
-					<p:inputText placeholder="Insira o turno"
-						value="#{gestorTurnoController.gestorEntity.turno}" />
+						
+					<p:autoComplete
+						value="#{gestorTurnoController.gestorEntity.turno}"
+						completeMethod="#{gestorTurnoController.carregarTurnos()}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="width :60%; margin: 0" style="margin:0;" />
 				</div>
 
 			</div>
@@ -180,7 +189,7 @@
 						<p:commandButton value="🔍"
 							action="#{gestorTurnoController.setGestorEntity(objeto)}"
 							oncomplete="PF('pendencias').show()"
-							update=":formGestor :formGestor:ocorrencias" process="@this"
+							update=":formGestor:pendencias" process="@this"
 							ajax="true" styleClass="ui-button-info" />
 					</p:column>
 
@@ -189,7 +198,7 @@
 						<p:commandButton value="🔍"
 							action="#{gestorTurnoController.setGestorEntity(objeto)}"
 							oncomplete="PF('ocorrencias').show()"
-							update=":formGestor :formGestor:ocorrencias" process="@this"
+							update=":formGestor" process="@this"
 							ajax="true" styleClass="ui-button-info" />
 					</p:column>
 
@@ -240,7 +249,7 @@
 						<p:commandButton value="🔍"
 							action="#{gestorTurnoController.setOcorrencia(objeto)}"
 							oncomplete="PF('ocorrencias').show(), PF('observacoes').show()"
-							update=":formGestor :formGestor:ocorrencias" process="@this"
+							update=":formGestor:observacoes" process="@this"
 							ajax="true" styleClass="ui-button-info" />
 					</p:column>
 
@@ -249,7 +258,7 @@
 						<p:commandButton value="🗑️"
 							action="#{gestorTurnoController.removerOcorrencia(objeto)}"
 							process="@this" ajax="true"
-							update=":formGestor :formGestor:ocorrencias"
+							update=":formGestor:ocorrencias"
 							oncomplete="PF('ocorrencias').show()"
 							styleClass="ui-button-danger" />
 					</p:column>

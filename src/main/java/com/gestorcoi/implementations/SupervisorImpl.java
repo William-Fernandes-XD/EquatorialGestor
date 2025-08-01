@@ -126,6 +126,21 @@ public class SupervisorImpl implements AbstractMethods<Supervisor>, Serializable
 		 
 		 return supervisores;
 	}
+	
+	public List<Supervisor> findAllSupervisores(){
+		
+		validateSessionFactory();
+		
+		 StringBuilder query = new StringBuilder();
+		 query.append("select distinct(entity) from ");
+		 query.append(Supervisor.class.getSimpleName());
+		 query.append(" entity join entity.roles role where role.role = :roleName");
+		 
+		 List<Supervisor> supervisores = sessionFactory.getCurrentSession().createQuery(query.toString())
+				 .setParameter("roleName", "SUPERVISOR").list();
+		 
+		 return supervisores;
+	}
 
 	@Override
 	public List<Supervisor> findAllOnCondition(Class<Supervisor> classe, String condition) throws Exception {

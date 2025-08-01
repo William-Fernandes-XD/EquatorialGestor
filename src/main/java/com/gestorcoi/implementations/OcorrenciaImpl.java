@@ -1,8 +1,11 @@
 package com.gestorcoi.implementations;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import org.apache.poi.ss.formula.functions.Days360;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -78,12 +81,15 @@ public class OcorrenciaImpl implements AbstractMethods<Ocorrencia>, Serializable
 	@Override
 	public List<Ocorrencia> findAll(Class<Ocorrencia> classe) throws Exception {
 		
+		LocalDate limiteData = LocalDate.now().minus(90, ChronoUnit.DAYS);
+		
 		StringBuilder query = new StringBuilder();
 		query.append("select distinct(entity) from ");
 		query.append(Ocorrencia.class.getSimpleName());
-		query.append(" entity");
+		query.append(" entity where entity.date >= :dataLimite");
 		 
-		List<Ocorrencia> Ocorrencias = sessionFactory.getCurrentSession().createQuery(query.toString()).list();
+		List<Ocorrencia> Ocorrencias = sessionFactory.getCurrentSession().createQuery(query.toString())
+				.setParameter("dataLimite", limiteData).list();
 		 
 		return Ocorrencias;
 	}

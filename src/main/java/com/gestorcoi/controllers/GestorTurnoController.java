@@ -129,7 +129,7 @@ public class GestorTurnoController {
 		
 		if(supervisoresName == null || supervisoresName.isEmpty()) {
 			
-			List<Supervisor> supervisores = supervisorImpl.findAll(Supervisor.class);
+			List<Supervisor> supervisores = supervisorImpl.findAllSupervisores();
 			
 			for (Supervisor supervisor : supervisores) {
 				supervisoresName.add(supervisor.getName());
@@ -149,7 +149,7 @@ public class GestorTurnoController {
 		}
 
 		if (supervisoresName.isEmpty()) {
-		    List<Supervisor> supervisores = supervisorImpl.findAll(Supervisor.class);
+		    List<Supervisor> supervisores = supervisorImpl.findAllSupervisores();
 
 		    for (Supervisor supervisor : supervisores) {
 		        supervisoresName.add(supervisor.getName());
@@ -306,6 +306,18 @@ public class GestorTurnoController {
 		}else {
 			MensagensJSF.msgSeverityError("Não foi possível identificar essa gestão");
 		}
+	}
+	
+	public List<String> carregarTurnos(){
+		
+		List<String> retorno = new ArrayList<>();
+		
+		retorno.add("1");
+		retorno.add("2");
+		retorno.add("3");
+		retorno.add("4");
+		
+		return retorno;
 	}
 	
 	public GestorEntity getGestorEntity() {
