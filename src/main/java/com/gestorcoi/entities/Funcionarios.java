@@ -45,7 +45,7 @@ public class Funcionarios implements Serializable{
 	@OneToMany(mappedBy = "funcionarios", orphanRemoval = true)
 	private List<RegistroAusencia> ausencias;
 	
-	@OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "funcionario", orphanRemoval = true)
 	private List<Feedback> feedbacks;
 	
 	/**

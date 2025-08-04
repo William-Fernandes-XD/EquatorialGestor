@@ -255,6 +255,9 @@ body {
 .dataTable-div {
     width: 100%;
     background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
     padding: 1.5em;

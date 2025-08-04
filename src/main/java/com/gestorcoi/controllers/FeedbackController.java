@@ -39,10 +39,24 @@ public class FeedbackController {
 	private List<Funcionarios> funcionariosListaBusca = new ArrayList<>();
 	private List<Feedback> feedbacksListaBusca = new ArrayList<>();
 	
+	/**
+	 * Listas mais pesadas de consulta, sendo as de principal view
+	 */
+	
+	private	List<Feedback> listaAllFuncionariosMainPageViewAuxiliar = new ArrayList<>();
+	private List<Feedback> listaAllFuncionariosMainPageView = new ArrayList<>();
+	private List<Funcionarios> allFuncionariosObjectDialog = new ArrayList<>();
+	
 	private String filtro = "";
 	
 	@PostConstruct
 	public void init() {
+		
+		try {
+			listarAll();
+		} catch (Exception e) {
+			MensagensJSF.msgSeverityInfo("Não foi possível carregar a tabela de feedbacks", "Um erro inesperado");
+		}
 		
 		feedback = new Feedback();
 		feedback.setFuncionario(new Funcionarios());
@@ -72,10 +86,9 @@ public class FeedbackController {
 			
 				funcionarios.getFeedbacks().add(feedback);
 			
-				funcionarioImpl.merge2(funcionarios);
-			
-				funcionarios.getFeedbacks().remove(feedback);
-				funcionarioImpl.merge2(funcionarios);
+				feedbackImpl.merge2(feedback);
+				
+				listaAllFuncionariosMainPageView.add(feedback);
 				
 				EmailUtil.enviarFeedBack(feedback);
 				
@@ -100,6 +113,7 @@ public class FeedbackController {
 	public void remover(Feedback feedback) throws Exception{
 		
 		feedbackImpl.remove(feedback);
+		listaAllFuncionariosMainPageView.remove(feedback);
 	}
 	
 	public List<String> findAllFuncionario(String query) throws Exception{
@@ -126,35 +140,39 @@ public class FeedbackController {
 		return list;
 	}
 	
-	public List<Funcionarios> getAllFuncionariosObjeto() throws Exception{
+	public void getAllFuncionariosObjeto() throws Exception{
 		
-		List<Funcionarios> funcionariosObjeto = funcionarioImpl.findAll(Funcionarios.class);
-		return funcionariosObjeto;
+		allFuncionariosObjectDialog = funcionarioImpl.findAll(Funcionarios.class);
 	}
 	
-	public List<Feedback> listarAll() throws Exception{
+	public void listarAll() throws Exception{
 		
-		List<Feedback> feedbacks = feedbackImpl.findAll(Feedback.class);	
+		listaAllFuncionariosMainPageViewAuxiliar = feedbackImpl.findAll(Feedback.class);	
 		
-		Collections.sort(feedbacks, new Comparator<Feedback>() {
+		listaAllFuncionariosMainPageView = listaAllFuncionariosMainPageViewAuxiliar;
+		
+		Collections.sort(listaAllFuncionariosMainPageView, new Comparator<Feedback>() {
 
 			@Override
 			public int compare(Feedback o1, Feedback o2) {
 				return o2.getData().compareTo(o1.getData());
 			}
 		});
+	}
+	
+	public void filtros(String filtro) throws Exception{
+		
+		listaAllFuncionariosMainPageView = listaAllFuncionariosMainPageViewAuxiliar;
 		
 		if ("Positivo".equalsIgnoreCase(filtro)) {
-		    feedbacks = feedbacks.stream()
+			listaAllFuncionariosMainPageView = listaAllFuncionariosMainPageView.stream()
 		            .filter(f -> "Positivo".equalsIgnoreCase(f.getPositivoOrNegative()))
 		            .collect(Collectors.toList());
 		} else if ("Negativo".equalsIgnoreCase(filtro)) {
-		    feedbacks = feedbacks.stream()
+			listaAllFuncionariosMainPageView = listaAllFuncionariosMainPageView.stream()
 		            .filter(f -> "Negativo".equalsIgnoreCase(f.getPositivoOrNegative()))
 		            .collect(Collectors.toList());
 		}
-		
-		return feedbacks;
 	}
 	
 	public void carregarFeedBacksByObject(Funcionarios funcionario) throws Exception{
@@ -232,6 +250,21 @@ public class FeedbackController {
 		this.funcionariosListaBusca = funcionariosListaBusca;
 	}
 	
+	public List<Funcionarios> getAllFuncionariosObjectDialog() {
+		return allFuncionariosObjectDialog;
+	}
+	
+	public void setAllFuncionariosObjectDialog(List<Funcionarios> allFuncionariosObjectDialog) {
+		this.allFuncionariosObjectDialog = allFuncionariosObjectDialog;
+	}
+	
+	public List<Feedback> getListaAllFuncionariosMainPageView() {
+		return listaAllFuncionariosMainPageView;
+	}
+	
+	public void setListaAllFuncionariosMainPageView(List<Feedback> listaAllFuncionariosMainPageView) {
+		this.listaAllFuncionariosMainPageView = listaAllFuncionariosMainPageView;
+	}
 	public void setFeedback(Feedback feedback) {
 		this.feedback = feedback;
 	}

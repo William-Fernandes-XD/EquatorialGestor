@@ -39,9 +39,9 @@
 					
 					<div class="dataTable-div">
 					<p:dataTable emptyMessage="Não há nenhum feedback no momento"
-								 value="#{feedback.listarAll()}"
+								 value="#{feedback.listaAllFuncionariosMainPageView}"
 								 var="objeto"
-							     class="datatableresultados"
+							     class="datatableresultados" id="tabelaDadosGerais" widgetVar="tabelaDadosGerais"
 >
 						<p:column width="20%">
 							<center>
@@ -86,7 +86,7 @@
 								<f:facet name="header">Remover</f:facet>
 								<p:commandButton value="🗑️"
 								ajax="true" action="#{feedback.remover(objeto)}"
-								update=":formFeedBack" styleClass="ui-button-danger"/>
+								update=":formFeedBack:tabelaDadosGerais" styleClass="ui-button-danger"/>
 							</center>						
 						</p:column>
 					</p:dataTable>
@@ -94,16 +94,16 @@
 					<div style="margin-top: 1em">
 					
 						<p:commandButton value="Todos" styleClass="botao"
-						ajax="false" immediate="true" update=":formFeedBack:dataTable-div:datatableresultados" 
-						action="#{feedback.filtrar('')}">
+						ajax="true" update=":formFeedBack:tabelaDadosGerais" 
+						action="#{feedback.filtros('')}">
 						</p:commandButton>
 						
-						<p:commandButton value="Positivos" styleClass="botao" action="#{feedback.filtrar('Positivo')}"
-						ajax="false" immediate="true" update=":formFeedBack:dataTable-div:datatableresultados">
+						<p:commandButton value="Positivos" styleClass="botao" action="#{feedback.filtros('Positivo')}"
+						ajax="true" update=":formFeedBack:tabelaDadosGerais">
 						</p:commandButton>
 						
-						<p:commandButton value="Negativos" styleClass="botao" ajax="false" immediate="true"
-						action="#{feedback.filtrar('Negativo')}" update=":formFeedBack:dataTable-div:datatableresultados"/>
+						<p:commandButton value="Negativos" styleClass="botao" ajax="true"
+						action="#{feedback.filtros('Negativo')}" update=":formFeedBack:tabelaDadosGerais"/>
 					</div>
 				</div>
 					
@@ -146,11 +146,12 @@
 					
 					<div class="botoes">
 						<p:commandButton value="Salvar 💾" class="botao"
-						ajax="true" action="#{feedback.salvar()}" update=":formFeedBack"/>
+						ajax="true" action="#{feedback.salvar()}" update=":formFeedBack:tabelaDadosGerais"/>
 						
 						<c:if test="#{userVerification.admin}">
 							<p:commandButton value="Consultar 🔍" class="botao"
-							ajax="true" oncomplete="PF('consulta').show()"/>
+							ajax="true" oncomplete="PF('consulta').show()" action="#{feedback.getAllFuncionariosObjeto()}"
+							update=":formFeedBack:consulta"/>
 						</c:if>
 						
 						<p:commandButton value="Limpar 🧹" class="botao"
@@ -181,11 +182,11 @@
     						style="width:340px !important; display: flex; flex-direction: row"/>
 							 
 			<p:commandButton value="Pesquisar" action="#{feedback.carregarFeedBacksByName()}"
-			ajax="true" update=":formFeedBack"
+			ajax="true" update=":formFeedBack:feedbacks"
 			oncomplete="PF('consulta').show(), PF('feedbacks').show()"/>
 		</div>
 				
-				<p:dataTable value="#{feedback.allFuncionariosObjeto}" var="objeto" class="datatableresultados">
+				<p:dataTable value="#{feedback.allFuncionariosObjectDialog}" var="objeto" class="datatableresultados">
 					<p:column>
 						<center>
 							<f:facet name="header">Nome</f:facet>
@@ -197,7 +198,7 @@
 						<center>
 							<f:facet name="header">Feedbacks</f:facet>
 							<p:commandButton value="🔍" action="#{feedback.carregarFeedBacksByObject(objeto)}"
-							update=":formFeedBack:dataTableDivInView" ajax="true"
+							update=":formFeedBack:feedbacks" ajax="true"
 							oncomplete="PF('consulta').show(), PF('feedbacks').show()"/>
 						</center>
 					</p:column>
