@@ -199,6 +199,7 @@ public class CardsController {
 		if(redCard != null) {
 			
 			redCardImpl.remove(redCard);
+			redCardsAll.remove(redCard);
 			MensagensJSF.msgSeverityInfo("Card vermelhor removido com sucesso!", "Removido");
 		}
 	}

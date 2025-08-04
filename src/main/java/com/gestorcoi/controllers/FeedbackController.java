@@ -47,8 +47,6 @@ public class FeedbackController {
 	private List<Feedback> listaAllFuncionariosMainPageView = new ArrayList<>();
 	private List<Funcionarios> allFuncionariosObjectDialog = new ArrayList<>();
 	
-	private String filtro = "";
-	
 	@PostConstruct
 	public void init() {
 		
@@ -226,10 +224,6 @@ public class FeedbackController {
 		this.feedbacksListaBusca = feedbacksListaBusca;
 	}
 	
-	public void filtrar(String filtrar){
-		this.filtro = filtrar; 
-	}
-
 	public Funcionarios getFuncionarios() {
 		return funcionarios;
 	}

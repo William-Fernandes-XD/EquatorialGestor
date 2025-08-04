@@ -34,12 +34,13 @@
 
 			<div class="botoes">
 				<p:commandButton value="Filtrar ⚙️"
-					action="#{cardsController.findAll()}" update=":formCards"
+					action="#{cardsController.findAll()}" update=":formCards:dataTable-div-redcards"
 					ajax="true" oncomplete="PF('redCardsDialog').show()" class="botao" styleClass="ui-button-info" />
 			</div>
 		</div>
 
-		<p:dataTable value="#{cardsController.redCardsAll}" var="redCard" styleClass="dataTable">
+		<p:dataTable value="#{cardsController.redCardsAll}" var="redCard" styleClass="dataTable"
+		id="dataTable-div-redcards" widgetVar="dataTable-div-redcards">
 			<p:column>
 				<center>
 					<f:facet name="header">Número Ocorrência</f:facet>
@@ -69,7 +70,7 @@
 					<f:facet name="header">Deletar</f:facet>
 					<p:commandButton value="🗑️"
 						action="#{cardsController.deletarRedCard(redCard)}" ajax="true" styleClass="ui-button-danger"
-						update=":formCards" />
+						update=":formCards:dataTable-div-redcards" />
 				</center>
 			</p:column>
 
@@ -153,7 +154,8 @@
 				<div class="botoes2" style="border: none; !important">
 				
 					<p:commandButton value="Salvar 💾" class="botao" styleClass="ui-button-info"
-						action="#{cardsController.salvarVerde()}" update=":formCards"/>
+						action="#{cardsController.salvarVerde()}" update=":formCards"
+						ajax="true"/>
 					<p:commandButton value="Limpar 🧹" class="botao" styleClass="ui-button-danger"
 						action="#{cardsController.limparVerdeOuAmarelo()}"
 						update=":formCards:adicionarGreenCard"
