@@ -12,9 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "supervisor")
 public class Supervisor {
@@ -66,7 +63,6 @@ public class Supervisor {
 		this.email = email;
 	}
 	
-	@JsonIgnore
 	public List<Feedback> getFeedbacks() {
 		return feedbacks;
 	}
@@ -75,12 +71,10 @@ public class Supervisor {
 		this.feedbacks = feedbacks;
 	}
 	
-	@JsonIgnore
 	public List<GestorEntity> getDeclarados() {
 		return declarados;
 	}
 	
-	@JsonIgnore
 	public List<GestorEntity> getPendenciasOcorrencias() {
 		return pendenciasOcorrencias;
 	}
@@ -93,7 +87,6 @@ public class Supervisor {
 		this.pendenciasOcorrencias = pendenciasOcorrencias;
 	}
 	
-	@JsonIgnore
 	public List<Ocorrencia> getOcorrencias() {
 		return ocorrencias;
 	}

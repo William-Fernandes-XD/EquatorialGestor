@@ -8,8 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "roles")
 public class Roles {
@@ -48,7 +46,6 @@ public class Roles {
 		this.role = role;
 	}
 
-	@JsonIgnore
 	public Supervisor getSupervisor() {
 		return supervisor;
 	}

@@ -102,7 +102,10 @@
 
 						<p:commandButton value="Salvar 💾" update=":formGestor:tabelaAusenciasGerais"
 							class="botao" action="#{ausenciaController.salvarAusencia()}"
-							oncomplete="PF('registroAusencia').show()" />
+							oncomplete="PF('registroAusencia').show()">
+							
+								<f:setPropertyActionListener value="" target="#{ausenciaController.funcionarios.nome}" />
+							</p:commandButton>
 
 						<p:commandButton value="Consultar 🔍" update=":formGestor:funcionariosDialog"
 							class="botao" oncomplete="PF('registroAusencia').show(); PF('funcionariosDialog').show();"

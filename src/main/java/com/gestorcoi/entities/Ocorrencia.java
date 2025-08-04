@@ -10,8 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * 
  * Classe responsável pela tabela de ocorrências na gestão de turno
@@ -48,7 +46,6 @@ public class Ocorrencia {
 		return id;
 	}
 	
-	@JsonIgnore	
 	public GestorEntity getGestorEntity() {
 		return gestorEntity;
 	}

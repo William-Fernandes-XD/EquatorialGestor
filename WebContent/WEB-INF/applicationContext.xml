@@ -55,6 +55,8 @@
   	<property name="suffix" value="*.jsf, *.xhtml, *.html, *.jsp, *.js"/>
   </bean>
   
+  <bean id="loginSuccesHandler" class="com.gestorcoi.utils.CustomLoginSuccessHandler"/>
+  
   <bean id="indexController" lazy-init="false" class="org.springframework.web.servlet.mvc.ParameterizableViewController"/>
   
   <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer" lazy-init="false">

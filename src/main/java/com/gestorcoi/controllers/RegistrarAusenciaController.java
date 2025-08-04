@@ -50,6 +50,10 @@ public class RegistrarAusenciaController implements Serializable{
 				funcionarios.setAusencias(new ArrayList<RegistroAusencia>());
 			}
 		}
+		
+		if(ausencia.getFuncionarios() == null) {
+			ausencia.setFuncionarios(new Funcionarios());
+		}
 	}
 	
 	public RegistrarAusenciaController(){
@@ -123,10 +127,6 @@ public class RegistrarAusenciaController implements Serializable{
 					
 						ausencia = ausenciaImpl.merge2(ausencia);
 					
-						funcionarios.getAusencias().remove(ausencia);
-					
-						funcionarioImpl.merge2(funcionarios);
-					
 						listaAusenciasGerais.add(ausencia);
 					
 						MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome(), "Salvo");
@@ -158,11 +158,7 @@ public class RegistrarAusenciaController implements Serializable{
 						ausencia.setFuncionarios(funcionarios);
 					
 						ausencia = ausenciaImpl.merge2(ausencia);
-					
-						funcionarios.getAusencias().remove(ausencia);
-					
-						funcionarioImpl.merge2(funcionarios);
-					
+						
 						listaAusenciasGerais.add(ausencia);
 					
 						MensagensJSF.msgSeverityInfo("Ausência Registrada para " + funcionarios.getNome(), "Salvo");
@@ -225,7 +221,7 @@ public class RegistrarAusenciaController implements Serializable{
 	}
 	
 	public Long contadorDeAusencias() {
-		return ausenciaImpl.countAusencias();
+		return (long) listaAusenciasGerais.size();
 	}
 	
 	public Long contadorDeFuncionarios() {

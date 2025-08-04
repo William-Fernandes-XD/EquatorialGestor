@@ -36,8 +36,9 @@
 		   	   
 		   	   <intercept-url pattern="/publico/**" access="permitAll"/>
 		   	   
-		   	   <form-login login-page="/publico/login.jsf" always-use-default-target="true"
-		   	    default-target-url="/restrito/home.jsf" authentication-failure-url="/publico/login.jsf?login_error=1" 
+		   	   <form-login login-page="/publico/login.jsf"
+		   	    authentication-failure-url="/publico/login.jsf?login_error=1" 
+		   	    authentication-success-handler-ref="loginSuccesHandler"
 		   	    username-parameter="j_username"
 		   	    password-parameter="j_password"/>
 		   	    

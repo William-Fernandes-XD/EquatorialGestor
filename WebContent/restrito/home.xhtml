@@ -14,8 +14,12 @@
 	<link rel="stylesheet" type="text/css" href="../styles/home.css" />
 </h:head>
 <h:body>
-	<h:form id="forms">
+	<h:form id="forms" target="#{homeController}">
 
+		<p:growl id="messages" autoUpdate="true" showDetail="true" life="4000" />
+		
+		<f:event listener="#{homeController.init}" type="preRenderView"/>
+		
 		<ui:include src="/templates/barraProgresso.xhtml" />
 
 		<div class="painel-topo">

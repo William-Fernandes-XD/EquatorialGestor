@@ -112,7 +112,8 @@ body {
 
 /* Growl container fixo no topo direito */
 .ui-growl {
-    top: 20px !important;
+	position: fixed !important;
+    bottom: 20px !important;
     right: 20px !important;
     width: auto !important;
     z-index: 9999 !important;

@@ -42,7 +42,7 @@ public class Funcionarios implements Serializable{
 	
 	private String nome;
 	
-	@OneToMany(mappedBy = "funcionarios", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "funcionarios", orphanRemoval = true)
 	private List<RegistroAusencia> ausencias;
 	
 	@OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)

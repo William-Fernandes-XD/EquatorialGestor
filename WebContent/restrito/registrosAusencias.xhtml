@@ -39,7 +39,7 @@
 						<div class="menu-view1">
 							<h2>Total Ausências</h2>	
 							
-							<h2><h:outputText value="#{ausenciaController.contadorDeAusencias()}" /></h2>		
+							<h2><h:outputText value="#{ausenciaController.contadorDeAusencias()}" id="contadorAusencias"/></h2>		
 							
 							<p>Registradas no sistema</p>		
 						</div>
@@ -91,7 +91,7 @@
 							<center>
 								<f:facet name="header">Remover</f:facet>
 								<p:commandButton value="🗑️" styleClass="ui-button-danger"
-								update="tabelaDados"
+								update="tabelaDados :formAusencia:contadorAusencias"
 								action="#{ausenciaController.removerAusenciaOptimusPrime(ausencia)}"/>
 							</center>
 						</p:column>
@@ -141,7 +141,7 @@
 					
 					<div>
 						<p:commandButton value="Salvar 💾" styleClass="ui-button-info"
-						update=":formAusencia:tabelaDados" ajax="true" 
+						update=":formAusencia:tabelaDados :formAusencia:contadorAusencias" ajax="true" 
 						action="#{ausenciaController.salvarAusenciaComFuncionario()}"/>
 						
 						<p:commandButton value="Limpar" styleClass="ui-button-danger"
@@ -212,7 +212,7 @@
 						<center>
 							<f:facet name="header">Remover</f:facet>
 							<p:commandButton value="🗑️" styleClass="ui-button-danger" action="#{ausenciaController.removerAusenciaOptimusPrime(ausencia)}"
-							update=":formAusencia:funcionarioConsultado" ajax="true"/>
+							update=":formAusencia:funcionarioConsultado :formAusencia:contadorAusencias" ajax="true"/>
 						</center>
 					</p:column>
 				</p:dataTable>
