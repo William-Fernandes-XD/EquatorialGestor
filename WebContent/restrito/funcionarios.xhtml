@@ -47,8 +47,8 @@
 			<div id="dataTableFuncionarios">
 				<p:dataTable id="telaFuncionarios" widgetVar="telaFuncionarios"
 					value="#{gerenciaFuncionarios.funcionariosCarregadosTela}"
-					var="objeto">
-					<p:column width="400">
+					var="objeto" scrollable="true" scrollHeight="750">
+					<p:column width="300">
 						<center>
 							<f:facet name="header">Nome</f:facet>
 							<h:outputText value="#{objeto.nome}" />

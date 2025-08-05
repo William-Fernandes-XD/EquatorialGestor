@@ -198,24 +198,24 @@
 			<p:dataTable
 				value="#{gestorTurnoFuncionarios.funcionariosFiltrados}"
 				var="funcionarios" id="tabela" resizableColumns="true"
-				styleClass="tabela-larga" scrollable="true" scrollHeight="690">
+				styleClass="tabela-larga" scrollable="true" scrollHeight="690" frozenColumns="2" scrollWidth="1300">
 
-				<p:column width="300px">
+				<p:column style="width: 100px !important">
 						<f:facet name="header">Nome</f:facet>
 						<h:outputText value="#{funcionarios.nome}" />
 				</p:column>
 
-				<p:column width="200px">
+				<p:column style="width: 100px !important">
 						<f:facet name="header">Tipo</f:facet>
 						<h:outputText value="#{funcionarios.atividadeSuperintendencia}" />
 				</p:column>
 
-				<p:column width="200px">
+				<p:column style="width: 150px">
 						<f:facet name="header">Regional</f:facet>
 						<h:outputText value="#{funcionarios.regional}" />
 				</p:column>
 				
-				<p:column width="100px">
+				<p:column style="width: 50px">
 						<f:facet name="header">Grupo</f:facet>
 						<h:outputText value="#{funcionarios.secao}" />
 				</p:column>

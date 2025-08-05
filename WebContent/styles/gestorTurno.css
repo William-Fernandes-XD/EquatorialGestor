@@ -91,6 +91,10 @@ body {
 	
 }
 
+#tabela .ui-datatable-scrollable-frozen {
+    width: 120px !important; /* soma das duas colunas + espaçamentos */
+}
+
 /* Aplica somente na tabela com id="tabela" */
 #tabela .ui-datatable-scrollable-body {
     display: flex;
