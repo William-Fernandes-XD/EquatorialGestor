@@ -113,12 +113,14 @@ public class GerenciaFuncionarioController {
 			if(funcionarios.getId() != null) {
 				
 				Date trocaTurnoData = funcionarios.getTrocaTurnoData();
+				Date trocaTurnoDataFim = funcionarios.getTrocaTurnoFim();
 				String trocaTurno = funcionarios.getTrocaTurno();
 				
 				funcionarios = funcionarioImpl.findById(funcionarios.getId());
 				
 				funcionarios.setTrocaTurnoData(trocaTurnoData);
 				funcionarios.setTrocaTurno(trocaTurno);
+				funcionarios.setTrocaTurnoFim(trocaTurnoDataFim);
 				
 				funcionarios = funcionarioImpl.merge2(funcionarios);
 				MensagensJSF.msgSeverityInfo("Usuário " + funcionarios.getNome() + ", atualizado com sucesso", "Atualizado");

@@ -268,6 +268,7 @@ public class GestorTurnoFuncionariosController implements Serializable{
 					
 					// Troca de Turno
 					
+					LocalDate trocaTurnoFim;
 					LocalDate trocaTurnoDate;
 					String trocaTurno;
 					
@@ -276,9 +277,12 @@ public class GestorTurnoFuncionariosController implements Serializable{
 						trocaTurnoDate = new java.sql.Date(funcionario.getTrocaTurnoData().getTime()).toLocalDate();
 						trocaTurno = funcionario.getTrocaTurno();
 						
+						trocaTurnoFim = new java.sql.Date(funcionario.getTrocaTurnoFim().getTime()).toLocalDate();
+						
 					}catch(Exception e) {
 						
 						trocaTurnoDate = null;
+						trocaTurnoFim = null;
 						trocaTurno = "";
 					}
 					
@@ -306,7 +310,7 @@ public class GestorTurnoFuncionariosController implements Serializable{
 							int ciclo = (index - offset + 6) % 6; // Mantém dentro de [0,5]
 
 							String valor = "1"; // padrão
-
+							
 							if ("6666".equals(funcionario.getEscala())) {
 								if (ciclo >= 4) {
 									valor = "X"; // folga
@@ -317,6 +321,30 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								valor = (ciclo >= 4) ? "X" : "15";
 							} else if ("21212121".equals(funcionario.getEscala())) {
 								valor = (ciclo >= 4) ? "X" : "21";
+							}
+							
+							/**
+							 * Troca de turno do funcionário, caso ele queira trocar algum dia
+							 */
+							if (trocaTurnoDate != null && trocaTurnoFim != null &&
+								    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+								     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+								
+								if(trocaTurno.trim() != "") {
+									if("6666".equals(funcionario.getEscala())) {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-21" : "X";
+									}else if("15151515".equals(funcionario.getEscala())) {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-21" : "X";
+									}else if("21212121".equals(funcionario.getEscala())) {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-21" : "X";
+									}
+								}
 							}
 							
 							if(!bancosTurnos.isEmpty()) {
@@ -340,27 +368,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								    valor = "Licença";
 								}
 							
-							/**
-							 * Troca de turno do funcionário, caso ele queira trocar algum dia
-							 */
-							if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-								if(trocaTurno.trim() != "") {
-									if("6666".equals(funcionario.getEscala())) {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-15";
-										if("3".equals(trocaTurno)) valor = "T-21";
-									}else if("15151515".equals(funcionario.getEscala())) {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-15";
-										if("3".equals(trocaTurno)) valor = "T-21";
-									}else if("21212121".equals(funcionario.getEscala())) {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-15";
-										if("3".equals(trocaTurno)) valor = "T-21";
-									}
-								}
-							}
-
 							mapadias.put(dia, valor);
 							index++;
 						}
@@ -397,6 +404,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 5) ? "X" : "PTP";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										valor = !valor.equalsIgnoreCase("X") ? "T-PTP" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -417,15 +435,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										valor = "T-PTP";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -438,6 +447,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 4) ? "X" : "PTP";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										valor = !valor.equalsIgnoreCase("X") ? "T-PTP" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -458,15 +478,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										valor = "T-PTP";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -499,6 +510,20 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 5) ? "X" : "6";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("66666".equals(funcionario.getEscala())) {
+											if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+											if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+										}
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -519,18 +544,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("66666".equals(funcionario.getEscala())) {
-											if("1".equals(trocaTurno)) valor = "T-6";
-											if("2".equals(trocaTurno)) valor = "T-15";
-										}
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -541,6 +554,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 5) ? "X" : "15";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -561,16 +586,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-15";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -582,6 +597,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 4) ? "X" : "15";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -602,16 +629,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-15";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -647,6 +664,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 4) ? "X" : "6";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -667,16 +696,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-15";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -689,6 +708,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 4) ? "X" : "15";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -709,16 +740,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-15";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -752,6 +773,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 4) ? "X" : "6";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -772,16 +805,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-15";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -796,6 +819,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 4) ? "X" : "15";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -816,16 +851,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-15";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -851,6 +876,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 5) ? "X" : "8";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-8" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -871,16 +908,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-8";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -895,6 +922,18 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 5) ? "X" : "6";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-8" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -915,16 +954,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-6";
-										if("2".equals(trocaTurno)) valor = "T-8";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -996,6 +1025,20 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								int posicaoLista = (index - offset + totalDiasCiclo) % totalDiasCiclo;
 								String valor = sequenciaEscala.get(posicaoLista);
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-1" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-2" : "X";
+										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-3" : "X";
+										if("4".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-4" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -1017,18 +1060,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-1";
-										if("2".equals(trocaTurno)) valor = "T-2";
-										if("3".equals(trocaTurno)) valor = "T-3";
-										if("4".equals(trocaTurno)) valor = "T-4";
-									}
-								}
-
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -1048,6 +1079,20 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 4) ? "X" : "6";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-1" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-2" : "X";
+										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-3" : "X";
+										if("4".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-4" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -1068,18 +1113,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-1";
-										if("2".equals(trocaTurno)) valor = "T-2";
-										if("3".equals(trocaTurno)) valor = "T-3";
-										if("4".equals(trocaTurno)) valor = "T-4";
-									}
-								}
 								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;
@@ -1094,6 +1127,20 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								
 								String valor = (ciclo >= 4) ? "X" : "15";
 								
+								/**
+								 * Troca de turno do funcionário, caso ele queira trocar algum dia
+								 */
+								if (trocaTurnoDate != null && trocaTurnoFim != null &&
+									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
+									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
+									if(trocaTurno.trim() != "") {
+										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-1" : "X";
+										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-2" : "X";
+										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-3" : "X";
+										if("4".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-4" : "X";
+									}
+								}
+								
 								if(!bancosTurnos.isEmpty()) {
 									for (BancosTurno bancoTurno : bancosTurnos) {
 										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
@@ -1114,19 +1161,6 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if(trocaTurnoDate != null && dia.isEqual(trocaTurnoDate)) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = "T-1";
-										if("2".equals(trocaTurno)) valor = "T-2";
-										if("3".equals(trocaTurno)) valor = "T-3";
-										if("4".equals(trocaTurno)) valor = "T-4";
-									}
-								}
-								
 								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;

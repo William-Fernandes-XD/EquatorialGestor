@@ -130,10 +130,18 @@
 				<div class="text">
 				
 					<div class="ferias-inputs">
-						<h:outputText value="Data da Troca" />
+						<h:outputText value="Data/Ínicio troca de turno" />
 
 						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
 							value="#{gerenciaFuncionarios.funcionarios.trocaTurnoData}"
+							autocomplete="false" appendTo="@form"/>
+					</div>
+					
+					<div class="ferias-inputs">
+						<h:outputText value="Data/Fim troca de turno" />
+
+						<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
+							value="#{gerenciaFuncionarios.funcionarios.trocaTurnoFim}"
 							autocomplete="false" appendTo="@form"/>
 					</div>
 

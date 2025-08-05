@@ -146,13 +146,14 @@
 					
 					<h:panelGroup rendered="#{userVerification.registradora}">
 					
+						<p:commandButton value="Gerar escala" styleClass="ui-button-info"
+							action="#{gestorTurnoFuncionarios.gerarEscala()}" update="tabela" process="@form"
+							ajax="true" />
+					
 						<p:commandButton value="Salvar Escala" styleClass="ui-button-info"
 							action="#{gestorTurnoFuncionarios.salvarEscala()}"
 							ajax="true" />
 				
-						<p:commandButton value="Gerar escala" styleClass="ui-button-info"
-							action="#{gestorTurnoFuncionarios.gerarEscala()}" update="tabela" process="@form"
-							ajax="true" />
 						
 					</h:panelGroup>
 						

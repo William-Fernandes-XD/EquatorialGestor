@@ -88,6 +88,21 @@ body {
 
 .tabela-larga{
 	font-size: 12px;
+	
+}
+
+/* Aplica somente na tabela com id="tabela" */
+#tabela .ui-datatable-scrollable-body {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#tabela .ui-datatable-scrollable-body table {
+    transform: scaleY(-1);
+}
+
+#tabela .ui-datatable-scrollable-body tbody {
+    transform: scaleY(-1);
 }
 
 .fundo-verde{
