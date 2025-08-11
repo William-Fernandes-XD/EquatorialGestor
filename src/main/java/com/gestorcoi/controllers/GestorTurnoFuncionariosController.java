@@ -18,10 +18,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import com.gestorcoi.entities.BancosTurno;
+import com.gestorcoi.entities.DobraTurnoFuncionario;
 import com.gestorcoi.entities.Funcionarios;
 import com.gestorcoi.entities.configGeraEscala.GeradorEscalaEntity;
 import com.gestorcoi.excels.ExcelScanner;
 import com.gestorcoi.implementations.BancosTurnoImpl;
+import com.gestorcoi.implementations.DobrasTurnoFuncionarioImpl;
 import com.gestorcoi.implementations.FuncionarioImpl;
 import com.gestorcoi.implementations.GeradorEscalaEntityImpl;
 import com.gestorcoi.utils.MensagensJSF;
@@ -186,6 +188,7 @@ public class GestorTurnoFuncionariosController implements Serializable{
 		gerarEscala();
 	}
 
+	private DobrasTurnoFuncionarioImpl dobrasTurnoFuncionarioImpl = new DobrasTurnoFuncionarioImpl();
 	/**
 	 * Gera a escala que aparece na tela
 	 */
@@ -216,6 +219,19 @@ public class GestorTurnoFuncionariosController implements Serializable{
 
 			LocalDate atual = inicio;
 			long diferencaDias = ChronoUnit.DAYS.between(inicio, fim);
+			
+			/**
+			 * Dobra de turnos
+			 */
+			
+			List<DobraTurnoFuncionario> dobraTurnoFuncionarios;
+			
+			try {
+				dobraTurnoFuncionarios = dobrasTurnoFuncionarioImpl.findAllGestoriaTurnos(inicio);
+			} catch (Exception e1) {
+				
+				dobraTurnoFuncionarios = null;
+			}
 
 			if (diferencaDias == 35) {
 				while (!atual.isAfter(fim)) {
@@ -227,6 +243,23 @@ public class GestorTurnoFuncionariosController implements Serializable{
 
 				for (Funcionarios funcionario : funcionariosFiltrados) {
 					Map<LocalDate, String> mapadias = new HashMap<>();
+					
+					/**
+					 * Carregamento de dobra de turno por funcionário
+					 */
+					
+					List<DobraTurnoFuncionario> dobraTurnoFuncionariosFiltrada = new ArrayList<>();
+					
+					if(dobraTurnoFuncionarios != null && !dobraTurnoFuncionarios.isEmpty()) {
+						
+						for (DobraTurnoFuncionario obj : dobraTurnoFuncionarios) {
+							
+							if(obj.getFuncionario().getId().equals(funcionario.getId())) {
+								
+								dobraTurnoFuncionariosFiltrada.add(obj);
+							}
+						}
+					}
 					
 					int offset = 0;
 					
@@ -368,6 +401,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 								    valor = "Licença";
 								}
 							
+							if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+								
+								for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+									
+									if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+										
+										valor = obj.getDobra();
+									}
+								}
+							}
+							
 							mapadias.put(dia, valor);
 							index++;
 						}
@@ -436,6 +480,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -478,6 +533,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -545,6 +611,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -586,6 +663,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -629,6 +717,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -697,6 +796,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -740,6 +850,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -806,6 +927,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -851,6 +983,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -909,6 +1052,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -954,6 +1108,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									) {
 									    valor = "Licença";
 									}
+								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
 								
 								mapadias.put(dia, valor);
 								index++;
@@ -1060,6 +1225,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								index++;
 							}
@@ -1114,6 +1290,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;
 							}
@@ -1162,6 +1349,17 @@ public class GestorTurnoFuncionariosController implements Serializable{
 									    valor = "Licença";
 									}
 								
+								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
+									
+									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
+										
+										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
+											
+											valor = obj.getDobra();
+										}
+									}
+								}
+								
 								mapadias.put(dia, valor);
 								indexEscalaFixa++;
 							}
@@ -1203,7 +1401,7 @@ public class GestorTurnoFuncionariosController implements Serializable{
 		
 		if (valor != null && valor.contains("-")) {
 		    String[] corte = valor.trim().split("-");
-		    if (corte.length > 0 && corte[0].trim().equals("T")) {
+		    if (corte.length > 0) {
 		        return "fundo-amarelo";
 		    }
 		}

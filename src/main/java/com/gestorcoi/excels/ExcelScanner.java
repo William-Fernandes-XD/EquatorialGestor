@@ -45,11 +45,11 @@ public class ExcelScanner {
 				
 				Map<LocalDate, String> mapaDiasTrabalho = new HashMap<>();
 				LocalDate atual = inicio;
-				
-				for (Cell celula : row) {
 					
-					if(celula.getColumnIndex() >= 4) {
+				for(int i = 3; i < 3 + 35; i++) {
 						
+						Cell celula = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
+					
 						String valorCelula = "";
 						
 						if(celula.getCellType() == Cell.CELL_TYPE_STRING) {
@@ -61,20 +61,19 @@ public class ExcelScanner {
 						mapaDiasTrabalho.put(atual, valorCelula);
 						atual = atual.plusDays(1);
 					}
-				}
 				
-				if(!mapaDiasTrabalho.isEmpty()) {
-					mapaDados.put(row.getCell(0).getStringCellValue(), mapaDiasTrabalho);
+					if(!mapaDiasTrabalho.isEmpty()) {
+						mapaDados.put(row.getCell(0).getStringCellValue(), mapaDiasTrabalho);
+					}
 				}
+			
+				return mapaDados;
+			
+			}catch(Exception e) {
+				e.printStackTrace();
+				return new HashMap<String, Map<LocalDate,String>>();
 			}
-			
-			return mapaDados;
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			return mapaDados = new HashMap<String, Map<LocalDate,String>>();
 		}
-	}
 
 	public static List<Row> retornarOcorrencia() {
 		

@@ -56,6 +56,13 @@ public class Funcionarios implements Serializable{
 	@OneToMany(mappedBy = "funcionario", orphanRemoval = true)
 	private List<BancosTurno> bancosTurnos;
 	
+	/**
+	 * Dobra de turno para o funcionário
+	 */
+	
+	@OneToMany(mappedBy = "funcionario", orphanRemoval = true)
+	private List<DobraTurnoFuncionario> dobrasTurno;
+	
 	public Funcionarios() {
 
 	}
