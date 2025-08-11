@@ -31,7 +31,7 @@
 		</div>
 
 		<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
-			life="7000"
+			life="800"
 			style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;" />
 
 		<div class="corpo-geral">
@@ -52,6 +52,13 @@
 						<center>
 							<f:facet name="header">Nome</f:facet>
 							<h:outputText value="#{objeto.nome}" />
+						</center>
+					</p:column>
+					
+					<p:column width="100px">
+						<center>
+							<f:facet name="header">Regional</f:facet>
+							<h:outputText value="#{objeto.regional}" />
 						</center>
 					</p:column>
 
@@ -113,9 +120,97 @@
 								</p:commandButton>
 						</center>
 					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Trocar Regional</f:facet>
+							<p:commandButton value="➕" ajax="true"
+								styleClass="ui-button-info" update=":forms:trocaRegionalControl"
+								oncomplete="PF('trocaRegionalControl').show()" process="@this">
+									<f:setPropertyActionListener value="#{objeto}" target="#{gerenciaFuncionarios.funcionarios}" />
+								</p:commandButton>
+						</center>
+					</p:column>
+					
+					<p:column>
+						<center>
+							<f:facet name="header">Trocar Atividade</f:facet>
+							<p:commandButton value="➕" ajax="true"
+								styleClass="ui-button-info" update=":forms:trocaAtividadeControl"
+								oncomplete="PF('trocaAtividadeControl').show()" process="@this">
+									<f:setPropertyActionListener value="#{objeto}" target="#{gerenciaFuncionarios.funcionarios}" />
+								</p:commandButton>
+						</center>
+					</p:column>
 				</p:dataTable>
 			</div>
 		</div>
+		
+		<p:dialog widgetVar="trocaAtividadeControl" id="trocaAtividadeControl"  draggable="false"
+			position="center" width="50vw" height="60vh" header="Trocar Atividade" resizable="false">
+			
+			<div class="ferias-tudo">
+			
+				<div class="nomeFuncionario">
+					<h:outputText value="#{gerenciaFuncionarios.funcionarios.nome}" />					
+				</div>
+			
+				<div class="text">
+				
+					<div class="ferias-inputs">
+						<h:outputText value="Atividade superintendência" />
+
+						<p:autoComplete
+						value="#{gerenciaFuncionarios.atividadeSuperintendencia}"
+						completeMethod="#{gerenciaFuncionarios.retornaAtividadeSuperintendencia}"
+						dropdown="true" forceSelection="true"
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="margin: 0" style="margin:0;" id="atividadeComplete"/>
+					</div>
+					
+				</div>
+				
+				<div class="button-ferias">
+					<p:commandButton class="ui-button-info" value="Atualizar" 
+					 action="#{gerenciaFuncionarios.mergeFuncionarioAtividade()}" process="@form"
+					  update=":forms" ajax="true">
+					 	
+					 	<f:setPropertyActionListener value="#{gerenciaFuncionarios.funcionarios}" target="#{gerenciaFuncionarios.funcionarios}" />
+					 </p:commandButton>
+				</div>
+			</div>
+		</p:dialog>
+		
+		<p:dialog widgetVar="trocaRegionalControl" id="trocaRegionalControl"  draggable="false"
+			position="center" width="50vw" height="60vh" header="Trocar Regional" resizable="false">
+			
+			<div class="ferias-tudo">
+			
+				<div class="nomeFuncionario">
+					<h:outputText value="#{gerenciaFuncionarios.funcionarios.nome}" />					
+				</div>
+			
+				<div class="text">
+				
+					<div class="ferias-inputs">
+						<h:outputText value="Regional: " />
+						
+						<p:autoComplete
+						value="#{gerenciaFuncionarios.regional}"
+						completeMethod="#{gerenciaFuncionarios.retornaRegionais}"
+						dropdown="true" forceSelection="true" 
+						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+						inputStyle="margin: 0" style="margin:0;" id="regionalComplete" widgetVar="regionalComplete"/>
+					</div>
+					
+				</div>
+				
+				<div class="button-ferias">
+					<p:commandButton class="ui-button-info" value="Atualizar" action="#{gerenciaFuncionarios.mergeFuncionarioRegional()}"
+					update=":forms:telaFuncionarios" ajax="true" process="@form"/>
+				</div>
+			</div>
+		</p:dialog>
 		
 		<p:dialog widgetVar="trocaTurnoControl" id="trocaTurnoControl"
 			position="center" width="50vw" height="60vh" header="Troca de Turno"

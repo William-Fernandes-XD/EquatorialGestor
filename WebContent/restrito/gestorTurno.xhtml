@@ -15,7 +15,7 @@
 <h:body>
 
 	<p:growl id="msg" showDetail="true" autoUpdate="true" closable="true"
-		life="7000"
+		life="800"
 		style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;"
 		sticky="true" />
 
@@ -198,7 +198,7 @@
 			<p:dataTable
 				value="#{gestorTurnoFuncionarios.funcionariosFiltrados}"
 				var="funcionarios" id="tabela" resizableColumns="true"
-				styleClass="tabela-larga" scrollable="true" scrollHeight="690" frozenColumns="2" scrollWidth="1300">
+				styleClass="tabela-larga" scrollable="true" scrollHeight="650" frozenColumns="2" scrollWidth="1300">
 
 				<p:column style="width: 100px !important">
 						<f:facet name="header">Nome</f:facet>
@@ -238,12 +238,12 @@
 		</div>
 		
 		<p:dialog id="escalasSalvas" widgetVar="escalasSalvas" position="center" width="90vw" height="90vh" 
-		header="Visualizar bancos" resizable="false" draggable="false">
+		header="Escalas salvas" resizable="false" draggable="false">
 			
 			<p:dataTable widgetVar="tabelaEscala"
 				value="#{gestorTurnoFuncionarios.listaDeEscalasSalvas}"
 				var="escala" id="tabelaEscala" resizableColumns="true"
-				styleClass="tabela-larga" scrollable="true" scrollHeight="500">
+				styleClass="tabela-larga" scrollable="true" scrollHeight="750">
 				
 				<p:column>
 					<center>

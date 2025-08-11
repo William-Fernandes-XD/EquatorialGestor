@@ -23,8 +23,17 @@ public class GerenciaFuncionarioController {
 	
 	private List<Funcionarios> funcionariosCarregadosTela = new ArrayList<>();
 	
+	// bug de salvamento do jsf, logo criar um novo usuário
+	
+	private Funcionarios dadosFuncionario;
+	
 	@PostConstruct
 	public void init() {
+		
+		if(dadosFuncionario == null) {
+			
+			dadosFuncionario = new Funcionarios();
+		}
 		
 		if(funcionarios == null) {
 			funcionarios = new Funcionarios();
@@ -42,6 +51,77 @@ public class GerenciaFuncionarioController {
 	public GerenciaFuncionarioController() throws Exception{
 		if(funcionariosCarregadosTela.isEmpty()) {
 			findAllFuncionariosObjeto();
+		}
+	}
+	
+	
+	private String regional;
+	
+	public String getRegional() {
+		return regional;
+	}
+	
+	public void setRegional(String regional) {
+		this.regional = regional;
+	}
+	
+	public void mergeFuncionarioRegional() {
+		
+		try {
+			
+			if(funcionarios.getId() != null) {
+				
+				System.out.println("Entou: " + regional);
+				
+				String regional = this.regional;
+				
+				funcionarios = funcionarioImpl.findById(funcionarios.getId());
+				
+				funcionarios.setRegional(regional);
+				
+				funcionarios = funcionarioImpl.merge2(funcionarios);
+				MensagensJSF.msgSeverityInfo("Usuário " + funcionarios.getNome() + ", atualizado com sucesso", "Atualizado");
+			}else {
+				MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			}
+			
+		}catch(Exception e) {
+			MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			e.printStackTrace();
+		}
+	}
+	
+	private String atividadeSuperintendencia;
+	
+	public String getAtividadeSuperintendencia() {
+		return atividadeSuperintendencia;
+	}
+	
+	public void setAtividadeSuperintendencia(String atividadeSuperintendencia) {
+		this.atividadeSuperintendencia = atividadeSuperintendencia;
+	}
+	
+	public void mergeFuncionarioAtividade() {
+		
+		try {
+			
+			if(funcionarios.getId() != null) {
+				
+				String atividade = atividadeSuperintendencia;
+				
+				funcionarios = funcionarioImpl.findById(funcionarios.getId());
+				
+				funcionarios.setAtividadeSuperintendencia(atividade);
+				
+				funcionarios = funcionarioImpl.merge2(funcionarios);
+				MensagensJSF.msgSeverityInfo("Usuário " + funcionarios.getNome() + ", atualizado com sucesso", "Atualizado");
+			}else {
+				MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			}
+			
+		}catch(Exception e) {
+			MensagensJSF.msgSeverityInfo("Não foi possível atualizar o funcionário", "Atualização comprometida");
+			e.printStackTrace();
 		}
 	}
 	
@@ -333,5 +413,13 @@ public class GerenciaFuncionarioController {
 		retorno.add("4");
 		
 		return retorno;
+	}
+	
+	public Funcionarios getDadosFuncionario() {
+		return dadosFuncionario;
+	}
+	
+	public void setDadosFuncionario(Funcionarios dadosFuncionario) {
+		this.dadosFuncionario = dadosFuncionario;
 	}
 }
