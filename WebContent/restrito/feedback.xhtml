@@ -132,7 +132,7 @@
 							value="#{feedback.feedback.positivoOrNegative}"
 							completeMethod="#{feedback.retornarPositivoNegativo()}"
 							dropdown="true" forceSelection="true"
-							placeholder="Nome funcionário"
+							placeholder="Como está indo o colaborador?"
 							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
 							inputStyle="width :80%; margin: 0;  padding: 0.5em" 
 							style="margin:0;" />
@@ -140,8 +140,15 @@
 					
 					<div class="inputs">
 						<h:outputText value="FeedBack" />
-						<p:inputText placeholder="Desenvolvimento do funcionário"
-									 value="#{feedback.feedback.feedback}"/>
+									 
+						<p:autoComplete
+							value="#{feedback.feedback.feedback}"
+							completeMethod="#{feedback.feedbacksAutoComplete}"
+							dropdown="true" forceSelection="true"
+							multiple="true"
+							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+							inputStyle="width :80%; margin: 0;  padding: 0.5em" 
+							style="margin:0;"/>
 					</div>
 					
 					<div class="botoes">

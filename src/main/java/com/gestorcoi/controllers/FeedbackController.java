@@ -216,6 +216,31 @@ public class FeedbackController {
 		}
 	}
 	
+	public List<String> feedbacksAutoComplete(String query){
+		
+		List<String> feedbacks = new ArrayList<>();
+		
+		if(feedback.getPositivoOrNegative() != null && feedback.getPositivoOrNegative().equalsIgnoreCase("Positivo")) {
+			
+			feedbacks.add("Bom desenvolvimento");
+			feedbacks.add("Cumpriu prazos");
+			feedbacks.add("Demonstrou um ótimo empenho");
+		}else if(feedback.getPositivoOrNegative() != null && feedback.getPositivoOrNegative().equalsIgnoreCase("Negativo")) {
+			
+			feedbacks.add("Não está cumprindo prazos");
+			feedbacks.add("Falta de empenho");
+		}else {
+			feedbacks.add("Bom desenvolvimento");
+			feedbacks.add("Cumpriu prazos");
+			feedbacks.add("Demonstrou um ótimo empenho");
+			feedbacks.add("Não está cumprindo prazos");
+			feedbacks.add("Falta de empenho");
+		}
+		
+		return feedbacks.stream().filter(s -> s.toLowerCase().contains(query.toLowerCase()))
+				.collect(Collectors.toList());
+	}
+	
 	public List<Feedback> getFeedbacksListaBusca() {
 		return feedbacksListaBusca;
 	}

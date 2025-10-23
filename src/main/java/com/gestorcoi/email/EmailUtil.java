@@ -89,9 +89,9 @@ public class EmailUtil {
 	private static String htmltype(Feedback feedback) {
 		
 		String html = "<html><body style='font-style:helvetica; line-height:1.6'>"
-				+ "<p style='border-left: 2px solid yellow; padding: 1em'> Avaliado por: " + feedback.getAvaliador().getName() +"</p>" +
-				"<p style='border-left: 2px solid yellow; margin-top: 1em; padding: 1em'> Colaborador: " + feedback.getFuncionario().getNome()+ "</p>" +
-				"<p style='border-left: 2px solid blue; margin-top: 2em; padding: 1em'> Tipo do feedback: " + feedback.getPositivoOrNegative() + 
+				//+ "<p style='border-left: 2px solid yellow; padding: 1em'> Avaliado por: " + feedback.getAvaliador().getName() +"</p>" +
+				//"<p style='border-left: 2px solid yellow; margin-top: 1em; padding: 1em'> Colaborador: " + feedback.getFuncionario().getNome()+ "</p>" +
+				+"<p style='border-left: 2px solid blue; margin-top: 2em; padding: 1em'> Tipo do feedback: " + feedback.getPositivoOrNegative() + 
 				"<p style='border-left: 2px solid blue; margin-top: 1em; padding: 1em'> Feedback: " + feedback.getFeedback() +
 				"<p style='border-left: 2px solid red; margin-top: 3em; padding: 1em'> Data: " + formatData(feedback.getData()) + "</body></html>";
 		

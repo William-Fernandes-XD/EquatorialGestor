@@ -30,7 +30,7 @@
 		   	   <intercept-url pattern="/restrito/funcionarios.jsf" access="isAuthenticated() and hasAnyRole('ADMIN', 'SUPERVISOR', 'REGISTRADORA')"/>
 		   	   <intercept-url pattern="/restrito/geradorTexto.jsf" access="isAuthenticated()"/>
 		   	   <intercept-url pattern="/restrito/gerencia-cards.jsf" access="isAuthenticated() and hasAnyRole('ADMIN', 'SUPERVISOR', 'AVALIADOR')"/>
-		   	   <intercept-url pattern="/restrito/gestorTurno.jsf" access="isAuthenticated() and hasAnyRole('ADMIN', 'SUPERVISOR', 'REGISTRADORA')"/>
+		   	   <intercept-url pattern="/restrito/gestorTurno.jsf" access="isAuthenticated()"/>
 		   	   <intercept-url pattern="/restrito/home.jsf" access="isAuthenticated()"/>
 		   	   <intercept-url pattern="/restrito/registrosAusencias.jsf" access="isAuthenticated() and hasAnyRole('ADMIN', 'SUPERVISOR', 'REGISTRADORA')"/>
 		   	   

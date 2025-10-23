@@ -86,16 +86,23 @@
 
 					<div class="input-label">
 						<p:outputLabel value="Turno" />
-						<p:inputText placeholder="Turno de trabalho"
-							value="#{ausenciaController.ausencia.turno}" style="width: 90%"
-							autocomplete="false" />
+						
+						<p:autoComplete
+							value="#{ausenciaController.ausencia.turno}"
+							completeMethod="#{ausenciaController.turnosAutoComplete}"
+							dropdown="true" forceSelection="true"
+							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+							inputStyle="" style="margin:0;" placeholder="Turno referente a falta"/>
 					</div>
 
 					<div class="input-label">
 						<p:outputLabel value="Justificativa" />
-						<p:inputText placeholder="Justificativa"
+							<p:autoComplete
 							value="#{ausenciaController.ausencia.justificativa}"
-							style="width: 90%" autocomplete="false" />
+							completeMethod="#{ausenciaController.justificativasComplete}"
+							dropdown="true" forceSelection="false"
+							panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
+							inputStyle="" style="margin:0;" placeholder="Justificativa da ausência"/>
 					</div>
 
 					<div class="botoes" style="margin-top: 1em;">

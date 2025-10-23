@@ -1,1434 +1,68 @@
 package com.gestorcoi.controllers;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStream;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import com.gestorcoi.entities.BancosTurno;
-import com.gestorcoi.entities.DobraTurnoFuncionario;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+
 import com.gestorcoi.entities.Funcionarios;
-import com.gestorcoi.entities.configGeraEscala.GeradorEscalaEntity;
-import com.gestorcoi.excels.ExcelScanner;
-import com.gestorcoi.implementations.BancosTurnoImpl;
-import com.gestorcoi.implementations.DobrasTurnoFuncionarioImpl;
 import com.gestorcoi.implementations.FuncionarioImpl;
-import com.gestorcoi.implementations.GeradorEscalaEntityImpl;
 import com.gestorcoi.utils.MensagensJSF;
 
 @ManagedBean(name = "gestorTurnoFuncionarios")
 @ViewScoped
-public class GestorTurnoFuncionariosController implements Serializable{
-	
+public class GestorTurnoFuncionariosController implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+	
+	private String filtro;
+	private String filtroTurno;
 
-	// Filtro da tabela que aparece na tela (pode ser nulo, e não funciona se nao tiver uma planilha feita)
-	
-	private String filtro = "";
-	
-	private String filtroGrupo = "";
-	
-	// set ferias
-	
 	private FuncionarioImpl funcionarioImpl = new FuncionarioImpl();
-	
-	private GeradorEscalaEntityImpl geradorEscalaEntityImpl = new GeradorEscalaEntityImpl();
-	
-	private GeradorEscalaEntity geradorEscalaEntity = new GeradorEscalaEntity();
-
-	private List<LocalDate> dias;
 
 	private List<Funcionarios> funcionarios = new ArrayList<>();
 	private List<Funcionarios> funcionariosFiltrados = new ArrayList<>();
-	
-	private Map<String, Map<LocalDate, String>> tabelaDados;
-	
-	private BancosTurnoImpl bancosTurnoImpl = new BancosTurnoImpl();
-	
-	private List<GeradorEscalaEntity> listaDeEscalasSalvas = new ArrayList<>();
-	
+
+	private UploadedFile uploadedFile;
+
+	private Map<String, Map<LocalDate, String>> tabelaDados = new HashMap<String, Map<LocalDate, String>>();
+	private Map<LocalDate, String> mapaDias = new TreeMap<>();
+	private List<LocalDate> dias;
+
+	public GestorTurnoFuncionariosController() throws Exception {
+
+		carregarFuncionariosTabelaPrincipal();
+	}
+
 	public void carregarFuncionariosTabelaPrincipal() throws Exception {
 
 		funcionarios = funcionarioImpl.findAll(Funcionarios.class);
-		
-		funcionarios.sort(Comparator.comparing(Funcionarios::getAtividadeSuperintendencia, Comparator.nullsLast(String::compareToIgnoreCase))
+
+		funcionarios.sort(Comparator
+				.comparing(Funcionarios::getAtividadeSuperintendencia,
+						Comparator.nullsLast(String::compareToIgnoreCase))
 				.thenComparing(Funcionarios::getSecao, Comparator.nullsLast(String::compareToIgnoreCase))
-				.thenComparing(
-						Funcionarios::getEscala,
-						Comparator.nullsLast(String::compareToIgnoreCase).reversed())
-				.thenComparing(Funcionarios::getNome, Comparator.nullsLast(String::compareToIgnoreCase))
-				);
-		
-		funcionariosFiltrados = funcionarios;
-	}
-	
-	public GestorTurnoFuncionariosController() throws Exception{
-		carregarFuncionariosTabelaPrincipal();
-	}
-	
-	/**
-	 * Realiza o salvamento de escalas
-	 */
-	public void salvarEscala() {
-		
-		if(geradorEscalaEntity.getInicio() != null && geradorEscalaEntity.getFim() != null) {
-			
-			try {
-				
-				LocalDate inicioDetudo = geradorEscalaEntity.getInicio().toInstant()
-						.atZone(ZoneId.systemDefault()).toLocalDate();
-					
-				LocalDate dataFimDeTudo = inicioDetudo.plusDays(35);
-					
-					geradorEscalaEntity.setFim(Date.from(dataFimDeTudo.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-				
-				if (geradorEscalaEntity.getEmergencialFolga() == null) 
-				    geradorEscalaEntity.setEmergencialFolga("0");
+				.thenComparing(Funcionarios::getEscala, Comparator.nullsLast(String::compareToIgnoreCase).reversed())
+				.thenComparing(Funcionarios::getNome, Comparator.nullsLast(String::compareToIgnoreCase)));
 
-				if (geradorEscalaEntity.getPtpFolga() == null) 
-				    geradorEscalaEntity.setPtpFolga("0");
-
-				if (geradorEscalaEntity.getPtpFolga4x4() == null) 
-				    geradorEscalaEntity.setPtpFolga4x4("0");
-
-				if (geradorEscalaEntity.getComercialFolga() == null) 
-				    geradorEscalaEntity.setComercialFolga("0");
-
-				if (geradorEscalaEntity.getAvaliacaoFolga() == null) 
-				    geradorEscalaEntity.setAvaliacaoFolga("0");
-
-				if (geradorEscalaEntity.getIlhaDeRiscoFolga() == null) 
-				    geradorEscalaEntity.setIlhaDeRiscoFolga("0");
-
-				if (geradorEscalaEntity.getTriagemFolga() == null) 
-				    geradorEscalaEntity.setTriagemFolga("0");
-
-				if (geradorEscalaEntity.getImpactoFolga() == null) 
-				    geradorEscalaEntity.setImpactoFolga("0");
-
-				if (geradorEscalaEntity.getImpactoFolga2() == null) 
-				    geradorEscalaEntity.setImpactoFolga2("0");
-
-				if (geradorEscalaEntity.getImpactoFolga3() == null) 
-				    geradorEscalaEntity.setImpactoFolga3("0");
-
-				if (geradorEscalaEntity.getImpactoFolga4() == null) 
-				    geradorEscalaEntity.setImpactoFolga4("0");
-
-				if (geradorEscalaEntity.getImpactoFolga5() == null) 
-				    geradorEscalaEntity.setImpactoFolga5("0");
-
-				if (geradorEscalaEntity.getImpactoFolga6() == null) 
-				    geradorEscalaEntity.setImpactoFolga6("0");
-			    
-				geradorEscalaEntityImpl.merge(geradorEscalaEntity);
-				listaDeEscalasSalvas.add(geradorEscalaEntity);
-				
-				MensagensJSF.msgSeverityInfo("Nova escala salva com sucesso", "Salvo");
-				
-			}catch(Exception e) {
-				MensagensJSF.msgSeverityInfo("Não foi possível salvar a escala", "Um erro inesperado");
-			}
-		}
-	}
-	
-	public void removerEscala(GeradorEscalaEntity entity) {
-		
-		try{
-			geradorEscalaEntityImpl.remove(entity);
-			listaDeEscalasSalvas.remove(entity);
-			MensagensJSF.msgSeverityInfo("Escala removida com sucesso", "Removido");
-			
-		}catch(Exception e) {
-			MensagensJSF.msgSeverityInfo("Não foi possível remover a escala", "Um erro inesperado");
-		}
-	}
-	
-	public void carregarEscalasSalvas() {
-		
-		try {
-			
-			listaDeEscalasSalvas = geradorEscalaEntityImpl.findAll(GeradorEscalaEntity.class);
-			
-		}catch(Exception e) {
-			MensagensJSF.msgSeverityInfo("Não foi possível realizar a consulta de escalas", "Um erro inesperado");
-		}
-	}
-	
-	public void gerarEscalaFiltrada(){
-		
-		funcionariosFiltrados = funcionarios;
-		
-		try {
-			
-			if(filtro != null && !filtro.trim().isEmpty()) {
-				funcionariosFiltrados =  funcionariosFiltrados.stream().filter(s -> s.getAtividadeSuperintendencia().equalsIgnoreCase(filtro)).collect(Collectors.toList());
-			}
-			
-			if(filtroGrupo != null && !filtroGrupo.trim().isEmpty()){
-				funcionariosFiltrados = funcionariosFiltrados.stream().filter(s -> s.getSecao().equalsIgnoreCase(filtroGrupo)).collect(Collectors.toList());
-			}
-		}catch(Exception e) {
-			
-			MensagensJSF.msgSeverityInfo("Não foi possível realizar o filtro", "Um erro inesperado");
-		}
-		
-		gerarEscala();
-	}
-
-	private DobrasTurnoFuncionarioImpl dobrasTurnoFuncionarioImpl = new DobrasTurnoFuncionarioImpl();
-	/**
-	 * Gera a escala que aparece na tela
-	 */
-	public void gerarEscala() {
-
-		if (geradorEscalaEntity.getInicio() != null) {
-			
-			/**
-			 * 
-			 * Organizando tabela
-			 */
-			
-			dias = new ArrayList<>();
-			
-			/**
-			 * Setamento de afastamento de 35 dias
-			 */
-			LocalDate inicioDetudo = geradorEscalaEntity.getInicio().toInstant()
-					.atZone(ZoneId.systemDefault()).toLocalDate();
-				
-			LocalDate dataFimDeTudo = inicioDetudo.plusDays(35);
-				
-			geradorEscalaEntity.setFim(Date.from(dataFimDeTudo.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-	
-
-			LocalDate inicio = new java.sql.Date(geradorEscalaEntity.getInicio().getTime()).toLocalDate();
-			LocalDate fim = new java.sql.Date(geradorEscalaEntity.getFim().getTime()).toLocalDate();
-
-			LocalDate atual = inicio;
-			long diferencaDias = ChronoUnit.DAYS.between(inicio, fim);
-			
-			/**
-			 * Dobra de turnos
-			 */
-			
-			List<DobraTurnoFuncionario> dobraTurnoFuncionarios;
-			
-			try {
-				dobraTurnoFuncionarios = dobrasTurnoFuncionarioImpl.findAllGestoriaTurnos(inicio);
-			} catch (Exception e1) {
-				
-				dobraTurnoFuncionarios = null;
-			}
-
-			if (diferencaDias == 35) {
-				while (!atual.isAfter(fim)) {
-					dias.add(atual);
-					atual = atual.plusDays(1);
-				}
-
-				tabelaDados = new HashMap<String, Map<LocalDate, String>>();
-
-				for (Funcionarios funcionario : funcionariosFiltrados) {
-					Map<LocalDate, String> mapadias = new HashMap<>();
-					
-					/**
-					 * Carregamento de dobra de turno por funcionário
-					 */
-					
-					List<DobraTurnoFuncionario> dobraTurnoFuncionariosFiltrada = new ArrayList<>();
-					
-					if(dobraTurnoFuncionarios != null && !dobraTurnoFuncionarios.isEmpty()) {
-						
-						for (DobraTurnoFuncionario obj : dobraTurnoFuncionarios) {
-							
-							if(obj.getFuncionario().getId().equals(funcionario.getId())) {
-								
-								dobraTurnoFuncionariosFiltrada.add(obj);
-							}
-						}
-					}
-					
-					int offset = 0;
-					
-					// Ferias
-					
-					LocalDate feriasInicio;
-					LocalDate feriasFim;
-					
-					try {
-						feriasInicio = new java.sql.Date(funcionario.getFeriasInicio().getTime()).toLocalDate();
-						feriasFim = new java.sql.Date(funcionario.getFeriasFim().getTime()).toLocalDate();
-					}catch(Exception e) {
-						feriasInicio = null;
-						feriasFim = null;
-					}
-					
-					// licença
-					
-					LocalDate licencaInicio;
-					LocalDate licencaFim;
-					
-					try {
-						licencaInicio = new java.sql.Date(funcionario.getLicencaInicio().getTime()).toLocalDate();
-						licencaFim = new java.sql.Date(funcionario.getLicencaFim().getTime()).toLocalDate();
-					}catch(Exception e) {
-						licencaInicio = null;
-						licencaFim = null;
-					}
-					
-					// Bancos de horas
-					
-					List<BancosTurno> bancosTurnos;
-					
-					try {
-						bancosTurnos = bancosTurnoImpl.findAllById(funcionario.getId());
-					}catch(Exception e) {
-						bancosTurnos = new ArrayList<>();
-					}
-					
-					// Troca de Turno
-					
-					LocalDate trocaTurnoFim;
-					LocalDate trocaTurnoDate;
-					String trocaTurno;
-					
-					try {
-						
-						trocaTurnoDate = new java.sql.Date(funcionario.getTrocaTurnoData().getTime()).toLocalDate();
-						trocaTurno = funcionario.getTrocaTurno();
-						
-						trocaTurnoFim = new java.sql.Date(funcionario.getTrocaTurnoFim().getTime()).toLocalDate();
-						
-					}catch(Exception e) {
-						
-						trocaTurnoDate = null;
-						trocaTurnoFim = null;
-						trocaTurno = "";
-					}
-					
-					/**
-					 * Pessoal da emergencial apenas
-					 */
-					if(funcionario.getAtividadeSuperintendencia().equalsIgnoreCase("emergencial")) {
-						
-						try {
-							offset = Integer.parseInt(geradorEscalaEntity.getEmergencialFolga());
-						} catch (Exception e) {
-							offset = 0;
-						}
-						
-						// Definir offset conforme a seção
-						if ("2".equals(funcionario.getSecao())) {
-							offset += 2;
-						} else if ("3".equals(funcionario.getSecao())) {
-							offset += 4;
-						}
-
-						int index = 0;
-
-						for (LocalDate dia : dias) {
-							int ciclo = (index - offset + 6) % 6; // Mantém dentro de [0,5]
-
-							String valor = "1"; // padrão
-							
-							if ("6666".equals(funcionario.getEscala())) {
-								if (ciclo >= 4) {
-									valor = "X"; // folga
-								} else {
-									valor = "6"; // trabalho
-								}
-							} else if ("15151515".equals(funcionario.getEscala())) {
-								valor = (ciclo >= 4) ? "X" : "15";
-							} else if ("21212121".equals(funcionario.getEscala())) {
-								valor = (ciclo >= 4) ? "X" : "21";
-							}
-							
-							/**
-							 * Troca de turno do funcionário, caso ele queira trocar algum dia
-							 */
-							if (trocaTurnoDate != null && trocaTurnoFim != null &&
-								    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-								     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-								
-								if(trocaTurno.trim() != "") {
-									if("6666".equals(funcionario.getEscala())) {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-21" : "X";
-									}else if("15151515".equals(funcionario.getEscala())) {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-21" : "X";
-									}else if("21212121".equals(funcionario.getEscala())) {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-21" : "X";
-									}
-								}
-							}
-							
-							if(!bancosTurnos.isEmpty()) {
-								for (BancosTurno bancoTurno : bancosTurnos) {
-									LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-									valor = dia.isEqual(bancoData) ? "B" : valor;
-								}
-							}
-							
-							if (
-								    feriasInicio != null && feriasFim != null &&
-								    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-								) {
-								    valor = "Férias";
-								}
-							
-							if (
-								    licencaInicio != null && licencaFim != null &&
-								    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-								) {
-								    valor = "Licença";
-								}
-							
-							if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-								
-								for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-									
-									if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-										
-										valor = obj.getDobra();
-									}
-								}
-							}
-							
-							mapadias.put(dia, valor);
-							index++;
-						}
-					}
-
-					/**
-					 * Pessoal do PTP apenas
-					 */
-					
-					if(funcionario.getAtividadeSuperintendencia().equalsIgnoreCase("ptp")) {
-						
-						try{
-							
-							if(funcionario.getEscala().equalsIgnoreCase("4-PTP")) {
-								offset = Integer.parseInt(geradorEscalaEntity.getPtpFolga4x4());
-							}else if(funcionario.getEscala().equalsIgnoreCase("5-PTP")){
-								offset = Integer.parseInt(geradorEscalaEntity.getPtpFolga());
-							}
-						}catch(Exception e) {
-							offset = 0;
-						}
-						
-						if("2".equals(funcionario.getSecao())) {
-							offset+= 2;
-						}
-						
-						int index = 0;
-						
-						if("5-PTP".equalsIgnoreCase(funcionario.getEscala())) {
-							
-							for(LocalDate dia : dias) {
-								
-								int ciclo = (index - offset + 7) % 7;
-								
-								String valor = (ciclo >= 5) ? "X" : "PTP";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										valor = !valor.equalsIgnoreCase("X") ? "T-PTP" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}else if("4-PTP".equalsIgnoreCase(funcionario.getEscala())) {
-							
-							for(LocalDate dia : dias) {
-								
-								int ciclo = (index - offset + 6) % 6;
-								
-								String valor = (ciclo >= 4) ? "X" : "PTP";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										valor = !valor.equalsIgnoreCase("X") ? "T-PTP" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}
-					}
-						
-						/**
-						 * 
-						 * Comercial
-						 */
-					
-					if("Comercial".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())) {
-						
-						try {
-							offset = Integer.parseInt(geradorEscalaEntity.getComercialFolga());
-						}catch(Exception e) {
-							offset = 0;
-						}
-						
-						if("2".equals(funcionario.getSecao())) {
-							offset+=2;
-						}
-						
-						int index = 0;
-						
-						if("66666".equals(funcionario.getEscala())) {
-							for(LocalDate dia : dias) {
-								int ciclo = (index - offset + 7) % 7;
-								
-								String valor = (ciclo >= 5) ? "X" : "6";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("66666".equals(funcionario.getEscala())) {
-											if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-											if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-										}
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}else if("1515151515".equals(funcionario.getEscala())) {
-							for(LocalDate dia : dias) {
-								int ciclo = (index - offset + 7) % 7;
-								
-								String valor = (ciclo >= 5) ? "X" : "15";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}else if("15151515".equals(funcionario.getEscala())) {
-							for(LocalDate dia : dias) {
-								
-								int ciclo = (index - offset + 6) % 6;
-								
-								String valor = (ciclo >= 4) ? "X" : "15";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}
-					}
-					
-					if("Avaliação".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())){
-						
-						try {
-							offset = Integer.parseInt(geradorEscalaEntity.getAvaliacaoFolga());
-						}catch(Exception e) {
-							offset = 0;
-						}
-						
-						if("2".equalsIgnoreCase(funcionario.getSecao())) {
-							offset += 3;
-						}
-						
-						if("3".equals(funcionario.getSecao())) {
-							offset -= 1; 
-						}
-						
-						if("4".equals(funcionario.getSecao())) {
-							offset += 1;
-						}
-						
-						int index = 0;
-						
-						if("6666".equals(funcionario.getEscala())) {
-							for(LocalDate dia : dias) {
-								int ciclo = (index - offset + 6) % 6;
-								
-								String valor = (ciclo >= 4) ? "X" : "6";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}
-						
-						else if("15151515".equals(funcionario.getEscala())) {
-							for(LocalDate dia : dias) {
-								int ciclo = (index - offset + 6) % 6;
-								
-								String valor = (ciclo >= 4) ? "X" : "15";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}
-					}
-					
-					if("ilha de risco".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())){
-						
-						try {
-							offset = Integer.parseInt(geradorEscalaEntity.getIlhaDeRiscoFolga());
-						}catch(Exception e) {
-							offset = 0;
-						}
-						
-						if("2".equals(funcionario.getSecao())) {
-							offset += 2;
-						}
-						
-						if("3".equals(funcionario.getSecao())) {
-							offset += 4;
-						}
-						
-						int index = 0;
-						
-						if("6666".equals(funcionario.getEscala())) {
-							
-							for(LocalDate dia : dias) {
-								
-								int ciclo = (index - offset + 6) % 6;
-								
-								String valor = (ciclo >= 4) ? "X" : "6";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}
-						
-						else if("15151515".equals(funcionario.getEscala())) {
-							
-							for(LocalDate dia : dias) {
-								
-								int ciclo = (index - offset + 6) % 6;
-								
-								String valor = (ciclo >= 4) ? "X" : "15";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-15" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}
-					}
-					
-					if("triagem".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())){
-						
-						try {
-							offset = Integer.parseInt(geradorEscalaEntity.getTriagemFolga());
-						}catch(Exception e) {
-							offset = 0;
-						}
-						
-						int index = 0;
-						
-						if("88888".equals(funcionario.getEscala())) {
-							
-							for(LocalDate dia : dias) {
-								
-								int ciclo = (index - offset + 7) % 7;
-								
-								String valor = (ciclo >= 5) ? "X" : "8";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-8" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}
-						
-						else if("66666".equals(funcionario.getEscala())) {
-							
-							for(LocalDate dia : dias) {
-								
-								int ciclo = (index - offset + 7) % 7;
-								
-								String valor = (ciclo >= 5) ? "X" : "6";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-6" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-8" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}
-					}
-					
-					if ("impacto".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())
-							|| "manobra".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())) {
-
-						try {
-							offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga());
-							
-							if("1".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga());
-								
-							}else if("2".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga2());
-								
-							}else if("3".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga3());
-							}
-							else if("4".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga4());
-								
-							}else if("5".equals(funcionario.getSecao()) && "4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga5());
-							}
-							
-							/**
-							 * Escala normal fixa
-							 */
-							
-							else if("1".equals(funcionario.getSecao()) && !"4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga6());
-							}else if("2".equals(funcionario.getSecao()) && !"4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga6()) + 2;
-							}else if("3".equals(funcionario.getSecao()) && !"4321".equals(funcionario.getEscala())) {
-								offset = Integer.parseInt(geradorEscalaEntity.getImpactoFolga6()) + 4;
-							}
-						} catch (Exception e) {
-							offset = 0;
-						}
-
-						int secao = 0;
-						try {
-							secao = Integer.parseInt(funcionario.getSecao());
-						} catch (Exception e) {
-							secao = 0;
-						}
-
-						// Seção 1: offset = 0, Seção 2: offset = 2, Seção 3: offset = 4, ...
-						offset += (secao > 1) ? (secao - 1) * 2 : 0;
-
-						List<String> sequenciaEscala = Arrays.asList(
-							"4", "3", "2", "1", "X", "X",
-							"4", "3", "2", "1", "X",
-							"4", "4", "3", "2", "1", "X",
-							"4", "3", "3", "2", "1", "X",
-							"4", "3", "2", "2", "1", "X",
-							"4", "3", "2", "1", "1", "X"
-						); 
-
-						if ("4321".equals(funcionario.getEscala())) {
-							int totalDiasCiclo = sequenciaEscala.size();
-							int index = 0;
-
-							for (LocalDate dia : dias) {
-								int posicaoLista = (index - offset + totalDiasCiclo) % totalDiasCiclo;
-								String valor = sequenciaEscala.get(posicaoLista);
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-1" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-2" : "X";
-										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-3" : "X";
-										if("4".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-4" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								index++;
-							}
-						}
-						
-						/**
-						 * Impacto de escala fixa
-						 */
-						
-						int indexEscalaFixa = 0;
-						
-						if("6666".equals(funcionario.getEscala())) {
-							
-							for(LocalDate dia : dias) {
-								
-								int ciclo = (indexEscalaFixa - offset + 6) % 6;
-								
-								String valor = (ciclo >= 4) ? "X" : "6";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-1" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-2" : "X";
-										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-3" : "X";
-										if("4".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-4" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								indexEscalaFixa++;
-							}
-						}
-						
-						if("15151515".equals(funcionario.getEscala())) {
-							
-							for(LocalDate dia : dias) {
-								
-								int ciclo = (indexEscalaFixa - offset + 6) % 6;
-								
-								String valor = (ciclo >= 4) ? "X" : "15";
-								
-								/**
-								 * Troca de turno do funcionário, caso ele queira trocar algum dia
-								 */
-								if (trocaTurnoDate != null && trocaTurnoFim != null &&
-									    (dia.isEqual(trocaTurnoDate) || dia.isEqual(trocaTurnoFim) ||
-									     (dia.isAfter(trocaTurnoDate) && dia.isBefore(trocaTurnoFim)))) {
-									if(trocaTurno.trim() != "") {
-										if("1".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-1" : "X";
-										if("2".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-2" : "X";
-										if("3".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-3" : "X";
-										if("4".equals(trocaTurno)) valor = !valor.equalsIgnoreCase("X") ? "T-4" : "X";
-									}
-								}
-								
-								if(!bancosTurnos.isEmpty()) {
-									for (BancosTurno bancoTurno : bancosTurnos) {
-										LocalDate bancoData = new java.sql.Date(bancoTurno.getDataBanco().getTime()).toLocalDate();
-										valor = dia.isEqual(bancoData) ? "B" : valor;
-									}
-								}
-								
-								if (
-									    feriasInicio != null && feriasFim != null &&
-									    !dia.isBefore(feriasInicio) && !dia.isAfter(feriasFim)
-									) {
-									    valor = "Férias";
-									}
-								
-								if (
-									    licencaInicio != null && licencaFim != null &&
-									    !dia.isBefore(licencaInicio) && !dia.isAfter(licencaFim)
-									) {
-									    valor = "Licença";
-									}
-								
-								if(dobraTurnoFuncionariosFiltrada != null && !dobraTurnoFuncionariosFiltrada.isEmpty()) {
-									
-									for (DobraTurnoFuncionario obj : dobraTurnoFuncionariosFiltrada) {
-										
-										if(dia.isEqual((new java.sql.Date(obj.getDataDobra().getTime()).toLocalDate()))) {
-											
-											valor = obj.getDobra();
-										}
-									}
-								}
-								
-								mapadias.put(dia, valor);
-								indexEscalaFixa++;
-							}
-						}
-					}
-					
-					if("supervisão".equalsIgnoreCase(funcionario.getAtividadeSuperintendencia())) {
-						
-						Map<String, Map<LocalDate, String>> supervisoresDados = new HashMap<>();
-						
-						if(supervisoresDados == null || supervisoresDados.isEmpty()) {
-							supervisoresDados = ExcelScanner.carregarSupervisoresDadosTurno(inicio);
-							
-							if(supervisoresDados != null && !supervisoresDados.isEmpty()) {
-								for (LocalDate dia : dias) {
-									mapadias.put(dia, supervisoresDados.get(funcionario.getNome()).get(dia));
-								}
-							}else {
-								for (LocalDate dia : dias) {
-									mapadias.put(dia, "-");
-								}
-							}
-						}
-						
-					}
-					
-					tabelaDados.put(funcionario.getNome(), mapadias);
-				}
-			} else {
-				MensagensJSF.msgSeverityInfo("O limite máximo entre as datas não pode ser diferente de 35 dias",
-						"Operação não realizada");
-			}
-		}	
-	}
-	
-	public String getClasseCelula(String nome, LocalDate dia) {
-		
-		String valor = getValor(nome, dia);
-		
-		if (valor != null && valor.contains("-")) {
-		    String[] corte = valor.trim().split("-");
-		    if (corte.length > 0) {
-		        return "fundo-amarelo";
-		    }
-		}
-		
-		switch(valor != null ? valor.toUpperCase() : "") {
-		
-			case "X":
-				return "fundo-verde";
-			case "PTP":
-				return "fundo-azul";
-			case "FÉRIAS":
-				return "fundo-laranja";
-			case "R":
-				return "fundo-azul-claro";
-			case "S":
-				return "fundo-azul-claro";
-			case "A":
-				return "fundo-azul-claro";
-			case "T":
-				return "fundo-azul-claro";
-			case "B":
-				return "fundo-azul-claro";
-			case "LICENÇA":
-				return "fundo-cinza";
-			default:
-				return "";
-		}
+		setFuncionariosFiltrados(funcionarios);
 	}
 
 	public String formatarDataCabecalho(LocalDate dia) {
@@ -1439,12 +73,289 @@ public class GestorTurnoFuncionariosController implements Serializable{
 	public String getValor(String nome, LocalDate dia) {
 		return tabelaDados.get(nome).get(dia);
 	}
-	
-	/**
-	 * Autocomplete
-	 * 
-	 */
 
+	public void gerarEscalaFiltrada() {
+
+		funcionariosFiltrados = funcionarios;
+		
+		try {
+			
+			if(filtro != null && !filtro.trim().isEmpty()) {
+				funcionariosFiltrados =  funcionariosFiltrados.stream().filter(s -> s.getAtividadeSuperintendencia().equalsIgnoreCase(filtro)).collect(Collectors.toList());
+			}
+		}catch(Exception e) {
+			
+			MensagensJSF.msgSeverityInfo("Não foi possível realizar o filtro", "Um erro inesperado");
+		}
+		
+		gerarEscala();
+	}
+
+	public void gerarEscala() {
+
+		String caminhoPadraoPlanilha = "C:/Users/E21057649/eclipse-workspace/com.gestorcoi/src/main/webapp/resources/uploads/escala.csv";
+
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(caminhoPadraoPlanilha))) {
+			
+			// Utilitaria para erros como o .csv vir como 11/out
+			Map<String, String> mesMap = new HashMap<>();
+		    mesMap.put("jan", "01"); mesMap.put("fev", "02"); mesMap.put("mar", "03");
+		    mesMap.put("abr", "04"); mesMap.put("mai", "05"); mesMap.put("jun", "06");
+		    mesMap.put("jul", "07"); mesMap.put("ago", "08"); mesMap.put("set", "09");
+		    mesMap.put("out", "10"); mesMap.put("nov", "11"); mesMap.put("dez", "12");
+
+			String linha;
+
+			dias = new ArrayList<>(); // retorno para a tela do usuário
+			List<String> datas = new ArrayList<>();
+			boolean datasSalvas = false;
+
+			while ((linha = bufferedReader.readLine()) != null) {
+
+				mapaDias = new TreeMap<>();
+
+				String[] colunas = linha.split(";");
+
+				Funcionarios funcionario = new Funcionarios();
+
+				// Pegar os cabeçalhos de datas
+				for (String buscaDatas : colunas) {
+
+					if (buscaDatas != null && !buscaDatas.trim().isEmpty() && buscaDatas.contains("/")) {
+						// System.out.println(linha);
+						try {
+							
+							/**
+							 * Erros de .csv vir como 11/out
+							 */
+							for (Map.Entry<String, String> entry : mesMap.entrySet()) {
+							    String chave = entry.getKey();
+							    String valor = entry.getValue();
+							    
+							    if(buscaDatas.split("/")[1].toLowerCase().equalsIgnoreCase(chave)) {
+							    	buscaDatas = buscaDatas.split("/")[0] + "/" + valor;
+							    }
+							}
+							
+							datas.add(buscaDatas.trim());
+							datasSalvas = true;
+
+							// salvando a data para o usuário interface
+							String primeiroDigito = buscaDatas.split("/")[0];
+							int anoAtual = LocalDate.now().getYear();
+							String dataAtualColuna;
+
+							// Verificação de valor 1/10 que nao pode ser convertido
+
+							if (Integer.parseInt(primeiroDigito) < 10) {
+								dataAtualColuna = "0" + buscaDatas + "/" + anoAtual;
+							} else {
+								dataAtualColuna = buscaDatas + "/" + anoAtual;
+							}
+
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+							LocalDate dataColunaFormatada = LocalDate.parse(dataAtualColuna, formatter);
+
+							dias.add(dataColunaFormatada);
+						} catch (Exception e) {
+							continue;
+						}
+					}
+				}
+				if (datasSalvas == true) {
+
+					int contadorColuna = 0;
+
+					for (String texto : colunas) {
+
+						contadorColuna++;
+
+						// Funcionarios e mapa de dias
+						if (texto != null && !colunas[4].toLowerCase().contains("controladores")
+								&& !colunas[4].toLowerCase().contains("avaliador")
+								&& !colunas[4].toLowerCase().contains("férias")
+								&& !colunas[4].toLowerCase().contains("licença")
+								&& !colunas[4].toLowerCase().contains("falta")
+								&& !colunas[4].toLowerCase().contains("compensação")) {
+
+							if (contadorColuna == 4) {
+								funcionario.setNome(texto);
+							} else if (contadorColuna == 5) {
+								funcionario.setTipo(texto);
+							} else if (contadorColuna == 6) {
+								funcionario.setAtividadeSuperintendencia(texto);
+								
+								if(filtro != null && !filtro.trim().isEmpty()) {
+						            if(!funcionario.getAtividadeSuperintendencia().equalsIgnoreCase(filtro)) {
+						                funcionario = null; 
+						                break; 
+						            }
+						        }
+							} else if (contadorColuna == 7) {
+								funcionario.setRegional(texto);
+							} else if (contadorColuna > 7) {
+
+								// Índice relativo à lista de datas
+								int indiceData = contadorColuna - 7; // ajusta o deslocamento
+
+								if (indiceData >= 0 && indiceData < datas.size()) {
+									try {
+										String dataTexto = datas.get(indiceData);
+
+										String primeiroDigito = dataTexto.split("/")[0];
+										int anoAtual = LocalDate.now().getYear();
+										String dataAtualColuna;
+
+										if (Integer.parseInt(primeiroDigito) < 10) {
+											dataAtualColuna = "0" + dataTexto + "/" + anoAtual;
+										} else {
+											dataAtualColuna = dataTexto + "/" + anoAtual;
+										}
+
+										DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+										LocalDate dataColunaFormatada = LocalDate.parse(dataAtualColuna, formatter);
+
+										mapaDias.put(dataColunaFormatada, texto);
+									} catch (Exception e) {
+										continue;
+									}
+								}
+							}
+
+						} else {
+							continue;
+						}
+					}
+					
+					if(funcionario != null) {
+						if(filtroTurno != null && !filtroTurno.trim().equals("")) {
+							
+							
+						}else {
+							tabelaDados.put(funcionario.getNome(), mapaDias);
+						}
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * Salvamento do arquivo planilha das escalas
+	 * 
+	 * @param event
+	 */
+	public void handleFileUpload(FileUploadEvent event) {
+
+		uploadedFile = event.getFile();
+		salvarEscalaExcel();
+	}
+
+	public void salvarEscalaExcel() {
+
+		try {
+
+			if (uploadedFile != null && uploadedFile.getFileName().endsWith(".csv")) {
+				try (InputStream input = uploadedFile.getInputstream()) {
+
+					String uploadedDir = "C:/Users/E21057649/eclipse-workspace/com.gestorcoi/src/main/webapp/resources/uploads/";
+
+					File targetFolder = new File(uploadedDir);
+
+					if (!targetFolder.exists()) {
+						targetFolder.mkdirs();
+					}
+
+					File targetFile = new File(uploadedDir + "escala.csv");
+
+					try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
+						byte[] buffer = new byte[1024];
+						int bytesRead;
+						while ((bytesRead = input.read(buffer)) != -1) {
+							outputStream.write(buffer, 0, bytesRead);
+						}
+					}
+
+					System.out.println("Arquivo salvo em: " + targetFile.getAbsolutePath());
+
+					MensagensJSF.msgSeverityInfo("Escala importada com sucesso!", "Sucesso");
+
+				} catch (Exception e) {
+					MensagensJSF.msgSeverityError("Não foi possível salvar esse arquivo");
+				}
+			} else {
+				MensagensJSF.msgSeverityInfo("Arquivo não econtrado", "Um erro inesperado");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<Funcionarios> getFuncionariosFiltrados() {
+		return funcionariosFiltrados;
+	}
+
+	public void setFuncionariosFiltrados(List<Funcionarios> funcionariosFiltrados) {
+		this.funcionariosFiltrados = funcionariosFiltrados;
+	}
+
+	public Map<String, Map<LocalDate, String>> getTabelaDados() {
+		return tabelaDados;
+	}
+
+	public List<LocalDate> getDias() {
+		return dias;
+	}
+
+	public void setDias(List<LocalDate> dias) {
+		this.dias = dias;
+	}
+
+	public void setTabelaDados(Map<String, Map<LocalDate, String>> tabelaDados) {
+		this.tabelaDados = tabelaDados;
+	}
+
+	public String getClasseCelula(String nome, LocalDate dia) {
+
+		String valor = getValor(nome, dia);
+
+		if (valor != null && valor.contains("-")) {
+			String[] corte = valor.trim().split("-");
+			if (corte.length > 0) {
+				return "fundo-amarelo";
+			}
+		}
+
+		switch (valor != null ? valor.toUpperCase() : "") {
+
+		case "X":
+			return "fundo-verde";
+		case "PTP":
+			return "fundo-azul";
+		case "FÉRIAS":
+			return "fundo-laranja";
+		case "R":
+			return "fundo-azul-claro";
+		case "S":
+			return "fundo-azul-claro";
+		case "A":
+			return "fundo-azul-claro";
+		case "T":
+			return "fundo-azul-claro";
+		case "B":
+			return "fundo-azul-claro";
+		case "LICENÇA":
+			return "fundo-cinza";
+		default:
+			return "";
+		}
+	}
+	
 	public List<String> filtrosAtividadesAutoComplete(String query){
 		
 		List<String> retorno = new ArrayList<>();
@@ -1462,7 +373,7 @@ public class GestorTurnoFuncionariosController implements Serializable{
 		return retorno.stream().filter(s -> s.toUpperCase().contains(query.toUpperCase())).collect(Collectors.toList());
 	}
 	
-	public List<String> filtrosGrupoAutoComplete(){
+	public List<String> filtrosTurno(String query){
 		
 		List<String> retorno = new ArrayList<>();
 		
@@ -1470,64 +381,31 @@ public class GestorTurnoFuncionariosController implements Serializable{
 		retorno.add("2");
 		retorno.add("3");
 		retorno.add("4");
-		retorno.add("5");
 		
-		return retorno;
+		return retorno.stream().filter(s -> s.toUpperCase().contains(query.toUpperCase())).collect(Collectors.toList());
 	}
 	
-	public List<String> returnTipos() {
-
-		List<String> tipos = new ArrayList<>();
-		tipos.add("Emergencial");
-
-		return tipos;
+	public UploadedFile getUploadedFile() {
+		return uploadedFile;
 	}
 	
-	public List<LocalDate> getDias() {
-		return dias;
+	public void setUploadedFile(UploadedFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
 	}
 
-	public void setDias(List<LocalDate> dias) {
-		this.dias = dias;
-	}
-	
-	public GeradorEscalaEntity getGeradorEscalaEntity() {
-		return geradorEscalaEntity;
-	}
-	
 	public String getFiltro() {
 		return filtro;
 	}
-	
+
 	public void setFiltro(String filtro) {
 		this.filtro = filtro;
 	}
-	
-	public void setGeradorEscalaEntity(GeradorEscalaEntity geradorEscalaEntity) {
-		this.geradorEscalaEntity = geradorEscalaEntity;
+
+	public String getFiltroTurno() {
+		return filtroTurno;
 	}
-	
-	public List<GeradorEscalaEntity> getListaDeEscalasSalvas() {
-		return listaDeEscalasSalvas;
-	}
-	
-	public List<Funcionarios> getFuncionariosFiltrados() {
-		return funcionariosFiltrados;
-	}
-	
-	public void setFuncionariosFiltrados(List<Funcionarios> funcionariosFiltrados) {
-		this.funcionariosFiltrados = funcionariosFiltrados;
-	}
-	
-	public String getFiltroGrupo() {
-		return filtroGrupo;
-	}
-	
-	public void setFiltroGrupo(String filtroTurno) {
-		this.filtroGrupo = filtroTurno;
-	}
-	
-	public void setListaDeEscalasSalvas(List<GeradorEscalaEntity> listaDeEscalasSalvas) {
-		this.listaDeEscalasSalvas = listaDeEscalasSalvas;
+
+	public void setFiltroTurno(String filtroTurno) {
+		this.filtroTurno = filtroTurno;
 	}
 }

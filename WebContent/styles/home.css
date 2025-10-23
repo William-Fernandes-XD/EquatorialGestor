@@ -333,6 +333,14 @@ body {
   margin-top: 0.5rem;
 }
 
+.menu-acoes a[href="possiveisImprocedentes.jsf"]::after {
+  content: "Possíveis Improcedentes";
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+  margin-top: 0.5rem;
+}
+
 .menu-acoes a[href="geradorTexto.html"]::after {
   content: "Gerador de Texto";
   font-size: 1.1rem;

@@ -126,16 +126,26 @@
 						
 						<div class="menu-inputs">
 							<p:outputLabel value="Turno"/>
-							<p:inputText placeholder="Turno de trabalho" id="turno" widgetVar="turno"
-							value="#{ausenciaController.ausencia.turno}" style="width: 90%"
-							autocomplete="false" styleClass="inputs"/>
+							
+							<p:autoComplete
+							value="#{ausenciaController.ausencia.turno}"
+							completeMethod="#{ausenciaController.turnosAutoComplete}"
+							dropdown="true" forceSelection="true" 
+							panelStyle="max-height: 400px; overflow-y:auto;"
+						    inputStyleClass="inputs" inputStyle="width: 80%;"
+							placeholder="Turno referente a falta"/>
 						</div>
 						
 						<div class="menu-inputs">
 							<p:outputLabel value="Justificativa" />
-							<p:inputText placeholder="Justificativa" id="justificativa" widgetVar="justificativa"
+							
+							<p:autoComplete
 							value="#{ausenciaController.ausencia.justificativa}"
-							style="width: 90%" autocomplete="false" styleClass="inputs"/>
+							completeMethod="#{ausenciaController.justificativasComplete}"
+							dropdown="true" forceSelection="false" 
+							panelStyle="max-height: 400px; overflow-y:auto;"
+						    inputStyleClass="inputs" inputStyle="width: 80%;"
+							placeholder="Justificativa da ausência"/>
 						</div>
 					</div>	
 					

@@ -93,7 +93,7 @@
 				<div class="text">
 					<p:outputLabel value="Ocorrência" />
 						
-						<p:autoComplete
+						<!-- <p:autoComplete
 						value="#{gestorTurnoController.ocorrencia.ocorrencia}"
 						completeMethod="#{gestorTurnoController.retornaOcorrenciasNumber}"
 						onblur="#{gestorTurnoController}"
@@ -101,9 +101,11 @@
 						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
 						inputStyle="width :60%; margin: 0" style="margin:0;" >
 							
-							<p:ajax event="itemSelect" listener="#{gestorTurnoController.retornaValorPontoDefeito}" update="pontoDefeito"/>
-							
+							  <p:ajax event="itemSelect" listener="#{gestorTurnoController.retornaValorPontoDefeito}" update="pontoDefeito"/>
 						</p:autoComplete>
+						 -->
+						 
+						<p:inputText value="#{gestorTurnoController.ocorrencia.ocorrencia}"/>
 				</div>
 
 				<div class="text">

@@ -1,17 +1,28 @@
 package com.gestorcoi.controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
-import com.gestorcoi.entities.DobraTurnoFuncionario;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+
 import com.gestorcoi.entities.Funcionarios;
-import com.gestorcoi.implementations.DobrasTurnoFuncionarioImpl;
 import com.gestorcoi.implementations.FuncionarioImpl;
 import com.gestorcoi.utils.MensagensJSF;
 
@@ -23,24 +34,22 @@ public class GerenciaFuncionarioController {
 	
 	private Funcionarios funcionarios;
 	
+	private String regional;
 	
 	private List<Funcionarios> funcionariosCarregadosTela = new ArrayList<>();
 	
+	private UploadedFile uploadedFile;
+	
+	
+	private Map<String, Map<LocalDate, String>> tabelaDados = new HashMap<String, Map<LocalDate,String>>();
+	
 	// bug de salvamento do jsf, logo criar um novo usuário
 	
-	private DobraTurnoFuncionario dobraTurnoFuncionario;
 	private Funcionarios dadosFuncionario;
-	private DobrasTurnoFuncionarioImpl dobraTurnoImpl = new DobrasTurnoFuncionarioImpl();
 	
-	private List<DobraTurnoFuncionario> listaDobrasView = new ArrayList<>();
 	
 	@PostConstruct
 	public void init() {
-		
-		if(dobraTurnoFuncionario == null) {
-			
-			dobraTurnoFuncionario = new DobraTurnoFuncionario();
-		}
 		
 		if(dadosFuncionario == null) {
 			
@@ -59,7 +68,6 @@ public class GerenciaFuncionarioController {
 		    funcionarios.setFeedbacks(new ArrayList<>());
 		}
 		
-		listarDobrasTurnos();
 	}
 	
 	public GerenciaFuncionarioController() throws Exception{
@@ -68,8 +76,6 @@ public class GerenciaFuncionarioController {
 		}
 	}
 	
-	
-	private String regional;
 	
 	public String getRegional() {
 		return regional;
@@ -113,46 +119,6 @@ public class GerenciaFuncionarioController {
 	
 	public void setAtividadeSuperintendencia(String atividadeSuperintendencia) {
 		this.atividadeSuperintendencia = atividadeSuperintendencia;
-	}
-	
-	public void listarDobrasTurnos() {
-		
-		try {
-			
-			listaDobrasView = dobraTurnoImpl.findAll(DobraTurnoFuncionario.class);
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			MensagensJSF.msgSeverityInfo("Não foi possível carregar a lista de dobras de turno", "Um erro inesperado");
-		}
-	}
-	
-	public void salvarDobraTurno() {
-		
-		try {
-			
-			dobraTurnoFuncionario.setFuncionario(funcionarios);
-			dobraTurnoImpl.merge2(dobraTurnoFuncionario);
-			listaDobrasView.add(dobraTurnoFuncionario);
-			MensagensJSF.msgSeverityInfo("Dobra de turno salva com sucesso", "Salvo");
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			MensagensJSF.msgSeverityInfo("Não foi possível salvar a dobra de turno", "Um erro inesperado");
-		}
-	}
-	
-	public void removerDobraTurno(DobraTurnoFuncionario dobraTurnoFuncionario) {
-		
-		try {
-			
-			dobraTurnoImpl.remove(dobraTurnoFuncionario);
-			listaDobrasView.remove(dobraTurnoFuncionario);
-			MensagensJSF.msgSeverityInfo("Dobra de turno removida com sucesso", "Removido");
-		}catch(Exception e) {
-			e.printStackTrace();
-			MensagensJSF.msgSeverityInfo("Não foi possível remover a dobra de turno", "Um erro inesperado");
-		}
 	}
 	
 	public void mergeFuncionarioAtividade() {
@@ -473,22 +439,23 @@ public class GerenciaFuncionarioController {
 		return dadosFuncionario;
 	}
 	
-	public DobraTurnoFuncionario getDobraTurnoFuncionario() {
-		return dobraTurnoFuncionario;
-	}
-	
-	public void setDobraTurnoFuncionario(DobraTurnoFuncionario dobraTurnoFuncionario) {
-		this.dobraTurnoFuncionario = dobraTurnoFuncionario;
-	}
-	
 	public void setDadosFuncionario(Funcionarios dadosFuncionario) {
 		this.dadosFuncionario = dadosFuncionario;
 	}
-	
-	public List<DobraTurnoFuncionario> getListaDobrasView() {
-		return listaDobrasView;
+
+	public UploadedFile getUploadedFile() {
+		return uploadedFile;
 	}
-	public void setListaDobrasView(List<DobraTurnoFuncionario> listaDobrasView) {
-		this.listaDobrasView = listaDobrasView;
+
+	public void setUploadedFile(UploadedFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
+
+	public Map<String, Map<LocalDate, String>> getTabelaDados() {
+		return tabelaDados;
+	}
+
+	public void setTabelaDados(Map<String, Map<LocalDate, String>> tabelaDados) {
+		this.tabelaDados = tabelaDados;
 	}
 }

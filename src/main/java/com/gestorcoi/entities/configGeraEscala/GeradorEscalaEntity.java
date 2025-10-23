@@ -19,10 +19,16 @@ public class GeradorEscalaEntity {
 	private String emergencialFolga;
 	private String comercialFolga;
 	private String ilhaDeRiscoFolga;
+	private String ilhaDeRiscoFolga2;
+	private String ilhaDeRiscoFolga3;
 	private String triagemFolga;
 	private String PtpFolga;
+	private String PtpFolga2;
+	private String PtpFolga3;
 	private String PtpFolga4x4;
 	private String avaliacaoFolga;
+	private String avaliacaoFolga2;
+	private String avaliacaoFolga3;
 	private String impactoFolga;
 	private String impactoFolga2;
 	private String impactoFolga3;
@@ -148,5 +154,41 @@ public class GeradorEscalaEntity {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	public String getIlhaDeRiscoFolga3() {
+		return ilhaDeRiscoFolga3;
+	}
+	public void setIlhaDeRiscoFolga3(String ilhaDeRiscoFolga3) {
+		this.ilhaDeRiscoFolga3 = ilhaDeRiscoFolga3;
+	}
+	public String getIlhaDeRiscoFolga2() {
+		return ilhaDeRiscoFolga2;
+	}
+	public void setIlhaDeRiscoFolga2(String ilhaDeRiscoFolga2) {
+		this.ilhaDeRiscoFolga2 = ilhaDeRiscoFolga2;
+	}
+	public String getPtpFolga2() {
+		return PtpFolga2;
+	}
+	public void setPtpFolga2(String ptpFolga2) {
+		PtpFolga2 = ptpFolga2;
+	}
+	public String getPtpFolga3() {
+		return PtpFolga3;
+	}
+	public void setPtpFolga3(String ptpFolga3) {
+		PtpFolga3 = ptpFolga3;
+	}
+	public String getAvaliacaoFolga2() {
+		return avaliacaoFolga2;
+	}
+	public void setAvaliacaoFolga2(String avaliacaoFolga2) {
+		this.avaliacaoFolga2 = avaliacaoFolga2;
+	}
+	public String getAvaliacaoFolga3() {
+		return avaliacaoFolga3;
+	}
+	public void setAvaliacaoFolga3(String avaliacaoFolga3) {
+		this.avaliacaoFolga3 = avaliacaoFolga3;
 	}
 }

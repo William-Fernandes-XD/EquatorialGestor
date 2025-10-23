@@ -19,7 +19,8 @@
 		style="position: fixed; top: 20px; right: 20px; width: 350px; z-index: 9999;"
 		sticky="true" />
 
-	<h:form id="formGestor">
+	<h:form id="formGestor" enctype="multipart/form-data">
+	
 		<div id="menu_titulo">
 
 			<a href="#{request.contextPath}/restrito/home.jsf" id="titulo"
@@ -28,141 +29,20 @@
 
 				<p:graphicImage url="../resources/img/home.png"
 					style="max-width: 40px; max-height: 40px;" /> <span
-				style="color: white; font-size: 1.2em;"> Equatorial Energia </span>
+				style="color: white; font-size: 1.2em;"> Equatorial Energia</span>
 			</a>
 
-			<h1 id="logo">Gestoria de Turnos</h1>
+			<h1 id="logo">Geração de Escala</h1>
 		</div>
 
-	
-		<div class="tudo">
-
-			<div class="registroEscalas">
-			
-				<h:panelGroup rendered="#{userVerification.registradora}">
-					<div class="text">
-
-					<h:outputLabel value="Data/ínicio" />
-
-					<p:calendar placeholder="Insira a data" pattern="dd/MM/yyyy"
-						autocomplete="false" value="#{gestorTurnoFuncionarios.geradorEscalaEntity.inicio}" />
-				</div>
-
-				<div class="text">
-
-					<h:outputLabel value="Emergencial Folga" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.emergencialFolga}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Comercial Folga" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.comercialFolga}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Ilha de Risco Folga" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.ilhaDeRiscoFolga}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Triagem Folga" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.triagemFolga}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="PTP folga" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.ptpFolga}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="PTP folga escala 4x4" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.ptpFolga4x4}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Avaliação Folga" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.avaliacaoFolga}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Impacto Folga" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Impacto Folga 2" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga2}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Impacto Folga 3" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga3}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Impacto Folga 4" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga4}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Impacto Folga 5" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga5}"/>
-				</div>
-				
-				<div class="text">
-
-					<h:outputLabel value="Impacto Folga 6" />
-
-					<p:inputText value="#{gestorTurnoFuncionarios.geradorEscalaEntity.impactoFolga6}"/>
-				</div>
-
-				</h:panelGroup>
-
-
-				<div>
-					
-					<h:panelGroup rendered="#{userVerification.registradora}">
-					
-						<p:commandButton value="Gerar escala" styleClass="ui-button-info"
-							action="#{gestorTurnoFuncionarios.gerarEscala()}" update="tabela" process="@form"
-							ajax="true" />
-					
-						<p:commandButton value="Salvar Escala" styleClass="ui-button-info"
-							action="#{gestorTurnoFuncionarios.salvarEscala()}"
-							ajax="true" />
-				
-						
-					</h:panelGroup>
-						
-					<p:commandButton value="Visualizar escalas" styleClass="ui-button-info"
-						update="tabelaEscala" ajax="true" oncomplete="PF('escalasSalvas').show()"
-						action="#{gestorTurnoFuncionarios.carregarEscalasSalvas()}"/>
-				</div>
+		<div class="menu-topo">
+			<div class="menu-exportar">
+				<p:fileUpload mode="advanced" auto="false" value="#{gestorTurnoFuncionarios.uploadedFile}"
+				label="Importar Escala" allowTypes="/(\.|\/)(csv)$/" sizeLimit="10485760"
+				fileUploadListener="#{gestorTurnoFuncionarios.handleFileUpload}"
+				cancelLabel="Cancelar" dragDropSupport="true" multiple="false" />			
 			</div>
-
+			
 			<div class="filtroDiv">
 				<div class="text">
 					<h:outputText value="Filtro por atividade" />
@@ -172,54 +52,49 @@
 						completeMethod="#{gestorTurnoFuncionarios.filtrosAtividadesAutoComplete}"
 						dropdown="true" forceSelection="true"
 						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-						inputStyle="margin: 0" style="margin:0;" />
-				</div>		
+						inputStyle="" style="margin:0;" />
+				</div>	
 				
 				<div class="text">
-					<h:outputText value="Filtro por Grupo" />
+					<h:outputText value="Filtro por Turno" />
 					
 					<p:autoComplete
-						value="#{gestorTurnoFuncionarios.filtroGrupo}"
-						completeMethod="#{gestorTurnoFuncionarios.filtrosGrupoAutoComplete()}"
+						value="#{gestorTurnoFuncionarios.filtroTurno}"
+						completeMethod="#{gestorTurnoFuncionarios.filtrosTurno}"
 						dropdown="true" forceSelection="true"
 						panelStyle="max-height: 400px; overflow-y:auto;position:absolute"
-						inputStyle="margin: 0" style="margin:0;" />
-				</div>		
+						inputStyle="" style="margin:0;" />
+				</div>			
 				
 				<div class="botoesdiv">
-					<p:commandButton value="Filtrar" styleClass="ui-button-info" process="@form"
+					<p:commandButton value="Gerar" styleClass="ui-button-info" process="@form" style="margin-top: 24px"
 					action="#{gestorTurnoFuncionarios.gerarEscalaFiltrada()}" update="tabela" ajax="true" />
 				</div>
 			</div>
 		</div>
-
+		
 		<div style="overflow: auto; width: 100%; height: 75vh">
 
 			<p:dataTable
 				value="#{gestorTurnoFuncionarios.funcionariosFiltrados}"
 				var="funcionarios" id="tabela" resizableColumns="true"
-				styleClass="tabela-larga" scrollable="true" scrollHeight="650" frozenColumns="2" scrollWidth="1300">
+				styleClass="tabela-larga" scrollable="true" scrollHeight="650" frozenColumns="3" scrollWidth="1300">
 
 				<p:column style="width: 100px !important">
 						<f:facet name="header">Nome</f:facet>
 						<h:outputText value="#{funcionarios.nome}" />
 				</p:column>
 
-				<p:column style="width: 100px !important">
+				<p:column style="width: 70px !important">
 						<f:facet name="header">Tipo</f:facet>
 						<h:outputText value="#{funcionarios.atividadeSuperintendencia}" />
 				</p:column>
 
-				<p:column style="width: 150px">
+				<p:column style="width: 70px">
 						<f:facet name="header">Regional</f:facet>
 						<h:outputText value="#{funcionarios.regional}" />
 				</p:column>
 				
-				<p:column style="width: 50px">
-						<f:facet name="header">Grupo</f:facet>
-						<h:outputText value="#{funcionarios.secao}" />
-				</p:column>
-
 				<p:columns value="#{gestorTurnoFuncionarios.dias}" var="dia"
 					width="40px;">
 					<f:facet name="header">
@@ -237,55 +112,6 @@
 			</p:dataTable>
 		</div>
 		
-		<p:dialog id="escalasSalvas" widgetVar="escalasSalvas" position="center" width="90vw" height="90vh" 
-		header="Escalas salvas" resizable="false" draggable="false">
-			
-			<p:dataTable widgetVar="tabelaEscala"
-				value="#{gestorTurnoFuncionarios.listaDeEscalasSalvas}"
-				var="escala" id="tabelaEscala" resizableColumns="true"
-				styleClass="tabela-larga" scrollable="true" scrollHeight="750">
-				
-				<p:column>
-					<center>
-						<f:facet name="header">Data/Ínicio</f:facet>
-						<h:outputText value="#{escala.inicio}">
-							<f:convertDateTime pattern="dd/MM/yyyy"/>
-						</h:outputText>
-					</center>
-				</p:column>
-				
-				<p:column>
-					<center>
-						<f:facet name="header">Data/Fim</f:facet>
-						<h:outputText value="#{escala.fim}">
-							<f:convertDateTime pattern="dd/MM/yyyy"/>
-						</h:outputText>
-					</center>
-				</p:column>
-				
-				<p:column>
-					<center>
-						<f:facet name="header">Visualização</f:facet>
-						<p:commandButton styleClass="ui-button-info" update=":formGestor"
-						value="Visualizar" ajax="true" action="#{gestorTurnoFuncionarios.gerarEscala()}"
-						oncomplete="PF('escalasSalvas').hide()">
-							<f:setPropertyActionListener value="#{escala}" target="#{gestorTurnoFuncionarios.geradorEscalaEntity}" />
-						</p:commandButton>
-					</center>
-				</p:column>
-				
-				<p:column>
-					<center>
-						<f:facet name="header">Remover</f:facet>
-						<p:commandButton styleClass="ui-button-danger" update=":formGestor:tabelaEscala"
-						value="Remover" ajax="true" action="#{gestorTurnoFuncionarios.removerEscala(escala)}"/>
-					</center>
-				</p:column>
-				
-			</p:dataTable>
-			
-		</p:dialog>
-
 		<ui:include src="/templates/painelDuvidas.xhtml" />
 
 		<ui:include src="/templates/registroausencia.xhtml" />

@@ -11,8 +11,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import org.primefaces.PrimeFaces;
-
 import com.gestorcoi.entities.Funcionarios;
 import com.gestorcoi.entities.RegistroAusencia;
 import com.gestorcoi.implementations.FuncionarioImpl;
@@ -203,6 +201,28 @@ public class RegistrarAusenciaController implements Serializable{
 		});;
 		
 		listaAusenciasGerais = ausencias;
+	}
+	
+	public List<String> turnosAutoComplete(String query){
+		
+		List<String> turnos = new ArrayList<>();
+		turnos.add("1");
+		turnos.add("2");
+		turnos.add("3");
+		turnos.add("4");
+		
+		return turnos.stream().filter(turno -> turno.contains(query.toLowerCase())).collect(Collectors.toList());
+	}
+	
+	public List<String> justificativasComplete(String query){
+		
+		List<String> justificativas = new ArrayList<>();
+		justificativas.add("Atestado Médico");
+		justificativas.add("Banco de Horas");
+		justificativas.add("Sem motivo");
+		
+		return justificativas.stream().filter(s -> s.toLowerCase().contains(query.toLowerCase()))
+				.collect(Collectors.toList());
 	}
 	
 	public void carregarAusenciasFuncionarioByObject(Funcionarios funcionario) throws Exception {

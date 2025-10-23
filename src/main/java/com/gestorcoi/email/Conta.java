@@ -3,7 +3,7 @@ package com.gestorcoi.email;
 public class Conta {
 
 	private static final String conta_name = "gestorcoiequatorial@gmail.com";
-	private static final String conta_password = "pmia jiih iuir bdcv";
+	private static final String conta_password = "uope exhl ulyp lcwb";
 	
 	public static String getConta_name() {
 		return conta_name;
