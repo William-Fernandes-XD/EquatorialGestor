@@ -59,7 +59,10 @@
 					 	<div class="inputs">
 					 		<h:outputText value="CÓD.EQUIPAMENTO" class="output"/>
 					 		<p:inputText value="#{cardsController.redCard.codigoEquipamento}" class="input"
-					 		inputStyle="width :100%; margin: 0" />
+					 		inputStyle="width :100%; margin: 0">
+					 			<p:ajax event="change" listener="#{cardsController.carregarInterrupcaoDadosPlanilha}"
+					 			update="@form"/>
+					 		</p:inputText>
 					 	</div>
 					 	
 					 	<div class="inputs">
@@ -148,7 +151,7 @@
 						<div class="inputs2">
 							<h:outputText value="OBSERVAÇÃO" class="output"/>
 							<p:inputTextarea value="#{cardsController.redCard.observacao}" class="input"
-							inputStyle="width :100%; margin: 0"/>
+							inputStyle="width :100%; margin: 0" />
 						</div>
 						
 						<div class="inputs2">

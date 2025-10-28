@@ -39,7 +39,7 @@
 			<h1 id="logo">Possíveis Improcedentes</h1>
 		</div>
 		
-		<p:poll interval="30" update="@form" />
+		<p:poll interval="60" update="@form" />
 		
 		<div class="conteudo-improcedentes" id="conteudo_tabela">
 			
@@ -60,7 +60,8 @@
 				
 				<p:column width="60%">
 					<f:facet name="header">Informações Adicionais</f:facet>
-					<h:outputText value="#{improcedentes.informacoesAdicionais}" />
+					<h:outputText value="#{improcedentes.informacoesAdicionais}" 
+					style="white-space: normal; word-wrap: break-word; overflow-wrap: break-word;"/>
 				</p:column>
 			</p:dataTable>
 		</div>

@@ -334,7 +334,7 @@ body{
 
 .output{
 	
-	background-color: #993333;
+	background-color: #ff0000;
 	width: 70%;
 	color: white;
 	text-align:center;
@@ -342,7 +342,7 @@ body{
 
 .output-verde{
 	
-	background-color: #4C7B3F;
+	background-color: #47713b;
 	width: 40%;
 	max-width: 40%;
 	min-width: 40%;
@@ -353,7 +353,7 @@ body{
 
 .output-yellow{
 	
-	background-color: #FFD700;
+	background-color: #ffff00;
 	width: 30%;
 	max-width: 40%;
 	min-width: 40%;
@@ -364,7 +364,7 @@ body{
 
 .output-vermelho{
 	
-	background-color: #993333;
+	background-color: #ff0000;
 	width: 40%;
 	max-width: 40%;
 	min-width: 40%;
